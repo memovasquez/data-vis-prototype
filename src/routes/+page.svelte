@@ -1,2 +1,23 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import App from '../components/App.svelte';
+</script>
+
+<main>
+    
+</main>
+
+<style>
+    main {
+        text-align: center;
+        font-family: "Nunito", sans-serif;
+        font-weight: 300;
+        line-height: 2;
+        font-size: 24px;
+        color: var(--color-text);
+        margin-top: 100px;
+    }
+</style>
+
+
+<App />
+
