@@ -1,5 +1,6 @@
 <script>
     import Pie from '../components/Pie.svelte';
+    import Histogram from './Histogram.svelte';
     import * as d3 from 'd3';
     import { onMount } from 'svelte';
 
@@ -28,6 +29,11 @@
         <h2>Days of the Week Eating Kinds of Food </h2>
         <div class="actions" />
         <Pie bind:pie_data={pie_data}></Pie>
+        {/if}
+    </section>
+    <section>
+        {#if pie_data.length !== 0 }
+        <Histogram bind:hist_data={pie_data}></Histogram>
         {/if}
     </section>
 
