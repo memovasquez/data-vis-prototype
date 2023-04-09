@@ -10,6 +10,7 @@
     height = 400 - margin.top - margin.bottom;
     let reduced_meal_size_days = hist_data.map(obj => Number(obj.rcsi_meal_size)).filter( number => number > 0);
     let reduced_child_meal_days = hist_data.map(obj => Number(obj.rcsi_meal_adult)).filter(number => number > 0);
+    let hovered = -1;
 
 
     onMount( () => {
@@ -41,7 +42,7 @@
 
             // And apply this function to data to get the bins
             const bins = histogram(reduced_meal_size_days);
-            console.log(bins);
+
             // Y axis: scale and draw:
             const y = d3.scaleLinear()
                 .range([height, 0]);
@@ -50,7 +51,44 @@
                 svg.append("g")
             .call(d3.axisLeft(y));
 
+            // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
+            // Its opacity is set to 0: we don't see it by default.
+            const tooltip = d3.select("#histogram")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip-visible")
+                .style("background-color", "#69b3a2")
+                .style("color", "white")
+                .style("border-radius", "5px")
+                .style("padding", "10px")
 
+
+            const showTooltip = function(event,d) {
+                tooltip
+                .transition()
+                .duration(100)
+                .style("opacity", 1)
+                tooltip
+                .html(String(d.length) + " respondents reduced the size of their meal "+ String(d.x0) + " days in the past week")
+                .style("left", (event.x)/2-100 + "px")
+                .style("top", (event.y)/2 + "px")
+            }
+
+
+            const moveTooltip = function(event,d) {
+                tooltip
+                .style("left", (event.x)/2-100 + "px")
+                .style("top", (event.y)/2 + "px")
+            }
+
+            // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+            const hideTooltip = function(event,d) {
+                tooltip
+                .transition()
+                .duration(100)
+                .style("opacity", 0)
+
+            }
 
             // append the bar rectangles to the svg element
             svg.selectAll("rect")
@@ -61,7 +99,10 @@
                     .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
                     .attr("height", function(d) { return height - y(d.length); })
                     .style("fill", "#69b3a2")
-
+                    // Show tooltip on hover
+                    .on("mouseover", showTooltip )
+                    .on("mousemove", moveTooltip )
+                    .on("mouseleave", hideTooltip )
         
         })
 
@@ -78,6 +119,8 @@
 </script>
 
 <div id="histogram" bind:this={hist} class="visualization">
+
+
 
 </div>
 
