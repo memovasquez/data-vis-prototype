@@ -112,10 +112,10 @@
 		font: 25px sans-serif;
 		font-family: "Nunito", sans-serif;
 		visibility: visible;
-		background-color: #f0dba8;
+		background-color: #69b3a2;
 		border-radius: 10px;
 		width: 200px;
-		color: black;
+		color: white;
 		position: absolute;
 		padding: 10px;
 	}

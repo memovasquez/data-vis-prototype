@@ -10,7 +10,6 @@
     height = 400 - margin.top - margin.bottom;
     let reduced_meal_size_days = hist_data.map(obj => Number(obj.rcsi_meal_size)).filter( number => number > 0);
     let reduced_child_meal_days = hist_data.map(obj => Number(obj.rcsi_meal_adult)).filter(number => number > 0);
-    let hovered = -1;
 
 
     onMount( () => {
@@ -28,13 +27,22 @@
             
             // X axis: scale and draw:
             const x = d3.scaleLinear()
-                .domain([0, d3.max(reduced_meal_size_days)])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
+                .domain([0, d3.max(reduced_meal_size_days)+1])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
                 .range([0, width]); //width of histogram
 
             svg.append("g")
             .attr("transform", `translate(0, ${height})`)
-            .call(d3.axisBottom(x).tickFormat(d3.format("d")).tickValues([0, 1, 2, 3, 4, 5, 6, 7]));
-             
+            .call(d3.axisBottom(x).tickFormat(d3.format("d")).tickValues([1, 2, 3, 4, 5, 6, 7,]));
+
+
+            svg.append("text")
+                .attr("class", "axis-label")
+                .attr("text-anchor", "middle") // set the alignment of the text
+                .attr("font-size", "12px") // set the font size
+                .attr("fill", "black") // set the font color
+                .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")") // position the label at the bottom center of the axis
+                .text("Number of Days"); // set the label text
+                            
             const histogram = d3.histogram()
             .value(function(d) { return d; })   // I need to give the vector of value
             .domain(x.domain())  // then the domain of the graphic
@@ -43,13 +51,23 @@
             // And apply this function to data to get the bins
             const bins = histogram(reduced_meal_size_days);
 
+
             // Y axis: scale and draw:
             const y = d3.scaleLinear()
                 .range([height, 0]);
                 y.domain([0, d3.max(bins, function(d) {return d.length })]);   // d3.hist has to be called before the Y axis obviously
             
                 svg.append("g")
-            .call(d3.axisLeft(y));
+                .call(d3.axisLeft(y));
+
+                svg.append("text")
+                .attr("class", "axis-label")
+                .attr("text-anchor", "middle")
+                .attr("font-size", "12px")
+                .attr("fill", "black")
+                .attr("transform", "rotate(-90) translate(" + (-height/2) + "," + (margin.left - 20) + ")") // position the label at the left center of the axis and rotate it by -90 degrees
+                .text("# Respondents");
+
 
             // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
             // Its opacity is set to 0: we don't see it by default.
@@ -95,8 +113,8 @@
                 .data(bins)
                 .join("rect")
                     .attr("x", 1)
-                .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.length)})`})
-                    .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
+                .attr("transform", function(d) { return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`})
+                    .attr("width", function(d) { return (x(d.x1) - x(d.x0))/2 -1})
                     .attr("height", function(d) { return height - y(d.length); })
                     .style("fill", "#69b3a2")
                     // Show tooltip on hover

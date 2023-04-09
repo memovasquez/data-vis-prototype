@@ -23,7 +23,9 @@
 </script>
 
 <main>
+    <div class="box">
 
+    
     <section class="todos">
         {#if pie_data.length !== 0 }
         <h2>Days of the Week Eating Kinds of Food </h2>
@@ -31,12 +33,13 @@
         <Pie bind:pie_data={pie_data}></Pie>
         {/if}
     </section>
-    <section>
+    <section class="todos">
         {#if pie_data.length !== 0 }
+        <h2>Loss of Nutrition</h2>
         <Histogram bind:hist_data={pie_data}></Histogram>
         {/if}
     </section>
-
+    </div>
     
 </main>
 
@@ -68,6 +71,11 @@
         font-size: 24px;
         color: var(--color-text);
         margin-top: 100px;
+    }
+
+    .box {
+        display: flex;
+        justify-content: space-around;
     }
 
     label,
