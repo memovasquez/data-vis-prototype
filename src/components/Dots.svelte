@@ -6,6 +6,7 @@
     export let numDots = {};
     export let histData = {};
     let dots;
+    let state = 'all';
     var bins = [];
 
     const margin = {top: 10, right: 30, bottom: 30, left: 40},
@@ -16,7 +17,7 @@
 
 
     var numColumns = 20;
-    var dotCoords = updateDotCoords('all')
+    var dotCoords = [];//updateDotCoords('all')
     var size = centerWidth / numColumns - 4;
     var numRows = Math.floor(numDots['all'] / numColumns);
     var height = numRows * (size + 4)
@@ -35,7 +36,8 @@
             for (let i =0; i < numRows; i++) {
                 for (let j=0; j < numColumns; j ++) {
                     dotCoords.push({"x": getDotX(j, sidePlotWidth, sidePlotWidth + centerWidth), 
-                                    "y": getDotY(i)});
+                                    "y": getDotY(i),
+                                "c": "#69b3a2"});
                 }
             }
         } else {
@@ -46,19 +48,19 @@
                     if (i * numColumns + j < numDots[fieldName]) {
                         numLeftRows = i;
                         firstRightCol = j
-                        dotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i)});  
+                        dotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i), "c": "#69b3a2"});  
                     } else {
                         //console.log('woo')
                         let x = j - firstRightCol - 1
                         let y = i - numLeftRows
                         if (x < 0) {
-                            console.log('woo')
                             y--;
                             x = numColumns + x;
                         }
 
                         dotCoords.push({"x": getDotX(x, width - centerWidth, width), 
-                                        "y": getDotY(y)});
+                                        "y": getDotY(y),
+                                        "c": "#a83e32"});
                     }
                      
                 }
@@ -88,8 +90,6 @@
         .data(dotCoords)
         .join("circle")
         .attr("r", 5)
-        .style("fill", "#0909bd")
-        .attr("stroke", "#0909bd")
         .attr("fill-opacity", 1)
         .transition()
                 .duration(1000)
@@ -99,11 +99,16 @@
                 .attr("cy", function (d) {
                     return d["y"]
                 })
+                .style("fill", function (d) {
+                    return d["c"]
+                })
+                .attr("stroke", function (d) {
+                    return d["c"]
+                })
         // }
     }
 
     function splitHistogram (name, split) {
-        console.log('whattt', histData);
         let data = histData[name][split];
         let leftData = data[0];
         let rightData = data[1];
@@ -131,91 +136,71 @@
         }
         bins = []
         for (let i = 0; i < leftBins.length; i++) {
-            bins.push(leftBins[i]);
+            
+            // switched order? TODO
             bins.push(rightBins[i]);
+            bins.push(leftBins[i]);
         }
         // console.log('hello', bins)
         // foo
-        d3.select("#histogram").select("g").selectAll("rect")
-            .data(bins)
-            .join("rect")
-            .attr("transform", function(d, i) { 
-                if (i % 2 == 0) {
-                    return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
+        d3.select("#histogram").select("g").selectAll("polygon")
+        .data(bins)
+        .join("polygon")
+        .transition()
+        .duration(1000)
+        .attr("points", function (d, i) {
+            let x0 = x(d.x0);
+            let x1 = x(d.x1);
+            let y0 = y(0);
+            let y1;
+            if (split == 'all') {            
+                if (i % 2 == 1) { // TODO switched order
+                    y1 = y(d.length)
                 } else {
-                    return `translate(${x(d.x0) + (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
-                }})
-            .transition()
-            .duration(1000)
-            .attr("height", function(d) { return histHeight - y(d.length); })
+                    y1 = y(0.5);
+                }
+            }  else {
+                y1 =  y(d.length);
+            }
 
-        //     d3.select("#histogram").select("g").selectAll("rect").selectAll(".rightBar")
-        //         .data(rightBins)
-        //         .append("rect")
-        //         .attr("x", function(d) { return (x(d.x1) - x(d.x0))/2 + 1})
-        //         .attr("transform", function(d) { return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`})
-        //         .transition()
-        //             .duration(1000)
-        //             .attr("height", function(d) { return histHeight - y(d.length); })
-        // // } else {
-        //     const y = d3.scaleLinear()
-        //     .range([histHeight, 0])
-        //     .domain([0, d3.max(bins, function(d) {return d.length })]);   // d3.hist has to be called before the Y axis obviously
-            
-        //     // const svgHist = d3.selev.append("g")
-        //     //     .call(d3.axisLeft(y));
-
-        //     d3.select("#histogram").select("g").selectAll("rect").selectAll(".leftBar")
-        //     .data(bins)
-        //     .join("rect")
-        //     .attr("x", 1)
-        //     .attr("transform", function(d) { return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`})
-        //     .transition()
-        //         .duration(1000)
-        //         .attr("height", function(d) { return histHeight - y(d.length); })
-        // }
-
-        // svgHist.selectAll("rect")
-        // .data(bins)
-        // .join("rect")
-        //     .attr("x", 1)
-        // .attr("transform", function(d) { return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`})
-        //     .attr("width", function(d) { return (x(d.x1) - x(d.x0))/2 -1})
-        //     .attr("height", function(d) { return height - y(d.length); })
-        //     .style("fill", "#69b3a2")
-        //     // Show tooltip on hover
-        //             // .on("mouseover", showTooltip )
-        //             // .on("mousemove", moveTooltip )
-        //             // .on("mouseleave", hideTooltip )
-        //   })
-        
+            let pts = [
+                    [x0, y0], 
+                    [x0,  y1],
+                    [x1, y0],
+                    [x1 , y1],
+                ]
+            let points = d3.polygonHull(pts)
+            return points
+            })
+        .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
+        .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
     }
 
     var updatePlots = function (name) {
         return function () { 
+            if (state !== name) {
             moveDots(name);
             splitHistogram('income', name);
+            }
+            state = name;
         }
     }
 
 
-        //svg = d3.select("#dots").select("svg").select("g").selectAll("circle")//.select("#histogram")
-        // if (split == 'all') {
-
-
     $: {
-        if (numDots.length !== 0){// && (histData.length !== 0)){
+        if (numDots['all'] !== 0){// && (histData.length !== 0)){
+            console.log('this',numDots, histData)
             //histData = histData
-            console.log(numDots)
-            console.log(histData)
             updateDotCoords('all');
+            draw()
             //updateHistogramData('income', 'all');
         }
     }
 
     // TODO state variable so we don't randomize when button is double pressed
 
-    onMount( () => {
+    //onMount( () => {
+    function draw() {
     d3.select(dots).html(null);
 
     const svg = d3.select("#dots")
@@ -227,13 +212,14 @@
             .attr("transform",
                     `translate(${margin.left}, ${margin.top})`);
 
+    console.log('dots', dotCoords);
     d3.select("#dots").select("svg").select("g").selectAll("circle")
         .data(dotCoords)
         .enter()
         .append("circle")
         .attr("r", 5)
-        .style("fill", "#0909bd")
-        .attr("stroke", "#0909bd")
+        .style("fill", "#69b3a2")
+        .attr("stroke", "#69b3a2")
         .attr("fill-opacity", 1)
         .attr("cx", function (d) {
             console.log('y')
@@ -276,8 +262,10 @@
 
     bins = []
     for (let i = 0; i < leftBins.length; i++) {
-        bins.push(leftBins[i]);
+        // switched order? TODO
         bins.push(rightBins[i]);
+        bins.push(leftBins[i]);
+        
     }
 
     console.log('bins', bins)
@@ -290,20 +278,46 @@
         .call(d3.axisLeft(y));
 
     let barWidth = (x(bins[0].x1) - x(bins[0].x0)) / 2 - 1
-    svgHist.selectAll("rect")
+    // svgHist.selectAll("rect")
+    //     .data(bins)
+    //     .join("rect")
+    //     .attr("x", function (d, i) {return (i % 2 == 0) ? 1 :1})
+    //     .attr("class", function (d, i) {(i % 2 == 0) ? "leftBar" : "rightBar"})
+    //     .attr("transform", function(d, i) { 
+    //         if (i % 2 == 0) {
+    //             return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
+    //         } else {
+    //             return `translate(${x(d.x0) + (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
+    //         }})
+    //     .attr("width", function(d) { return barWidth})
+    //     .attr("height", function(d) { return histHeight - y(d.length) })
+    //     .style("fill", function (d, i) {return (i % 2 == 0) ? "#69b3a2" : "#a83e32"});
+
+
+    svgHist.selectAll("polygon")
         .data(bins)
-        .join("rect")
-        .attr("x", function (d, i) {return (i % 2 == 0) ? 1 :1})
-        .attr("class", function (d, i) {(i % 2 == 0) ? "leftBar" : "rightBar"})
-        .attr("transform", function(d, i) { 
-            if (i % 2 == 0) {
-                return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
+        .join("polygon")
+        .attr("points", function (d, i) {
+            let x0 = x(d.x0);
+            let x1 = x(d.x1);
+            let y0 = y(0);
+            let y1;
+            if (i % 2 == 1) {
+                y1 = y(d.length)
             } else {
-                return `translate(${x(d.x0) + (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
-            }})
-        .attr("width", function(d) { return barWidth})
-        .attr("height", function(d) { return histHeight - y(d.length) })
-        .style("fill", function (d, i) {return (i % 2 == 0) ? "#69b3a2" : "#a83e32"});
+                y1 = y(0.5);
+            }
+            let pts = [
+                    [x0, y0], 
+                    [x0,  y1],
+                    [x1, y0],
+                    [x1 , y1],
+                ]
+            let points = d3.polygonHull(pts)
+            return points
+            })
+        .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
+        .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
             //
             // Show tooltip on hover
                     // .on("mouseover", showTooltip )
@@ -323,7 +337,7 @@
                     // .on("mouseover", showTooltip )
                     // .on("mousemove", moveTooltip )
                     // .on("mouseleave", hideTooltip )
-    })
+    }//)
 
     console.log('here', dotMarkers);
 

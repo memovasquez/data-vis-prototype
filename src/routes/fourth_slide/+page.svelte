@@ -4,7 +4,8 @@
     import Dots from '../../components/Dots.svelte';
 
     let data = [];
-    let path = "https://docs.google.com/spreadsheets/d/1-y0RKyaYHCBK1mxT4mnhygGpy7wSFp3jYHk6lQNmKBg/gviz/tq?tqx=out:csv";
+    //let path = "https://docs.google.com/spreadsheets/d/1-y0RKyaYHCBK1mxT4mnhygGpy7wSFp3jYHk6lQNmKBg/gviz/tq?tqx=out:csv";
+    let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
     let dotNum;
     let histData;
     let missedMeals;
@@ -17,7 +18,7 @@
 
     function processData () {
         console.log(data)
-        missedMeals = data.map(obj => (Number(obj.rcsi_meal_nb) > 0))//.filter( number => number > 0);
+        missedMeals = data.map(obj => (Number(obj.rcsi_no_eat) > 0))//.filter( number => number > 0);
         let income = data.map(obj => Number(obj.rsp_age))//.filter( number => number > 0);
         //console.log(Number(data[0].rsp_age)); // TODO change to income
         console.log(income);
