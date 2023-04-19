@@ -126,6 +126,7 @@
         let rightBins = histogram(rightData);
 
         if (split == 'all') {
+            leftBins = allBins;
             rightBins = histogram([]);
         }
         bins = []
@@ -133,7 +134,8 @@
             bins.push(leftBins[i]);
             bins.push(rightBins[i]);
         }
-
+        // console.log('hello', bins)
+        // foo
         d3.select("#histogram").select("g").selectAll("rect")
             .data(bins)
             .join("rect")
@@ -203,7 +205,7 @@
 
     $: {
         if (numDots.length !== 0){// && (histData.length !== 0)){
-            histData = histData
+            //histData = histData
             console.log(numDots)
             console.log(histData)
             updateDotCoords('all');
@@ -278,9 +280,11 @@
         bins.push(rightBins[i]);
     }
 
+    console.log('bins', bins)
+
     const y = d3.scaleLinear()
         .range([histHeight, 0])
-        .domain([0, d3.max(bins, function(d) {return d.length })]);   // d3.hist has to be called before the Y axis obviously
+        .domain([0, d3.max(bins, function(d) {return d.length})]);   // d3.hist has to be called before the Y axis obviously
             
     svgHist.append("g")
         .call(d3.axisLeft(y));
