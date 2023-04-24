@@ -3,7 +3,7 @@
 </script>
 
 <main>
-    
+    <a href="/scrollytelling">View storytelling page</a>
 </main>
 
 <style>
