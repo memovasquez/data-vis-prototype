@@ -18,17 +18,27 @@
 
     function processData () {
         console.log(data)
-        missedMeals = data.map(obj => (Number(obj.rcsi_no_eat) > 0))//.filter( number => number > 0);
-        let income = data.map(obj => Number(obj.rsp_age))//.filter( number => number > 0);
+        missedMeals = data.map(obj => (Number(obj.rcsi_meal_nb) > 0))//.filter( number => number > 0);
+        let incomeCurrency = data.map(obj => Number(obj.avg_income_currency))
+        let income = data.map(obj => Number(obj.avg_income_amount))
+            .filter((number, i) => ((number < 1000) && (incomeCurrency[i] == 1)));
+
+        let debtCurrency = data.map(obj => Number(obj.debt_currency))
+        let debt = data.map(obj => Number(obj.debt_amount))
+            .filter((number, i) => ((number < 1000) && (incomeCurrency[i] == 1)));
+
         //console.log(Number(data[0].rsp_age)); // TODO change to income
-        console.log(income);
+        //console.log('stuff', data.map(obj => Number(obj.avg_income_amount)));
+        //console.log('income', income);
+        // console.log('ish', income.filter((n, i) => (i % 3 == 0)));
         console.log(missedMeals);
         dotNum = {'all': Number(Math.round(data.length / 20)), 'missedMeals': Number(Math.round(missedMeals.filter(n => n > 0).length / 20))};
         histData = {
-            'income': {'all': income, 'missedMeals': [income.filter((n, i) => missedMeals[i]), income.filter((n, i) => ! missedMeals[i])]}
+            'income': {'all': income, 'missedMeals': [income.filter((n, i) => missedMeals[i]), income.filter((n, i) => ! missedMeals[i])]},
+            'debt': {'all': debt, 'missedMeals': [debt.filter((n, i) => missedMeals[i]), debt.filter((n, i) => ! missedMeals[i])]}
         }
-        console.log(income);
-        console.log(dotNum);
+        //console.log(income);
+        //console.log(dotNum);
     }
 
     $: {

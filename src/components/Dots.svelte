@@ -6,7 +6,9 @@
     export let numDots = {};
     export let histData = {};
     let dots;
-    let state = 'all';
+    let hist;
+    let dotState = 'all';
+    let histState = 'income';
     var bins = [];
 
     const margin = {top: 10, right: 30, bottom: 30, left: 40},
@@ -109,6 +111,7 @@
     }
 
     function splitHistogram (name, split) {
+        console.log(histData);
         let data = histData[name][split];
         let leftData = data[0];
         let rightData = data[1];
@@ -123,9 +126,6 @@
             .thresholds(x.ticks(20)); // then the numbers of bins; 6 here because we remove 0
 
         const allBins = histogram(histData[name]['all']);
-        const y = d3.scaleLinear()
-            .range([histHeight, 0])
-            .domain([0, d3.max(allBins, function(d) {return d.length })]);  
         
         let leftBins = histogram(leftData);
         let rightBins = histogram(rightData);
@@ -134,6 +134,20 @@
             leftBins = allBins;
             rightBins = histogram([]);
         }
+
+        const leftTotal = leftBins.reduce((acc, cur) => acc + cur.length, 0);
+        const rightTotal = (split == 'all') ? 1 : rightBins.reduce((acc, cur) => acc + cur.length, 0);
+        const leftMax = d3.max(leftBins, function(d) {return d.length }) / leftTotal;
+        const rightMax = (split == 'all') ? 0 : d3.max(rightBins, function(d) {return d.length }) / rightTotal;
+
+
+        const y = d3.scaleLinear()
+            .range([histHeight, 0])
+            .domain([0, d3.max([leftMax, rightMax])]);//d3.max(allBins, function(d) {return d.length })]);  
+        
+        // TODO fix y-axis scale and scores?
+
+
         bins = []
         for (let i = 0; i < leftBins.length; i++) {
             
@@ -149,19 +163,35 @@
         .transition()
         .duration(1000)
         .attr("points", function (d, i) {
-            let x0 = x(d.x0);
-            let x1 = x(d.x1);
+            let offset;
+            let width = d.x1 - d.x0;
+            if (split == 'all') {
+                offset = 0;
+            } else {
+                if (i % 2 == 1) {
+                    offset = width / 4;
+                } else {
+                    offset = - width / 4;
+                }
+            }
+            // todo change spacing if splitting
+            let x0 = x(d.x0 + offset);
+            let x1 = x(d.x1 + offset);
             let y0 = y(0);
             let y1;
             if (split == 'all') {            
                 if (i % 2 == 1) { // TODO switched order
-                    y1 = y(d.length)
+                    y1 = d.length
                 } else {
-                    y1 = y(0.5);
+                    y1 = 0.001;
                 }
             }  else {
-                y1 =  y(d.length);
+                y1 = d.length;
             }
+
+            y1 /= (i % 2 == 1) ? leftTotal : rightTotal;
+            y1 = y(y1);
+            if (y1 == 0) {console.log('wut')};
 
             let pts = [
                     [x0, y0], 
@@ -176,13 +206,18 @@
         .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
     }
 
-    var updatePlots = function (name) {
+    var updatePlots = function (name, histName) {
         return function () { 
-            if (state !== name) {
-            moveDots(name);
-            splitHistogram('income', name);
+            console.log(name, histName)
+            if (dotState !== name) {
+                moveDots(name);
+                splitHistogram(histName, name);
             }
-            state = name;
+            else if (histState !== histName){
+                splitHistogram(histName, name);
+            }
+            dotState = name;
+            histState = histName;
         }
     }
 
@@ -196,8 +231,6 @@
             //updateHistogramData('income', 'all');
         }
     }
-
-    // TODO state variable so we don't randomize when button is double pressed
 
     //onMount( () => {
     function draw() {
@@ -232,7 +265,8 @@
 
         // build histogram
 
-    const svgHist = d3.select("#dots")
+    d3.select(hist).html(null);
+    const svgHist = d3.select("#hist")
         .append('svg')
             .attr("width", histWidth + margin.left + margin.right)
             .attr("height", histHeight + margin.top + margin.bottom)
@@ -257,7 +291,9 @@
 
     // console.log('this', histData['income']['all'])
     const leftBins = histogram(histData['income']['all']);
+    const leftTotal = leftBins.reduce((acc, cur) => acc + cur.length, 0);
     const rightBins = histogram([]);
+    const rightTotal = rightBins.reduce((acc, cur) => acc + cur.length, 0)
     //const rightBins = leftBins;
 
     bins = []
@@ -270,9 +306,10 @@
 
     console.log('bins', bins)
 
+    console.log(leftTotal);
     const y = d3.scaleLinear()
-        .range([histHeight, 0])
-        .domain([0, d3.max(bins, function(d) {return d.length})]);   // d3.hist has to be called before the Y axis obviously
+        .range([histHeight, 0.0001])
+        .domain([0, d3.max(bins, function(d) {return d.length}) / leftTotal]);   // d3.hist has to be called before the Y axis obviously
             
     svgHist.append("g")
         .call(d3.axisLeft(y));
@@ -303,10 +340,13 @@
             let y0 = y(0);
             let y1;
             if (i % 2 == 1) {
-                y1 = y(d.length)
+                y1 = d.length;
             } else {
-                y1 = y(0.5);
+                y1 = 0;
             }
+            y1 /= (i % 2 == 1) ? leftTotal : 1;
+            y1 = y(y1);
+            console.log(y1);
             let pts = [
                     [x0, y0], 
                     [x0,  y1],
@@ -344,8 +384,12 @@
 
 </script>
 
-<button type="button" on:click="{updatePlots('all')}">All</button>
-<button type="button" on:click="{updatePlots('missedMeals')}">Missed meals</button>
+<button type="button" on:click="{updatePlots('all', histState)}">All</button>
+<button type="button" on:click="{updatePlots('missedMeals', histState)}">Missed meals</button>
 
 <div id="dots" bind:this={dots} class="visualization"></div>
 
+<button type="button" on:click="{updatePlots(dotState, 'income')}">Monthly Income</button>
+<button type="button" on:click="{updatePlots(dotState, 'debt')}">Debt</button>
+
+<div id="hist" bind:this={dots} class="visualization"></div>
