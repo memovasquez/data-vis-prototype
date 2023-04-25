@@ -25,7 +25,7 @@
 
         let debtCurrency = data.map(obj => Number(obj.debt_currency))
         let debt = data.map(obj => Number(obj.debt_amount))
-            .filter((number, i) => ((number < 1000) && (incomeCurrency[i] == 1)));
+            .filter((number, i) => ((number < 1000) && (number > 0) && (incomeCurrency[i] == 1)));
 
         //console.log(Number(data[0].rsp_age)); // TODO change to income
         //console.log('stuff', data.map(obj => Number(obj.avg_income_amount)));

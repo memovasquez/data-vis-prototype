@@ -1,6 +1,8 @@
 <script>
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
+    // import * as science from 'science';
+
     //import { draw } from 'svelte/types/runtime/transition';
     //input data 
     export let numDots = {};
@@ -157,53 +159,143 @@
         }
         // console.log('hello', bins)
         // foo
-        d3.select("#histogram").select("g").selectAll("polygon")
-        .data(bins)
-        .join("polygon")
-        .transition()
-        .duration(1000)
-        .attr("points", function (d, i) {
-            let offset;
-            let width = d.x1 - d.x0;
-            if (split == 'all') {
-                offset = 0;
-            } else {
-                if (i % 2 == 1) {
-                    offset = width / 4;
-                } else {
-                    offset = - width / 4;
-                }
-            }
-            // todo change spacing if splitting
-            let x0 = x(d.x0 + offset);
-            let x1 = x(d.x1 + offset);
-            let y0 = y(0);
-            let y1;
-            if (split == 'all') {            
-                if (i % 2 == 1) { // TODO switched order
-                    y1 = d.length
-                } else {
-                    y1 = 0.001;
-                }
-            }  else {
-                y1 = d.length;
-            }
+        // d3.select("#histogram").select("g").selectAll("polygon")
+        // .data(bins)
+        // .join("polygon")
+        // .transition()
+        // .duration(1000)
+        // .attr("points", function (d, i) {
+        //     let offset;
+        //     let width = d.x1 - d.x0;
+        //     if (split == 'all') {
+        //         offset = 0;
+        //     } else {
+        //         if (i % 2 == 1) {
+        //             offset = width / 4;
+        //         } else {
+        //             offset = - width / 4;
+        //         }
+        //     }
+        //     // todo change spacing if splitting
+        //     let x0 = x(d.x0 + offset);
+        //     let x1 = x(d.x1 + offset);
+        //     let y0 = y(0);
+        //     let y1;
+        //     if (split == 'all') {            
+        //         if (i % 2 == 1) { // TODO switched order
+        //             y1 = d.length
+        //         } else {
+        //             y1 = 0.001;
+        //         }
+        //     }  else {
+        //         y1 = d.length;
+        //     }
 
-            y1 /= (i % 2 == 1) ? leftTotal : rightTotal;
-            y1 = y(y1);
-            if (y1 == 0) {console.log('wut')};
+        //     y1 /= (i % 2 == 1) ? leftTotal : rightTotal;
+        //     y1 = y(y1);
+        //     if (y1 == 0) {console.log('wut')};
 
-            let pts = [
-                    [x0, y0], 
-                    [x0,  y1],
-                    [x1, y0],
-                    [x1 , y1],
-                ]
-            let points = d3.polygonHull(pts)
-            return points
-            })
-        .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
-        .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
+        //     let pts = [
+        //             [x0, y0], 
+        //             [x0,  y1],
+        //             [x1, y0],
+        //             [x1 , y1],
+        //         ]
+        //     let points = d3.polygonHull(pts)
+        //     return points
+        //     })
+        // .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
+        // .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
+
+        function kde(kernel, thresholds, data) {
+            return thresholds.map(t => [t, d3.mean(data, d => kernel(t - d))]);
+        }
+        function epanechnikov(bandwidth) {
+            return x => Math.abs(x /= bandwidth) <= 1 ? 0.75 * (1 - x * x) / bandwidth : 0;
+        }
+        
+
+        
+        let thresholds = x.ticks(40)
+        let bandwidth = 150;
+
+
+        if (split == 'all') {
+            leftData = data;
+        }
+
+        let leftDensity = kde(epanechnikov(bandwidth), thresholds, leftData)
+
+        let rightDensity
+        if (split == 'all') {
+            rightDensity = leftDensity.map(d => [d[0], 0]);
+        } else {
+            rightDensity = kde(epanechnikov(bandwidth), thresholds, rightData)
+
+        }
+
+        let newY = d3.scaleLinear()
+            .range([histHeight, 0.0001])
+            .domain([0, d3.max(
+                [d3.max(leftDensity, function(d) {return d[1]}),
+                d3.max(rightDensity, function(d) {return d[1]})])
+             * 1.2]);
+        let line = d3.line()
+            .curve(d3.curveBasis)
+            .x(d => x(d[0]))
+            .y(d => newY(d[1]))
+
+        // let rightDensity = []
+        // for (let i = 0; i < leftDensity.length; i++) {
+        //     rightDensity.push([leftDensity[i][0], 0])
+        // }
+        //let rightDensity = kde(epanechnikov(bandwidth), thresholds, rightData);
+
+        d3.select('#leftCurve')
+            .datum(leftDensity)
+            .attr('id', 'leftCurve')
+            .transition()
+            .duration(1000)
+            .attr("fill", "none")
+            .attr("stroke", "#69b3a2")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-linejoin", "round")
+            .attr("d", line);
+
+        d3.select("#rightCurve")
+            .datum(rightDensity)
+            .attr('id', 'rightCurve')
+            .transition()
+            .duration(1000)
+            .attr("fill", "none")
+            .attr("stroke", "#a83e32")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-linejoin", "round")
+            .attr("d", line);
+
+        var area = d3.area()
+            .x(function(d) { return x(d[0]); })
+            .y0(y(0))
+            .y1(function(d) { return newY(d[1]); });
+
+        d3.select("#leftArea")
+            .datum(leftDensity)
+            .attr('id', 'leftArea')
+            .attr("class", "area")
+            .transition()
+            .duration(1000)
+            .style("fill", "#69b3a2")
+            .style("opacity", 0.5)
+            .attr("d", area);
+        d3.select("#rightArea")
+            .datum(rightDensity)
+            .attr('id', 'rightArea')
+            .attr("class", "area")
+            .transition()
+            .duration(1000)
+            .style("fill", "#a83e32")
+            .style("opacity", 0.5)
+            .attr("d", area);
     }
 
     var updatePlots = function (name, histName) {
@@ -225,7 +317,7 @@
     $: {
         if (numDots['all'] !== 0){// && (histData.length !== 0)){
             console.log('this',numDots, histData)
-            //histData = histData
+            histData = histData
             updateDotCoords('all');
             draw()
             //updateHistogramData('income', 'all');
@@ -296,6 +388,8 @@
     const rightTotal = rightBins.reduce((acc, cur) => acc + cur.length, 0)
     //const rightBins = leftBins;
 
+    
+
     bins = []
     for (let i = 0; i < leftBins.length; i++) {
         // switched order? TODO
@@ -315,55 +409,121 @@
         .call(d3.axisLeft(y));
 
     let barWidth = (x(bins[0].x1) - x(bins[0].x0)) / 2 - 1
-    // svgHist.selectAll("rect")
+
+    ///////  ///// barplot
+    // svgHist.selectAll("polygon")
     //     .data(bins)
-    //     .join("rect")
-    //     .attr("x", function (d, i) {return (i % 2 == 0) ? 1 :1})
-    //     .attr("class", function (d, i) {(i % 2 == 0) ? "leftBar" : "rightBar"})
-    //     .attr("transform", function(d, i) { 
-    //         if (i % 2 == 0) {
-    //             return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
+    //     .join("polygon")
+    //     .attr("points", function (d, i) {
+    //         let x0 = x(d.x0);
+    //         let x1 = x(d.x1);
+    //         let y0 = y(0);
+    //         let y1;
+    //         if (i % 2 == 1) {
+    //             y1 = d.length;
     //         } else {
-    //             return `translate(${x(d.x0) + (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`
-    //         }})
-    //     .attr("width", function(d) { return barWidth})
-    //     .attr("height", function(d) { return histHeight - y(d.length) })
-    //     .style("fill", function (d, i) {return (i % 2 == 0) ? "#69b3a2" : "#a83e32"});
+    //             y1 = 0;
+    //         }
+    //         y1 /= (i % 2 == 1) ? leftTotal : 1;
+    //         y1 = y(y1);
+    //         console.log(y1);
+    //         let pts = [
+    //                 [x0, y0], 
+    //                 [x0,  y1],
+    //                 [x1, y0],
+    //                 [x1 , y1],
+    //             ]
+    //         let points = d3.polygonHull(pts)
+    //         return points
+    //         })
+    //     .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
+    //     .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
 
 
-    svgHist.selectAll("polygon")
-        .data(bins)
-        .join("polygon")
-        .attr("points", function (d, i) {
-            let x0 = x(d.x0);
-            let x1 = x(d.x1);
-            let y0 = y(0);
-            let y1;
-            if (i % 2 == 1) {
-                y1 = d.length;
-            } else {
-                y1 = 0;
-            }
-            y1 /= (i % 2 == 1) ? leftTotal : 1;
-            y1 = y(y1);
-            console.log(y1);
-            let pts = [
-                    [x0, y0], 
-                    [x0,  y1],
-                    [x1, y0],
-                    [x1 , y1],
-                ]
-            let points = d3.polygonHull(pts)
-            return points
-            })
-        .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
-        .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
+
             //
             // Show tooltip on hover
                     // .on("mouseover", showTooltip )
                     // .on("mousemove", moveTooltip )
                     // .on("mouseleave", hideTooltip )
 
+    function kde(kernel, thresholds, data) {
+        return thresholds.map(t => [t, d3.mean(data, d => kernel(t - d))]);
+    }
+    function epanechnikov(bandwidth) {
+        return x => Math.abs(x /= bandwidth) <= 1 ? 0.75 * (1 - x * x) / bandwidth : 0;
+    }
+    // let newX = d3.scaleLinear()
+    // .domain(d3.extent(histData['income']['all'])).nice()
+    // .range([margin.left, width - margin.right])
+
+    // let newY = d3.scaleLinear()
+    // .domain([0, d3.max(bins, d => d.length) / histData['income']['all'].length])
+    // .range([height - margin.bottom, margin.top])
+
+    
+    
+    let thresholds = x.ticks(40)
+    let bandwidth = 150;
+    let leftDensity = kde(epanechnikov(bandwidth), thresholds, histData['income']['all'])
+
+    let newY = d3.scaleLinear()
+        .range([histHeight, 0.0001])
+        .domain([0, d3.max(leftDensity, function(d) {return d[1]})]);
+    
+    let line = d3.line()
+        .curve(d3.curveBasis)
+        .x(d => x(d[0]))
+        .y(d => newY(d[1]))
+
+
+    let rightDensity = []
+    for (let i = 0; i < leftDensity.length; i++) {
+        rightDensity.push([leftDensity[i][0], 0])
+    }
+    //let rightDensity = kde(epanechnikov(bandwidth), thresholds, rightData);
+
+    svgHist.append("path")
+      .datum(leftDensity)
+      .attr('id', 'leftCurve')
+      .attr("fill", "none")
+      .attr("stroke", "#69b3a2")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-linejoin", "round")
+      .attr("d", line);
+
+    svgHist.append("path")
+      .datum(rightDensity)
+      .attr("fill", "none")
+      .attr('id', 'rightCurve')
+      .attr("stroke", "#a83e32")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-linejoin", "round")
+      .attr("d", line);
+
+    var area = d3.area()
+        .x(function(d) { return x(d[0]); })
+        .y0(y(0))
+        .y1(function(d) { return newY(d[1]); });
+
+    svgHist.append("path")
+        .datum(leftDensity)
+        .attr('id', 'leftArea')
+        .attr("class", "area")
+        .style("fill", "#69b3a2")
+        .style("opacity", 0.5)
+        .attr("d", area);
+    svgHist.append("path")
+        .datum(rightDensity)
+        .attr('id', 'rightArea')
+        .attr("class", "area")
+        .style("fill", "#a83e32")
+        .style("opacity", 0.5)
+        .attr("d", area);
+
+    // 
+    
+    //   });
 
     // svgHist.data(bins)
     //     .append("rect")
