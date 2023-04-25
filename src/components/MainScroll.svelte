@@ -4,6 +4,7 @@
     import * as d3 from 'd3';
     import Scroller from '@sveltejs/svelte-scroller';
     import Histogram from './Histogram.svelte';
+    import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
 
     
     let pie_data = [];
@@ -63,6 +64,7 @@
       </section>
       <section class="panel" style="background-color: white-smoke;">
           <b>TWO</b>
+        <CountryFoodInsecurity/>
       </section>
       <section class="panel" style="background-color: green;">
           <b>THREE</b>
