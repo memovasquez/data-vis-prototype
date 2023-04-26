@@ -5,13 +5,14 @@
 
     //import { draw } from 'svelte/types/runtime/transition';
     //input data 
-    export let numDots = {};
-    export let histData = {};
+    let numDots = {};
+    let histData = {};
     let dots;
     let hist;
     let dotState = 'all';
     let histState = 'income';
     var bins = [];
+    let isPressed = false;
 
     const margin = {top: 10, right: 30, bottom: 30, left: 40},
     width = 1000 - margin.left - margin.right;
@@ -21,7 +22,7 @@
 
 
     var numColumns = 20;
-    var dotCoords = [];//updateDotCoords('all')
+    var dotCoords = [];
     var size = centerWidth / numColumns - 4;
     var numRows = Math.floor(numDots['all'] / numColumns);
     var height = numRows * (size + 4)
@@ -30,6 +31,75 @@
     var histHeight = 400
 
     var dotMarkers;
+
+    let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
+    let data;
+
+
+    onMount( () => {
+    //function processData () {
+        d3.csv(path).then((d) => {
+            data = d;
+        console.log('data', data)
+        // TODO filter to include only el salvador
+        data = data.filter(obj => obj.country == 'SLV') 
+        let missedMeals = data.map(obj => (Number(obj.rcsi_meal_nb) > 0))//.filter( number => number > 0);
+        let borrowedFood = data.map(obj => (Number(obj.rcsi_borrow) > 0))
+
+        let incomeCurrency = data.map(obj => Number(obj.avg_income_currency))
+        let income = data.map(obj => Number(obj.avg_income_amount))
+            .filter((number, i) => ((number < 1000) && (incomeCurrency[i] == 1)));
+
+        let incomePerCapita = data.map(obj => Number(obj.income_per_capita))
+            .filter((number, i) => ((number < 500) && (incomeCurrency[i] == 1)));
+
+        let debtCurrency = data.map(obj => Number(obj.debt_currency))
+        let debt = data.map(obj => Number(obj.debt_amount))
+            .filter((number, i) => ((number < 1000) && (number > 0)  && (debtCurrency[i] == 1)));
+
+        let remittanceCurrency = data.map(obj => Number(obj.rem_currency))
+        let remittance = data.map(obj => Number(obj.remesa_amount))
+            .filter((number, i) => ((number < 1000) && (number > 0)  && (remittanceCurrency[i] == 1)));
+
+        let div = 5
+        numDots = {
+            'all': Number(Math.round(data.length / div)), 
+            'missedMeals': Number(Math.round(missedMeals.filter(n => (n > 0) && (n != 88)).length / div)),
+            'borrowedFood': Number(Math.round(borrowedFood.filter(n => (n > 0) && (n != 88)).length / div))
+        };
+        histData = {
+            'income': {
+                'all': income, 
+                'missedMeals': [income.filter((n, i) => missedMeals[i]), income.filter((n, i) => ! missedMeals[i])],
+                'borrowedFood': [income.filter((n, i) => borrowedFood[i]), income.filter((n, i) => ! borrowedFood[i])]
+            },
+            'incomePerCapita': {
+                'all': incomePerCapita, 
+                'missedMeals': [incomePerCapita.filter((n, i) => missedMeals[i]), incomePerCapita.filter((n, i) => ! missedMeals[i])],
+                'borrowedFood': [incomePerCapita.filter((n, i) => borrowedFood[i]), incomePerCapita.filter((n, i) => ! borrowedFood[i])]
+            },
+            'debt': {
+                'all': debt, 
+                'missedMeals': [debt.filter((n, i) => missedMeals[i]), debt.filter((n, i) => ! missedMeals[i])],
+                'borrowedFood': [debt.filter((n, i) => borrowedFood[i]), debt.filter((n, i) => ! borrowedFood[i])]
+            },
+            'remittance': {
+                'all': remittance, 
+                'missedMeals': [remittance.filter((n, i) => missedMeals[i]), remittance.filter((n, i) => ! missedMeals[i])],
+                'borrowedFood': [remittance.filter((n, i) => borrowedFood[i]), remittance.filter((n, i) => ! borrowedFood[i])]
+            }  
+        }
+        //console.log(income);
+        //console.log(dotNum);
+    })
+
+
+    console.log('hist', histData)
+
+	});
+
+
+
     
     function updateDotCoords (fieldName) {
          //- margin.top - margin.bottom;
@@ -119,7 +189,7 @@
         let rightData = data[1];
 
         const x = d3.scaleLinear()
-            .domain([0, d3.max(histData[name]['all'])+1])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
+            .domain([0, d3.max(histData[name]['all'])*1.25])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
             .range([0, histWidth]);
 
         const histogram = d3.histogram()
@@ -147,7 +217,7 @@
             .range([histHeight, 0])
             .domain([0, d3.max([leftMax, rightMax])]);//d3.max(allBins, function(d) {return d.length })]);  
         
-        // TODO fix y-axis scale and scores?
+        // TODO redo x axis ticks
 
 
         bins = []
@@ -157,56 +227,7 @@
             bins.push(rightBins[i]);
             bins.push(leftBins[i]);
         }
-        // console.log('hello', bins)
-        // foo
-        // d3.select("#histogram").select("g").selectAll("polygon")
-        // .data(bins)
-        // .join("polygon")
-        // .transition()
-        // .duration(1000)
-        // .attr("points", function (d, i) {
-        //     let offset;
-        //     let width = d.x1 - d.x0;
-        //     if (split == 'all') {
-        //         offset = 0;
-        //     } else {
-        //         if (i % 2 == 1) {
-        //             offset = width / 4;
-        //         } else {
-        //             offset = - width / 4;
-        //         }
-        //     }
-        //     // todo change spacing if splitting
-        //     let x0 = x(d.x0 + offset);
-        //     let x1 = x(d.x1 + offset);
-        //     let y0 = y(0);
-        //     let y1;
-        //     if (split == 'all') {            
-        //         if (i % 2 == 1) { // TODO switched order
-        //             y1 = d.length
-        //         } else {
-        //             y1 = 0.001;
-        //         }
-        //     }  else {
-        //         y1 = d.length;
-        //     }
-
-        //     y1 /= (i % 2 == 1) ? leftTotal : rightTotal;
-        //     y1 = y(y1);
-        //     if (y1 == 0) {console.log('wut')};
-
-        //     let pts = [
-        //             [x0, y0], 
-        //             [x0,  y1],
-        //             [x1, y0],
-        //             [x1 , y1],
-        //         ]
-        //     let points = d3.polygonHull(pts)
-        //     return points
-        //     })
-        // .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
-        // .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
-
+  
         function kde(kernel, thresholds, data) {
             return thresholds.map(t => [t, d3.mean(data, d => kernel(t - d))]);
         }
@@ -216,8 +237,8 @@
         
 
         
-        let thresholds = x.ticks(40)
-        let bandwidth = 150;
+        let thresholds = x.ticks(200)
+        let bandwidth = 300;
 
 
         if (split == 'all') {
@@ -298,8 +319,10 @@
             .attr("d", area);
     }
 
-    var updatePlots = function (name, histName) {
+    var updatePlots = function (name, histName, buttonName) {
         return function () { 
+
+
             console.log(name, histName)
             if (dotState !== name) {
                 moveDots(name);
@@ -315,9 +338,11 @@
 
 
     $: {
-        if (numDots['all'] !== 0){// && (histData.length !== 0)){
-            console.log('this',numDots, histData)
-            histData = histData
+        //console.log('this', numDots.length, histData.length)
+        if ((Object.keys(numDots).length > 0) && (Object.keys(histData).length > 0)){
+            //console.log('this',numDots, histData)
+            console.log('that',numDots, histData)
+            //histData = histData
             updateDotCoords('all');
             draw()
             //updateHistogramData('income', 'all');
@@ -368,7 +393,7 @@
                 `translate(${margin.left}, ${margin.top})`);
 
     const x = d3.scaleLinear()
-            .domain([0, d3.max(histData['income']['all'])+1])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
+            .domain([0, d3.max(histData['income']['all']) * 1.25])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
             .range([0, histWidth]); //width of histogram
 
     // TODO fix 
@@ -405,47 +430,8 @@
         .range([histHeight, 0.0001])
         .domain([0, d3.max(bins, function(d) {return d.length}) / leftTotal]);   // d3.hist has to be called before the Y axis obviously
             
-    svgHist.append("g")
-        .call(d3.axisLeft(y));
-
     let barWidth = (x(bins[0].x1) - x(bins[0].x0)) / 2 - 1
 
-    ///////  ///// barplot
-    // svgHist.selectAll("polygon")
-    //     .data(bins)
-    //     .join("polygon")
-    //     .attr("points", function (d, i) {
-    //         let x0 = x(d.x0);
-    //         let x1 = x(d.x1);
-    //         let y0 = y(0);
-    //         let y1;
-    //         if (i % 2 == 1) {
-    //             y1 = d.length;
-    //         } else {
-    //             y1 = 0;
-    //         }
-    //         y1 /= (i % 2 == 1) ? leftTotal : 1;
-    //         y1 = y(y1);
-    //         console.log(y1);
-    //         let pts = [
-    //                 [x0, y0], 
-    //                 [x0,  y1],
-    //                 [x1, y0],
-    //                 [x1 , y1],
-    //             ]
-    //         let points = d3.polygonHull(pts)
-    //         return points
-    //         })
-    //     .attr("class", function (d, i) {(i % 2 == 1) ? "leftBar" : "rightBar"})
-    //     .style("fill", function (d, i) {return (i % 2 == 1) ? "#69b3a2" : "#a83e32"})
-
-
-
-            //
-            // Show tooltip on hover
-                    // .on("mouseover", showTooltip )
-                    // .on("mousemove", moveTooltip )
-                    // .on("mouseleave", hideTooltip )
 
     function kde(kernel, thresholds, data) {
         return thresholds.map(t => [t, d3.mean(data, d => kernel(t - d))]);
@@ -453,23 +439,20 @@
     function epanechnikov(bandwidth) {
         return x => Math.abs(x /= bandwidth) <= 1 ? 0.75 * (1 - x * x) / bandwidth : 0;
     }
-    // let newX = d3.scaleLinear()
-    // .domain(d3.extent(histData['income']['all'])).nice()
-    // .range([margin.left, width - margin.right])
-
-    // let newY = d3.scaleLinear()
-    // .domain([0, d3.max(bins, d => d.length) / histData['income']['all'].length])
-    // .range([height - margin.bottom, margin.top])
-
     
     
-    let thresholds = x.ticks(40)
+    let thresholds = x.ticks(200)
     let bandwidth = 150;
     let leftDensity = kde(epanechnikov(bandwidth), thresholds, histData['income']['all'])
 
     let newY = d3.scaleLinear()
         .range([histHeight, 0.0001])
         .domain([0, d3.max(leftDensity, function(d) {return d[1]})]);
+
+    svgHist.append("g")
+        .call(d3.axisLeft(newY).tickFormat(""));
+
+    //d3.axis().tickFormat("")
     
     let line = d3.line()
         .curve(d3.curveBasis)
@@ -521,35 +504,42 @@
         .style("opacity", 0.5)
         .attr("d", area);
 
-    // 
-    
-    //   });
-
-    // svgHist.data(bins)
-    //     .append("rect")
-    //     .attr("x", 10)
-    //     .attr("class", "rightBar")
-    //     .attr("transform", function(d) { return `translate(${x(d.x0) - (x(d.x1) - x(d.x0))/4 } , ${y(d.length)})`})
-    //         .attr("width", function(d) { return (x(d.x1) - x(d.x0))/2 -1})
-    //         .attr("height", function(d) { return histHeight - y(d.length); })
-    //         .style("fill", "#a83e32")
-            // Show tooltip on hover
-                    // .on("mouseover", showTooltip )
-                    // .on("mousemove", moveTooltip )
-                    // .on("mouseleave", hideTooltip )
-    }//)
+    }
 
     console.log('here', dotMarkers);
 
 
 </script>
 
-<button type="button" on:click="{updatePlots('all', histState)}">All</button>
-<button type="button" on:click="{updatePlots('missedMeals', histState)}">Missed meals</button>
+
+<button class="button dotButton {dotState === 'all' ? 'pressed' : ''}" id="allButton" on:click="{updatePlots('all', histState, 'allButton')}">All</button>
+<button class="button dotButton {dotState === 'missedMeals' ? 'pressed' : ''}" id="mealsButton" on:click="{updatePlots('missedMeals', histState, 'mealsButton')}">Missed meals</button>
+<button class="button dotButton {dotState === 'borrowedFood' ? 'pressed' : ''}" id="borrowedButton" on:click="{updatePlots('borrowedFood', histState, 'borrowButton')}">Borrowed Money for Food</button>
 
 <div id="dots" bind:this={dots} class="visualization"></div>
 
-<button type="button" on:click="{updatePlots(dotState, 'income')}">Monthly Income</button>
-<button type="button" on:click="{updatePlots(dotState, 'debt')}">Debt</button>
+<button class="button histButton {histState === 'income' ? 'pressed' : ''}" id="incomeButton" on:click="{updatePlots(dotState, 'income', 'incomeButton')}">Monthly Income</button>
+<button class="button histButton {histState === 'incomePerCapita' ? 'pressed' : ''}" id="incomePerCapitaButton" on:click="{updatePlots(dotState, 'incomePerCapita', 'incomePerCapitaButton')}">Income per capita</button>
+<button class="button histButton {histState === 'debt' ? 'pressed' : ''}" id="debtButton" on:click="{updatePlots(dotState, 'debt', 'debtButton')}">Debt</button>
+<button class="button histButton {histState === 'remittance' ? 'pressed' : ''}" id="remittanceButton" on:click="{updatePlots(dotState, 'remittance', 'remittanceButton')}">Remittances</button>
+
 
 <div id="hist" bind:this={dots} class="visualization"></div>
+
+<style>
+    .button {
+  border: "#a83e32";
+  color: #00;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.pressed {
+    background-color: #69b3a2;
+}
+
+</style>
