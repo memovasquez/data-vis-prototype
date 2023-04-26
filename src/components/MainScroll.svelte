@@ -4,6 +4,7 @@
     import * as d3 from 'd3';
     import Scroller from '@sveltejs/svelte-scroller';
     import Histogram from './Histogram.svelte';
+    import Dots from './Dots.svelte';
     import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
 
     
@@ -64,13 +65,15 @@
       </section>
       <section class="panel" style="background-color: white-smoke;">
           <b>TWO</b>
-        <CountryFoodInsecurity/>
+        
       </section>
-      <section class="panel" style="background-color: green;">
+      <section class="panel" >
           <b>THREE</b>
+            <Dots/>
       </section>
       <section class="panel" style="background-color: burlywood;">
           <b>FOUR</b>
+          <CountryFoodInsecurity/>
       </section>
   </div>
 

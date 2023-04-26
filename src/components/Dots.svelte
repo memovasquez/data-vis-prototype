@@ -24,8 +24,8 @@
     var numColumns = 20;
     var dotCoords = [];
     var size = centerWidth / numColumns - 4;
-    var numRows = Math.floor(numDots['all'] / numColumns);
-    var height = numRows * (size + 4)
+    let numRows;
+    let height; 
 
     var histWidth = 600
     var histHeight = 400
@@ -141,6 +141,8 @@
             }
         }
         dotCoords = dotCoords.sort((a, b) => 0.5 - Math.random());
+        console.log('numDots', numDots);
+        console.log('dotcoords', dotCoords);
     }
     
     function getDotX(x, minX, maxX) {
@@ -341,7 +343,9 @@
         //console.log('this', numDots.length, histData.length)
         if ((Object.keys(numDots).length > 0) && (Object.keys(histData).length > 0)){
             //console.log('this',numDots, histData)
-            console.log('that',numDots, histData)
+            console.log('that',numDots, histData);
+            numRows = Math.floor(numDots['all'] / numColumns);
+            height = numRows * (size + 4);
             //histData = histData
             updateDotCoords('all');
             draw()
