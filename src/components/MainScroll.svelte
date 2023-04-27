@@ -87,11 +87,11 @@
         line-height: 2;
         font-size: 24px;
         color: var(--color-text);
-        margin-top: 100px;
+
     }
 
     .panel {
-		height: 100vh;
+		height: 150vh;
 		width: 100%;
 	}
 

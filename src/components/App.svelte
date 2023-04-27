@@ -51,7 +51,7 @@
 
 </main>
 
-<style>
+<!-- <style>
     @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap");
 
     :root {
@@ -152,4 +152,4 @@
             0 17px 2px -6px var(--color-bg-1);
         z-index: -1;
     }
-</style>
+</style> -->

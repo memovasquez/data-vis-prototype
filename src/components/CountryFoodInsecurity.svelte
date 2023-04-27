@@ -21,7 +21,7 @@
     // set the dimensions and margins of the graph
     const margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 800 - margin.top - margin.bottom;
 
     onMount( () => {
 
@@ -52,6 +52,7 @@
             .range([ height, 0]);
             yAxis = svg.append("g")
             .attr("class", "myYaxis");
+
 
             // Add slider input
             const slider = d3.select('#year-slider');
@@ -174,7 +175,7 @@
 
     <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"};">
     <input style="width: 80%;" id="year-slider" type="range" bind:value={selectedYear} />
-    
+
     </div>
 
 
