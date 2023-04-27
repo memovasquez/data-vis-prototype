@@ -19,6 +19,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/svelte-scroller": "^2.0.7",
-		"d3": "^7.8.4"
+		"d3": "^7.8.4",
+		"svelte-adapter-github": "^1.0.0-next.0"
 	}
 }
