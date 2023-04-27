@@ -1,6 +1,5 @@
 <script>
     import * as d3 from 'd3';
-  import { each } from 'svelte/internal';
     //input data 
     export let pie_data = []
     
