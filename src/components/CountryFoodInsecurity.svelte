@@ -6,6 +6,7 @@
 
     let necessaryUSAData = [];
     let necessarySalvadorData = [];
+    let necessaryData = [];
     // let hist;
 
     let x;
@@ -22,11 +23,13 @@
 
     onMount( () => {
 
-        let salvadorData = fao_data.filter( (item) => item.Country == 'El Salvador' && Number(item.Year) > 2015);
-        necessarySalvadorData = salvadorData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
+        let filteredData = fao_data.filter( (item) => (item.Country == 'El Salvador' || item.Country == 'United States of America') && Number(item.Year) > 2015);
+        // necessarySalvadorData = salvadorData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
+        necessaryData = filteredData.map( (obj) => {return {year:obj.Year, percentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)'], country: obj.Country}} );
+        // let usaData = fao_data.filter( (item) => item.Country == 'United States of America' && Number(item.Year) > 2015);
+        // necessaryUSAData = usaData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)'], country: obj.Country } } );
+        
 
-        let usaData = fao_data.filter( (item) => item.Country == 'United States of America' && Number(item.Year) > 2015);
-        necessaryUSAData = usaData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
         // append the svg object to the body of the page
         svg = d3.select("#my_dataviz")
         .append("svg")
@@ -61,25 +64,29 @@
         console.log("called update");
         // Parse the Data
         // X axis
-        x.domain(data.map(d => d.year));
+        x.domain(data.map(d => d.country));
         xAxis.transition().duration(1000).call(d3.axisBottom(x));
-    
+        //filter by year
+        let selected_year = '2016';
+        data = data.filter((obj) => obj.year == selected_year);
+
         // Add Y axis
-        y.domain([0, d3.max(data, d => d.perecentFoodInsec) ]);
+        y.domain([0, d3.max(data, d => d.percentFoodInsec) ]);
         yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
     
         // variable u: map data to existing bars
         const u = svg.selectAll("rect")
             .data(data)
-    
+
         // update bars
         u.join("rect")
             .transition()
             .duration(1000)
-            .attr("x", d => x(d.year))
-            .attr("y", d => y(d.perecentFoodInsec))
+            .attr("x", d => x(d.country))
+            .attr("y", d => y(Number(d.percentFoodInsec)))
             .attr("width", x.bandwidth())
-            .attr("height", d => height - y(d.perecentFoodInsec))
+            .attr("height", d => height - y(d.percentFoodInsec))
             .attr("fill", "#69b3a2")
         
     }
@@ -90,8 +97,8 @@
 
 
 
-        if (necessarySalvadorData.length > 0){
-            update(necessarySalvadorData);
+        if (necessaryData.length > 0){
+            update(necessaryData);
         }
 
 
@@ -103,8 +110,8 @@
 
 <main>
 
-    <button on:click="{update(necessarySalvadorData)}">Variable 1</button>
-    <button on:click="{update(necessaryUSAData)}">Variable 2</button>
+    <button on:click="{update(necessaryData)}">Variable 1</button>
+    <button on:click="{update(necessaryData)}">Variable 2</button>
     
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz"></div>
