@@ -2,6 +2,7 @@
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
 
+
     export let fao_data = [];
 
     let necessaryUSAData = [];
@@ -15,6 +16,7 @@
     let yAxis;
     let svg;
     let selectedYear = 2016;
+    let sliderVisble = false;
 
     // set the dimensions and margins of the graph
     const margin = {top: 30, right: 30, bottom: 70, left: 60},
@@ -65,26 +67,45 @@
 
             const tickValues = d3.range(2016, 2022);
 
-            // const tickLabels = slider.append('div')
-            // .attr('class', 'tick-labels')
-            // .selectAll('div')
-            // .data(tickValues)
-            // .enter()
-            // .append('div')
-            // .attr('class', 'tick-label')
-            // .style('left', d => `${(d - 2016) / 5 * 100}%`)
-            // .text(d => d);
+            const slider_container = d3.select('#slider_container');
 
-
-
-            slider.append('datalist')
-            .attr('id', 'tickmarks')
-            .selectAll('option')
+            const slider_ticks = slider_container.append('svg')
+            .attr('width', '80%')
+            .attr('height','10' )
+            .attr('id', 'slider-ticks')
+            .selectAll('rect')
             .data(tickValues)
             .enter()
-            .append('option')
-            .attr('value', d => d)
-            .attr('label', d=>d);
+            .append('rect')
+            .attr('class', 'range__tick')
+            .attr('x', d => `${(d - 2016) / 5 * 100}%`)
+            .attr('y', '3')
+            .attr('width', '1')
+            .attr('height', '10')
+
+            const ticks_text = slider_container.append('svg')
+            .attr('width', '80%')
+            .attr('height','14' )
+            .attr('id', 'ticks-text')
+            .selectAll('text')
+            .data(tickValues)
+            .enter()
+            .append('text')
+            .attr('class', 'range__point')
+            .attr('text-anchor', d => d === 2016 ? 'start' : d === 2021 ? 'end' : 'middle' )
+            .attr('x', d => `${(d - 2016) / 5 * 100}%`)
+            .attr('y', '14')
+            .attr('font-size', 'medium')
+            .text(d=>d);
+
+            // slider.append('datalist')
+            // .attr('id', 'tickmarks')
+            // .selectAll('option')
+            // .data(tickValues)
+            // .enter()
+            // .append('option')
+            // .attr('value', d => d)
+            // .attr('label', d=>d);
 
 
 
@@ -130,10 +151,7 @@
     }
 
 
-
     $: {
-
-
 
         if (necessaryData.length > 0){
             update(necessaryData, 2016);
@@ -148,12 +166,18 @@
 
 <main>
 
-    <button on:click="{update(necessaryData,2016)}">Variable 1</button>
-    <button on:click="{update(necessaryData,2021)}">Variable 2</button>
+    <button on:click="{() => {sliderVisble = !sliderVisble}}">View Slider</button>
     
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz"></div>
-    <input style="width: -webkit-fill-available;" id="year-slider" type="range" bind:value={selectedYear} />
+
+
+    <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"};">
+    <input style="width: 80%;" id="year-slider" type="range" bind:value={selectedYear} />
+    
+    </div>
+
+
 
 
 </main>
@@ -170,16 +194,35 @@
         margin-top: 100px;
     }
 
-    .tick-labels {
-    position: relative;
-    height: 2em;
+    #tick-container {
+        position: relative;
+        height: 2em;
     }
-  .tick-label {
-    position: absolute;
-    bottom: 0;
-    text-align: center;
-    width: 20%;
-    transform: translateX(-50%);
-  }
+
+    .tick-labels {
+        position: relative;
+        height: 2em;
+    }
+    .tick-label {
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        width: 20%;
+        transform: translateX(-50%);
+    }
+
+    .tick {
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        width: 20%;
+        transform: translateX(-50%);
+     }
+
+     .range__tick {
+        fill: #000000;
+    }
+   
+   
 
 </style>
