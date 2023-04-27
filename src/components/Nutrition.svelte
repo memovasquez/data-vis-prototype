@@ -45,28 +45,9 @@
 	let recorded_mouse_position = { x: 0, y: 0 };
 
     $: {
-        // let person1 = pie_data[0];
-
-        // const picked = (({ fcs_staples, fcs_pulses, fcs_dairy, fcs_proteins, fcs_veg, fcs_fruits, fcs_fats, fcs_sugars }) => (
-        // {fcs_staples : Number(fcs_staples),
-        // fcs_pulses : Number(fcs_pulses),
-        // fcs_dairy : Number(fcs_dairy),
-        // fcs_proteins : Number(fcs_proteins),
-        // fcs_veg : Number(fcs_veg),
-        // fcs_fruits : Number(fcs_fruits),
-        // fcs_fats : Number(fcs_fats),
-        // fcs_sugars : Number(fcs_sugars)}))(person1);
-
-
 
         const arcColor = d3.scaleOrdinal(d3.schemeAccent).domain(Object.keys(nutritionServings));
 		
-        // colorFunction = arcColor;
-		// function colorFunction (idx) {
-		// 	return arcColorDefault[idx]
-		// }
-
-		// console.log(nutritionServings);
         let pie = d3.pie().value( (d) => d[1] );
         fullArcData = pie(Object.entries(nutritionServings)); 
 		individualArcData = pie(Object.entries(individualServings));
@@ -107,8 +88,13 @@ function shadeColor(color, percent) {
 </script>
 
 <div class="visualization">
+	<div>
+		<span style="display:block; height: 25px;"></span>
+		Nutrition and Diet Breakdown
+		<span style="display:block; height: 25px;"></span>
+	</div>
     <svg width="1000" height="1000">
-        <g transform="translate(400,250)">
+        <g transform="translate(500,250)">
             {#each fullArcData as data, index}
 			<path 
 				d={fullArcGenerator({
@@ -154,7 +140,7 @@ function shadeColor(color, percent) {
         style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40}px"
 	>
 		{#if hovered !== -1}
-		    INDIVIDUAL ate {individualArcData[hovered].data[1]} servings of {individualArcData[hovered].data[0]} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
+		    INDIVIDUAL ate {individualArcData[hovered].data[1]} servings of {individualArcData[hovered].data[0].toLowerCase()} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
 		{/if}
 	</div>
 

@@ -62,7 +62,7 @@
           <b>TWO</b>
             <Nutrition />
       </section>
-      <section class="panel" >
+      <section class="panel" style="display:block; margin:auto" align="center">
           <b>THREE</b>
             <Dots/>
       </section>
@@ -119,7 +119,7 @@
     /* outline: green solid 3px; */
     }
     .foreground {
-        width: 50%;
+        width: 100%;
         margin: 0 auto;
         height: auto;
         position: relative;

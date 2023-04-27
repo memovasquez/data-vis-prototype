@@ -14,7 +14,7 @@
     var bins = [];
     let isPressed = false;
 
-    const margin = {top: 10, right: 30, bottom: 30, left: 40},
+    const margin = {top: 10, right: 30, bottom: 30, left: 30},
     width = 1000 - margin.left - margin.right;
     
     let centerWidth = 400;
@@ -109,7 +109,9 @@
         if (fieldName == 'all') {
             for (let i =0; i < numRows; i++) {
                 for (let j=0; j < numColumns; j ++) {
-                    dotCoords.push({"x": getDotX(j, sidePlotWidth, sidePlotWidth + centerWidth), 
+                    let minX = (width / 2) - (centerWidth / 2)
+                    let maxX = (width / 2) + (centerWidth / 2)
+                    dotCoords.push({"x": getDotX(j, minX, maxX), 
                                     "y": getDotY(i),
                                 "c": "#69b3a2"});
                 }
@@ -141,8 +143,6 @@
             }
         }
         dotCoords = dotCoords.sort((a, b) => 0.5 - Math.random());
-        console.log('numDots', numDots);
-        console.log('dotcoords', dotCoords);
     }
     
     function getDotX(x, minX, maxX) {
@@ -383,6 +383,12 @@
             return d["y"];
         })
 
+        // d3.select("#dots").select("svg").select("g").selectAll("text")
+        // // .data(["Hello", "World"])
+        // // .enter()
+        // .append("text")
+        // .text("Hello World");
+
 
         // build histogram
 
@@ -514,13 +520,22 @@
 
 
 </script>
+<div>
+    <span style="display:block; height: 25px;"></span>
+    Food and Financial Security
+    <span style="display:block; height: 25px;"></span>
+</div>
 
 
 <button class="button dotButton {dotState === 'all' ? 'pressed' : ''}" id="allButton" on:click="{updatePlots('all', histState, 'allButton')}">All</button>
 <button class="button dotButton {dotState === 'missedMeals' ? 'pressed' : ''}" id="mealsButton" on:click="{updatePlots('missedMeals', histState, 'mealsButton')}">Missed meals</button>
 <button class="button dotButton {dotState === 'borrowedFood' ? 'pressed' : ''}" id="borrowedButton" on:click="{updatePlots('borrowedFood', histState, 'borrowButton')}">Borrowed Money for Food</button>
 
-<div id="dots" bind:this={dots} class="visualization"></div>
+<div>
+    Hello World
+</div>
+
+<div id="dots" align="center" style="display:block; margin:auto" bind:this={dots} class="visualization"></div>
 
 <button class="button histButton {histState === 'income' ? 'pressed' : ''}" id="incomeButton" on:click="{updatePlots(dotState, 'income', 'incomeButton')}">Monthly Income</button>
 <!-- <button class="button histButton {histState === 'incomePerCapita' ? 'pressed' : ''}" id="incomePerCapitaButton" on:click="{updatePlots(dotState, 'incomePerCapita', 'incomePerCapitaButton')}">Income per capita</button> -->
