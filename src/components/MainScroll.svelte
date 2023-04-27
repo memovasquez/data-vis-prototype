@@ -3,8 +3,9 @@
     import {onMount} from 'svelte';
     import * as d3 from 'd3';
     import Scroller from '@sveltejs/svelte-scroller';
-    import Histogram from './Histogram.svelte';
     import Dots from './Dots.svelte';
+    import Histogram from './Histogram.svelte';
+    import Nutrition from './Nutrition.svelte';
     import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
 
     
@@ -65,7 +66,7 @@
       </section>
       <section class="panel" style="background-color: white-smoke;">
           <b>TWO</b>
-        
+            <Nutrition />
       </section>
       <section class="panel" >
           <b>THREE</b>
