@@ -6,12 +6,12 @@
     import Histogram from './Histogram.svelte';
     import Dots from './Dots.svelte';
     import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
+    import Pie from './Pie.svelte';
 
+    // properties for data to be passed in
+    export let wfp_data = [];
+    export let fao_data = [];
     
-    let pie_data = [];
-    let path = "https://docs.google.com/spreadsheets/d/1-y0RKyaYHCBK1mxT4mnhygGpy7wSFp3jYHk6lQNmKBg/gviz/tq?tqx=out:csv";
-    
-
     let count;
 	let index;
 	let offset;
@@ -20,13 +20,6 @@
 	let top = 0.1;
 	let threshold = 0.5;
 	let bottom = 0.9;
-
-
-    onMount(async () => {
-        d3.csv(path).then((d) => {
-            pie_data = d;
-        })
-	});
     
 
 </script>
@@ -59,8 +52,9 @@
   <div class="foreground" slot="foreground">
       <section class="panel blue" id="slide1" style="background-color: turquoise;">
           <b>ONE</b>
-          {#if pie_data.length !== 0 }
-          <Histogram bind:hist_data={pie_data}></Histogram>
+          {#if wfp_data.length !== 0 }
+          <Histogram bind:hist_data={wfp_data}></Histogram>
+          <Pie bind:pie_data={wfp_data}></Pie>
           {/if}
       </section>
       <section class="panel" style="background-color: white-smoke;">
@@ -73,7 +67,9 @@
       </section>
       <section class="panel" style="background-color: burlywood;">
           <b>FOUR</b>
-          <CountryFoodInsecurity/>
+          {#if fao_data.length !== 0}
+          <CountryFoodInsecurity bind:fao_data={fao_data}/>
+          {/if}
       </section>
   </div>
 

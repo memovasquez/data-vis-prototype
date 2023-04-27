@@ -1,10 +1,9 @@
 <script>
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
-  import { update_await_block_branch } from 'svelte/internal';
 
-    let data = [];
-    let path = 'https://raw.githubusercontent.com/memovasquez/data/main/FAO_DatasetAbridged.csv';
+    export let fao_data = [];
+
     let necessaryUSAData = [];
     let necessarySalvadorData = [];
     // let hist;
@@ -23,38 +22,36 @@
 
     onMount( () => {
 
-        d3.csv(path).then((d) => {
-            data = d;
-            let salvadorData = data.filter( (item) => item.Country == 'El Salvador' && Number(item.Year) > 2015);
-            necessarySalvadorData = salvadorData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
+        let salvadorData = fao_data.filter( (item) => item.Country == 'El Salvador' && Number(item.Year) > 2015);
+        necessarySalvadorData = salvadorData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
 
-            let usaData = data.filter( (item) => item.Country == 'United States of America' && Number(item.Year) > 2015);
-            necessaryUSAData = usaData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
-            
-        });
+        let usaData = fao_data.filter( (item) => item.Country == 'United States of America' && Number(item.Year) > 2015);
+        necessaryUSAData = usaData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
+        // append the svg object to the body of the page
+        svg = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Initialize the X axis
+            x = d3.scaleBand()
+            .range([ 0, width ])
+            .padding(0.2);
+            xAxis = svg.append("g")
+            .attr("transform", `translate(0,${height})`);
+        
+            // Initialize the Y axis
+            y = d3.scaleLinear()
+            .range([ height, 0]);
+            yAxis = svg.append("g")
+            .attr("class", "myYaxis");
+    });
 
 
-    // append the svg object to the body of the page
-    svg = d3.select("#my_dataviz")
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-        // Initialize the X axis
-        x = d3.scaleBand()
-        .range([ 0, width ])
-        .padding(0.2);
-        xAxis = svg.append("g")
-        .attr("transform", `translate(0,${height})`);
     
-        // Initialize the Y axis
-        y = d3.scaleLinear()
-        .range([ height, 0]);
-        yAxis = svg.append("g")
-        .attr("class", "myYaxis");
-    })
+    
 
 
       
@@ -94,7 +91,6 @@
 
 
         if (necessarySalvadorData.length > 0){
-            console.log(necessarySalvadorData);
             update(necessarySalvadorData);
         }
 
