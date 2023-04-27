@@ -4,10 +4,12 @@
     //input data 
     export let hist_data = [];
     let hist;
-
+    // console.log("The histogram data is :" ,hist_data);
     const margin = {top: 10, right: 30, bottom: 30, left: 40},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
+
+    let meals_no_eat = hist_data.map(obj => Number(obj.rcsi_no_eat)).filter( number => number > 0);
     let reduced_meal_size_days = hist_data.map(obj => Number(obj.rcsi_meal_size)).filter( number => number > 0);
     let reduced_child_meal_days = hist_data.map(obj => Number(obj.rcsi_meal_adult)).filter(number => number > 0);
 
@@ -27,7 +29,7 @@
             
             // X axis: scale and draw:
             const x = d3.scaleLinear()
-                .domain([0, d3.max(reduced_meal_size_days)+1])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
+                .domain([0, d3.max(meals_no_eat)+1])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
                 .range([0, width]); //width of histogram
 
             svg.append("g")
@@ -49,7 +51,7 @@
             .thresholds(x.ticks(6)); // then the numbers of bins; 6 here because we remove 0
 
             // And apply this function to data to get the bins
-            const bins = histogram(reduced_meal_size_days);
+            const bins = histogram(meals_no_eat);
 
 
             // Y axis: scale and draw:
@@ -87,7 +89,7 @@
                 .duration(100)
                 .style("opacity", 1)
                 tooltip
-                .html(String(d.length) + " respondents reduced the size of their meal "+ String(d.x0) + " days in the past week")
+                .html(String(d.length) + " respondents skipped a meal "+ String(d.x0) + " days in the past week")
                 .style("left", (event.x)/2-100 + "px")
                 .style("top", (event.y)/2 + "px")
             }

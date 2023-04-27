@@ -533,7 +533,7 @@
 <style>
     .button {
   border: "#a83e32";
-  color: #00;
+  /* color: '#00'; */
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;

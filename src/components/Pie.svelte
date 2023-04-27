@@ -1,5 +1,6 @@
 <script>
     import * as d3 from 'd3';
+  import { each } from 'svelte/internal';
     //input data 
     export let pie_data = []
     
@@ -25,23 +26,27 @@
 	let recorded_mouse_position = { x: 0, y: 0 };
 
     $: {
-        let person1 = pie_data[0];
+        let person1 = pie_data[1521]; // the respondent
 
-        const picked = (({ fcs_staples, fcs_pulses, fcs_dairy, fcs_proteins, fcs_veg, fcs_fruits, fcs_fats, fcs_sugars }) => (
-        {fcs_staples : Number(fcs_staples),
-        fcs_pulses : Number(fcs_pulses),
-        fcs_dairy : Number(fcs_dairy),
-        fcs_proteins : Number(fcs_proteins),
-        fcs_veg : Number(fcs_veg),
-        fcs_fruits : Number(fcs_fruits),
-        fcs_fats : Number(fcs_fats),
-        fcs_sugars : Number(fcs_sugars)}))(person1);
+        const picked = (({ fcs_staples, fcs_pulses, fcs_dairy, fcs_proteins, fcs_veg, fcs_fruits, fcs_fats, fcs_sugars, fcs_green_veg, fcs_eggs }) => (
+        {Staples : Number(fcs_staples),
+        Pulses : Number(fcs_pulses),
+        Dairy : Number(fcs_dairy),
+        Proteins : Number(fcs_proteins),
+        Vegetables : Number(fcs_veg),
+        Fruits : Number(fcs_fruits),
+        Fats : Number(fcs_fats),
+		Eggs : Number(fcs_eggs),
+		Greens : Number(fcs_green_veg),
+        Sugars : Number(fcs_sugars)}))(person1);
 
         const arc_color = d3.scaleOrdinal(d3.schemeAccent).domain(Object.keys(picked));
         color_function = arc_color;
 
         let pie = d3.pie().value( (d) => d[1] );
         arc_data = pie(Object.entries(picked)); 
+
+		console.log('show me ',arc_data);
         
 
     }
@@ -55,7 +60,7 @@
 </script>
 
 <div class="visualization">
-    <svg width="500" height="500">
+    <svg width="500" height="250">
         <g transform="translate(250,120)">
             {#each arc_data as data, index}
 			<path 
@@ -79,16 +84,21 @@
 
         </g>
     </svg>
+	{#each arc_data as data, index}
+	{#if data.data[1] == 0}
+		<div style="font-size: medium;">{data.data[0]} were eaten 0 days </div>
+	{/if} 
+	{/each}
     <div
 		class={hovered === -1 ? "tooltip-hidden": "tooltip-visible"}	
         style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40}px"
 	>
 		{#if hovered !== -1}
-		    {arc_data[hovered].data[0].slice(4,)} were eaten {arc_data[hovered].data[1]} days in the past week
+		    {arc_data[hovered].data[0]} were eaten {arc_data[hovered].data[1]} days in the past week
 		{/if}
 	</div>
 
-
+	
 
 </div>
 

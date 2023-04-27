@@ -1,21 +1,29 @@
 <script>
-    import Pie from '../components/Pie.svelte';
-    import Histogram from './Histogram.svelte';
+
+    import MainScroll from './MainScroll.svelte';
     import * as d3 from 'd3';
     import { onMount } from 'svelte';
 
-    let pie_data = [];
-    let path = "https://docs.google.com/spreadsheets/d/1-y0RKyaYHCBK1mxT4mnhygGpy7wSFp3jYHk6lQNmKBg/gviz/tq?tqx=out:csv";
+    let fao_dataset_path = 'https://raw.githubusercontent.com/memovasquez/data/main/FAO_DatasetAbridged.csv';
+    let wfp_dataset_path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
+    let wfp_data = [];
+    let fao_data = [];
 
     onMount(async () => {
-        d3.csv(path).then((d) => {
-                pie_data = d;
-        })
+        //fetch the data here once and for all
+        d3.csv(wfp_dataset_path).then((d) => {
+                wfp_data = d;
+        });
+
+        d3.csv(fao_dataset_path).then((d) => {
+            fao_data = d;
+        });
+
 	});
 
-
     $: {
-        pie_data = pie_data;
+        wfp_data = wfp_data;
+        fao_data = fao_data;
     }
 
 
@@ -23,24 +31,24 @@
 </script>
 
 <main>
-    <div class="box">
-
-    
-    <section class="todos">
+    <!-- <section class="todos">
         {#if pie_data.length !== 0 }
         <h2>Days of the Week Eating Kinds of Food </h2>
         <div class="actions" />
         <Pie bind:pie_data={pie_data}></Pie>
         {/if}
-    </section>
-    <section class="todos">
+    </section> -->
+    <!-- <section class="todos">
         {#if pie_data.length !== 0 }
         <h2>Loss of Nutrition</h2>
         <Histogram bind:hist_data={pie_data}></Histogram>
         {/if}
-    </section>
-    </div>
-    
+    </section> -->
+    <!-- Pass data into main scroller component the svelte way -->
+    {#if wfp_data.length > 0 && fao_data.length > 0}
+    <MainScroll bind:wfp_data={wfp_data} bind:fao_data={fao_data}/>
+    {/if}
+
 </main>
 
 <style>
