@@ -523,9 +523,9 @@
 <div id="dots" bind:this={dots} class="visualization"></div>
 
 <button class="button histButton {histState === 'income' ? 'pressed' : ''}" id="incomeButton" on:click="{updatePlots(dotState, 'income', 'incomeButton')}">Monthly Income</button>
-<button class="button histButton {histState === 'incomePerCapita' ? 'pressed' : ''}" id="incomePerCapitaButton" on:click="{updatePlots(dotState, 'incomePerCapita', 'incomePerCapitaButton')}">Income per capita</button>
+<!-- <button class="button histButton {histState === 'incomePerCapita' ? 'pressed' : ''}" id="incomePerCapitaButton" on:click="{updatePlots(dotState, 'incomePerCapita', 'incomePerCapitaButton')}">Income per capita</button> -->
 <button class="button histButton {histState === 'debt' ? 'pressed' : ''}" id="debtButton" on:click="{updatePlots(dotState, 'debt', 'debtButton')}">Debt</button>
-<button class="button histButton {histState === 'remittance' ? 'pressed' : ''}" id="remittanceButton" on:click="{updatePlots(dotState, 'remittance', 'remittanceButton')}">Remittances</button>
+<!-- <button class="button histButton {histState === 'remittance' ? 'pressed' : ''}" id="remittanceButton" on:click="{updatePlots(dotState, 'remittance', 'remittanceButton')}">Remittances</button> -->
 
 
 <div id="hist" bind:this={dots} class="visualization"></div>

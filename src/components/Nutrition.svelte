@@ -27,11 +27,17 @@
 	let individualArcData = [];
 
     // // color mapping function
-	const arc_color_default = d3.scaleLinear()
-		.range(["#faffd1", "#db921d", "#b86a04", "#a65d29" ,"#6e3003","#3c2411"])
-		// .domain([0,3,6,9,12,15,18,21,24]);
+	// const arcColorDefault = d3.scaleLinear()
+	// 	.range(["#bd6202", "#158504", "#e02504", "#02c8de", "#f5830a", "#f5c60a"])
+	// 	// .domain([0,3,6,9,12,15,18,21,24]);
 
-    let color_function = arc_color_default;
+	let colors = ["#bd6202", "#158504", "#e02504", "#02c8de", "#f5830a", "#f5c60a"]
+	
+    function colorFunction (idx) {	
+		return colors[idx];
+	}
+	//arcColorDefault;
+	
     
 
 	// state trackers
@@ -53,10 +59,14 @@
 
 
 
-        const arc_color = d3.scaleOrdinal(d3.schemeAccent).domain(Object.keys(nutritionServings));
-        color_function = arc_color;
+        const arcColor = d3.scaleOrdinal(d3.schemeAccent).domain(Object.keys(nutritionServings));
+		
+        // colorFunction = arcColor;
+		// function colorFunction (idx) {
+		// 	return arcColorDefault[idx]
+		// }
 
-		console.log(nutritionServings);
+		// console.log(nutritionServings);
         let pie = d3.pie().value( (d) => d[1] );
         fullArcData = pie(Object.entries(nutritionServings)); 
 		individualArcData = pie(Object.entries(individualServings));
@@ -93,7 +103,7 @@ function shadeColor(color, percent) {
 
 
 
-
+//console.log('color', colorFunction(0));
 </script>
 
 <div class="visualization">
@@ -105,7 +115,7 @@ function shadeColor(color, percent) {
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
-				fill={index === hovered ? shadeColor("#037ffc", 40): shadeColor(color_function(data.data[0]), 40)}
+				fill={index === hovered ? shadeColor("#037ffc", 40): shadeColor(colorFunction(index), 40)}
                 
                 on:mouseover={(event) => {
                      hovered = index;
@@ -123,7 +133,7 @@ function shadeColor(color, percent) {
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
-				fill={index === hovered ? "#037ffc": color_function(data.data[0])}
+				fill={index === hovered ? "#037ffc": colorFunction(index)}
                 
                 on:mouseover={(event) => {
                      hovered = index;
