@@ -25,7 +25,7 @@
 	let recorded_mouse_position = { x: 0, y: 0 };
 
     $: {
-        let person1 = pie_data[1521]; // the respondent
+        let person1 = pie_data[2211]; // the respondent
 
         const picked = (({ fcs_staples, fcs_pulses, fcs_dairy, fcs_proteins, fcs_veg, fcs_fruits, fcs_fats, fcs_sugars, fcs_green_veg, fcs_eggs }) => (
         {Staples : Number(fcs_staples),

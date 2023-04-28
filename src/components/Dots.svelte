@@ -12,7 +12,25 @@
     let dotState = 'all';
     let histState = 'income';
     var bins = [];
+    let person1 = [];
+    let person2 = {
+        "avg_income_amount": 1000,
+        "debt_amount": 300,
+    }; //TODO import person2 data
+    // TODO handle if person2 line is off the charts
     let isPressed = false;
+
+    let yesColor = "#69b3a2";
+    let noColor = "#a83e32";
+    let person1Color = "#f0dc2e";
+    let person2Color = "#c32ef0";
+    let person1Loc = 0;
+    let person2Loc = 1;
+
+    let nameToField = {
+        "income": "avg_income_amount",
+        "debt": "debt_amount",
+    };
 
     const margin = {top: 10, right: 30, bottom: 30, left: 30},
     width = 1000 - margin.left - margin.right;
@@ -39,9 +57,10 @@
     onMount( () => {
     //function processData () {
         d3.csv(path).then((d) => {
-            data = d;
+        data = d;
         console.log('data', data)
         // TODO filter to include only el salvador
+        person1 = data[2211];
         data = data.filter(obj => obj.country == 'SLV') 
         let missedMeals = data.map(obj => (Number(obj.rcsi_meal_nb) > 0))//.filter( number => number > 0);
         let borrowedFood = data.map(obj => (Number(obj.rcsi_borrow) > 0))
@@ -89,6 +108,8 @@
                 'borrowedFood': [remittance.filter((n, i) => borrowedFood[i]), remittance.filter((n, i) => ! borrowedFood[i])]
             }  
         }
+
+        
         //console.log(income);
         //console.log(dotNum);
     })
@@ -104,16 +125,18 @@
     function updateDotCoords (fieldName) {
          //- margin.top - margin.bottom;
 
-        dotCoords = []
+        let nextDotCoords = []
         let offset = 0
         if (fieldName == 'all') {
             for (let i =0; i < numRows; i++) {
                 for (let j=0; j < numColumns; j ++) {
                     let minX = (width / 2) - (centerWidth / 2)
                     let maxX = (width / 2) + (centerWidth / 2)
-                    dotCoords.push({"x": getDotX(j, minX, maxX), 
+
+                    let color = yesColor;
+                    nextDotCoords.push({"x": getDotX(j, minX, maxX), 
                                     "y": getDotY(i),
-                                "c": "#69b3a2"});
+                                    "c": color});
                 }
             }
         } else {
@@ -124,9 +147,10 @@
                     if (i * numColumns + j < numDots[fieldName]) {
                         numLeftRows = i;
                         firstRightCol = j
-                        dotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i), "c": "#69b3a2"});  
+
+                        let color = yesColor
+                        nextDotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i), "c": color});  
                     } else {
-                        //console.log('woo')
                         let x = j - firstRightCol - 1
                         let y = i - numLeftRows
                         if (x < 0) {
@@ -134,17 +158,52 @@
                             x = numColumns + x;
                         }
 
-                        dotCoords.push({"x": getDotX(x, width - centerWidth, width), 
+                        let color =  noColor;
+                        nextDotCoords.push({"x": getDotX(x, width - centerWidth, width), 
                                         "y": getDotY(y),
-                                        "c": "#a83e32"});
-                    }
-                     
+                                        "c": color});
+                    }                     
                 }
             }
         }
-        dotCoords = dotCoords.sort((a, b) => 0.5 - Math.random());
+        dotCoords = nextDotCoords.sort((a, b) => 0.5 - Math.random());
+        let idx1 = 0;
+        let idx2 = 1;
+        if (fieldName != 'all') {
+            let person1Found = false;
+            let person2Found = false;
+            for (let i=1; i <= dotCoords.length; i++) {
+                if (! person1Found) {
+                    if (dotCoords[dotCoords.length - i]["c"] == yesColor) {
+                        idx1 = dotCoords.length - i
+                        person1Found = true;
+                    }
+                } 
+                if (! person2Found)  {
+                    if (dotCoords[dotCoords.length - i]["c"] == noColor) {
+                        idx2 = dotCoords.length - i
+                        person2Found = true;
+                    }
+                }
+            }
+        }
+
+        dotCoords[idx1]["c"] = person1Color;
+        dotCoords[idx2]["c"] = person2Color;
+
+        arrayReplace(dotCoords, idx1, 0);
+        arrayReplace(dotCoords, idx2, 1);
+    
+        
     }
     
+    function arrayReplace(arr, fromIndex, toIndex) {
+        var element1 = arr[fromIndex];
+        var element2 = arr[toIndex];
+        arr[fromIndex] = element2;
+        arr[toIndex] = element1;  
+    }
+
     function getDotX(x, minX, maxX) {
         const scale = d3.scaleLinear()
             .domain([0, numColumns])
@@ -280,7 +339,7 @@
             .transition()
             .duration(1000)
             .attr("fill", "none")
-            .attr("stroke", "#69b3a2")
+            .attr("stroke", yesColor)
             .attr("stroke-width", 1.5)
             .attr("stroke-linejoin", "round")
             .attr("d", line);
@@ -291,7 +350,7 @@
             .transition()
             .duration(1000)
             .attr("fill", "none")
-            .attr("stroke", "#a83e32")
+            .attr("stroke", noColor)
             .attr("stroke-width", 1.5)
             .attr("stroke-linejoin", "round")
             .attr("d", line);
@@ -307,7 +366,7 @@
             .attr("class", "area")
             .transition()
             .duration(1000)
-            .style("fill", "#69b3a2")
+            .style("fill", yesColor)
             .style("opacity", 0.5)
             .attr("d", area);
         d3.select("#rightArea")
@@ -316,9 +375,30 @@
             .attr("class", "area")
             .transition()
             .duration(1000)
-            .style("fill", "#a83e32")
+            .style("fill", noColor)
             .style("opacity", 0.5)
             .attr("d", area);
+
+    
+        d3.select("#person1Line")
+            .style("stroke", person1Color)
+            .style("stroke-width", 1.5)
+            .transition()
+            .duration(1000)
+            .attr("x1", x(person1[nameToField[name]]))
+            .attr("y1", y(0))
+            .attr("x2", x(person1[nameToField[name]]))
+            .attr("y2", y(1));
+
+        d3.select("#person2Line")
+            .style("stroke", person2Color)
+            .style("stroke-width", 1.5)
+            .transition()
+            .duration(1000)
+            .attr("x1", x(person2[nameToField[name]]))
+            .attr("y1", y(0))
+            .attr("x2", x(person2[nameToField[name]]))
+            .attr("y2", y(1));
     }
 
     var updatePlots = function (name, histName, buttonName) {
@@ -372,11 +452,14 @@
         .enter()
         .append("circle")
         .attr("r", 5)
-        .style("fill", "#69b3a2")
-        .attr("stroke", "#69b3a2")
+        .style("fill", function (d) {
+            return d["c"];
+        })
+        .attr("stroke", function (d) {
+            return d["c"];
+        })
         .attr("fill-opacity", 1)
         .attr("cx", function (d) {
-            console.log('y')
             return d["x"];
         })
         .attr("cy", function (d) {
@@ -480,7 +563,7 @@
       .datum(leftDensity)
       .attr('id', 'leftCurve')
       .attr("fill", "none")
-      .attr("stroke", "#69b3a2")
+      .attr("stroke", yesColor)
       .attr("stroke-width", 1.5)
       .attr("stroke-linejoin", "round")
       .attr("d", line);
@@ -489,7 +572,7 @@
       .datum(rightDensity)
       .attr("fill", "none")
       .attr('id', 'rightCurve')
-      .attr("stroke", "#a83e32")
+      .attr("stroke", noColor)
       .attr("stroke-width", 1.5)
       .attr("stroke-linejoin", "round")
       .attr("d", line);
@@ -503,16 +586,34 @@
         .datum(leftDensity)
         .attr('id', 'leftArea')
         .attr("class", "area")
-        .style("fill", "#69b3a2")
+        .style("fill", yesColor)
         .style("opacity", 0.5)
         .attr("d", area);
     svgHist.append("path")
         .datum(rightDensity)
         .attr('id', 'rightArea')
         .attr("class", "area")
-        .style("fill", "#a83e32")
+        .style("fill", noColor)
         .style("opacity", 0.5)
         .attr("d", area);
+
+    svgHist.append("line")
+        .attr("id", "person1Line")
+        .style("stroke", person1Color)
+        .style("stroke-width", 1.5)
+        .attr("x1", x(person1["avg_income_amount"]))
+        .attr("y1", y(0))
+        .attr("x2", x(person1["avg_income_amount"]))
+        .attr("y2", y(1));
+    
+    svgHist.append("line")
+        .attr("id", "person2Line")
+        .style("stroke", person2Color)
+        .style("stroke-width", 1.5)
+        .attr("x1", x(person2["avg_income_amount"]))
+        .attr("y1", y(0))
+        .attr("x2", x(person2["avg_income_amount"]))
+        .attr("y2", y(1));
 
     }
 
@@ -547,7 +648,7 @@
 
 <style>
     .button {
-  border: "#a83e32";
+  border: noColor;
   /* color: '#00'; */
   padding: 15px 32px;
   text-align: center;
