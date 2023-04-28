@@ -22,8 +22,8 @@
 
     let yesColor = "#69b3a2";
     let noColor = "#a83e32";
-    let person1Color = "#f0dc2e";
-    let person2Color = "#c32ef0";
+    let person1Color ="#c32ef0";
+    let person2Color =  "#f0dc2e";
     let person1Loc = 0;
     let person2Loc = 1;
 
@@ -39,16 +39,18 @@
     let sidePlotWidth = (width - centerWidth) / 2
 
 
-    var numColumns = 20;
+    var numColumns = 60;
     var dotCoords = [];
     var size = centerWidth / numColumns - 4;
     let numRows;
     let height; 
+    
 
     var histWidth = 600
-    var histHeight = 400
+    var histHeight = 200
 
     var dotMarkers;
+    let radius = 2;
 
     let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
     let data;
@@ -80,7 +82,7 @@
         let remittance = data.map(obj => Number(obj.remesa_amount))
             .filter((number, i) => ((number < 1000) && (number > 0)  && (remittanceCurrency[i] == 1)));
 
-        let div = 5
+        let div = 1
         numDots = {
             'all': Number(Math.round(data.length / div)), 
             'missedMeals': Number(Math.round(missedMeals.filter(n => (n > 0) && (n != 88)).length / div)),
@@ -127,16 +129,20 @@
 
         let nextDotCoords = []
         let offset = 0
+        console.log(numDots['all'], numRows, numColumns)
         if (fieldName == 'all') {
             for (let i =0; i < numRows; i++) {
                 for (let j=0; j < numColumns; j ++) {
-                    let minX = (width / 2) - (centerWidth / 2)
-                    let maxX = (width / 2) + (centerWidth / 2)
 
-                    let color = yesColor;
-                    nextDotCoords.push({"x": getDotX(j, minX, maxX), 
+                    if (i * numColumns + j < numDots['all']) {
+                        let minX = (width / 2) - (centerWidth / 2)
+                        let maxX = (width / 2) + (centerWidth / 2)
+
+                        let color = yesColor;
+                        nextDotCoords.push({"x": getDotX(j, minX, maxX), 
                                     "y": getDotY(i),
                                     "c": color});
+                    }
                 }
             }
         } else {
@@ -144,25 +150,28 @@
             let firstRightCol = 0;
             for (let i=0; i < numRows; i++) {
                 for (let j=0; j < numColumns; j ++) {
-                    if (i * numColumns + j < numDots[fieldName]) {
-                        numLeftRows = i;
-                        firstRightCol = j
 
-                        let color = yesColor
-                        nextDotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i), "c": color});  
-                    } else {
-                        let x = j - firstRightCol - 1
-                        let y = i - numLeftRows
-                        if (x < 0) {
-                            y--;
-                            x = numColumns + x;
-                        }
+                    if (i * numColumns + j < numDots['all']) {
+                        if (i * numColumns + j < numDots[fieldName]) {
+                            numLeftRows = i;
+                            firstRightCol = j
 
-                        let color =  noColor;
-                        nextDotCoords.push({"x": getDotX(x, width - centerWidth, width), 
+                            let color = yesColor
+                            nextDotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i), "c": color});  
+                        } else {
+                            let x = j - firstRightCol - 1
+                            let y = i - numLeftRows
+                            if (x < 0) {
+                                y--;
+                                x = numColumns + x;
+                            }
+
+                            let color =  noColor;
+                            nextDotCoords.push({"x": getDotX(x, width - centerWidth, width), 
                                         "y": getDotY(y),
                                         "c": color});
-                    }                     
+                        }                     
+                    }
                 }
             }
         }
@@ -224,7 +233,7 @@
             d3.select("#dots").select("svg").select("g").selectAll("circle")
         .data(dotCoords)
         .join("circle")
-        .attr("r", 5)
+        .attr("r", radius)
         .attr("fill-opacity", 1)
         .transition()
                 .duration(1000)
@@ -424,8 +433,8 @@
         if ((Object.keys(numDots).length > 0) && (Object.keys(histData).length > 0)){
             //console.log('this',numDots, histData)
             console.log('that',numDots, histData);
-            numRows = Math.floor(numDots['all'] / numColumns);
-            height = numRows * (size + 4);
+            numRows = Math.ceil(numDots['all'] / numColumns);
+            height = numRows * (size + 3);
             //histData = histData
             updateDotCoords('all');
             draw()
@@ -451,7 +460,7 @@
         .data(dotCoords)
         .enter()
         .append("circle")
-        .attr("r", 5)
+        .attr("r", radius)
         .style("fill", function (d) {
             return d["c"];
         })
