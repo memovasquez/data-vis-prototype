@@ -127,40 +127,45 @@
 
     function getLabels () {
         let total = numDots['all'];
-        labels = {
-        'all': [
+        labels = [
             {
+                "name": "all",
                 "text": total.toString() + " total responses",
                 "x": width / 2,
                 "y": 10,
-            }
-        ],
-        'missedMeals': [
+                "visibility": "visible"
+            },
             {
+                "name": "missedMeals",
                 "text": numDots['missedMeals'].toString() + " missed at least one meal this week",
                 "x": 250,
-                "y": 0
+                "y": 10,
+                "visibility": "hidden"
             },
             {
+                "name": "missedMeals",
                 "text": (total - numDots['missedMeals']).toString() + " missed no meals this week",
                 "x": 750,
-                "y": 0
+                "y": 10,
+                "visibility": "hidden",
             },
-        ],
-        'borrowedFood': [
             {
+                "name": "borrowedFood",
                 "text": numDots['borrowedFood'].toString() + " borrowed money for food this week",
                 "x": 250,
-                "y": 0
+                "y": 10,
+                "visibility": "hidden",
             },
             {
+                "name": "borrowedFood",
                 "text": (total - numDots['borrowedFood']).toString() + " did not",
                 "x": 750,
-                "y": 0
+                "y": 10,
+                "visibility": "hidden",
             },
-        ],
-        }
+        ]
     }
+    
     
     function updateDotCoords (fieldName) {
          //- margin.top - margin.bottom;
@@ -288,6 +293,9 @@
                 .attr("stroke", function (d) {
                     return d["c"]
                 })
+        hideLabels();
+        showLabel(name);
+        
         // }
     }
 
@@ -447,15 +455,6 @@
             .attr("y1", y(0))
             .attr("x2", x(person2[nameToField[name]]))
             .attr("y2", y(1));
-
-            d3.select("#dots").select("svg").selectAll("text")
-                .data(labels[name])
-                .enter()
-                .append("text")
-                .text(function (d) { return d["text"]})
-                .attr("x", function (d) { return d["x"]})
-                .attr("y", function (d) { return d["y"]})
-                .attr("text-anchor", "middle");
     }
 
     var updatePlots = function (name, histName, buttonName) {
@@ -490,11 +489,35 @@
         }
     }
 
+
+    function addLabels () {
+        d3.select("#dots").select("svg").select("g").selectAll("text")
+                .data(labels)
+                .enter()
+                .append("text")
+                .text(function (d) { console.log(d); return d["text"]})
+                .attr("class", function (d) { return d["name"] + "Text"})
+                .attr("x", function (d) { return d["x"]})
+                .attr("y", function (d) { return d["y"]})
+                .attr("text-anchor", "middle")
+                .attr("visibility", function (d) {return d["visibility"]});
+    }
+
+    function hideLabels () {
+        d3.select("#dots").select("svg").select("g").selectAll("text")
+            .attr("visibility", "hidden")
+    }
+
+    function showLabel (name) {
+        d3.select("#dots").select("svg").select("g").selectAll("." + name + "Text")
+            .attr("visibility", "visible")
+    }
+
     //onMount( () => {
     function draw() {
-    d3.select(dots).html(null);
+        d3.select(dots).html(null);
 
-    const svg = d3.select("#dots")
+        const svg = d3.select("#dots")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -523,15 +546,8 @@
             return d["y"];
         })
 
-        svg.selectAll("text")
-            .data(labels['all'])
-            .enter()
-            .append("text")
-            .text(function (d) { return d["text"]})
-            .attr("x", function (d) { return d["x"]})
-            .attr("y", function (d) { return d["y"]})
-            .attr("text-anchor", "middle");
-
+        addLabels();
+        
     //     svg.append("text")
 	// .text("This is text")
 	// .attr("x", 20)
@@ -723,5 +739,7 @@
 .pressed {
     background-color: #69b3a2;
 }
+
+.hidden
 
 </style>
