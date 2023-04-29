@@ -2,6 +2,7 @@
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
     import Map from './Map.svelte';
+    import IncomeChart from './IncomeChart.svelte';
 
 
     let info;
@@ -69,7 +70,9 @@
         if (Object.keys(person1).length > 0) {
             makeDisplay()
             //updateHistogramData('income', 'all');
+            
         }
+        selectedField;
     }
 
 </script>
@@ -132,6 +135,8 @@
         <div class="col">
             {#if selectedField === "location"}
                 <Map bind:map={map} bind:markerContainer={markerContainer}/>
+            {:else if selectedField === "monthlyIncome"}
+                <IncomeChart bind:data={data} bind:person1={person1}/>
             {/if}
         </div>
     </div>

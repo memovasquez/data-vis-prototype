@@ -6,24 +6,23 @@
 
     const margin = { top: 20, right: 20, bottom: 30, left: 40 };
     const width = 1000 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const height = 600 - margin.top - margin.bottom;
 
     let svg;
     let xScale, yScale, xAxis, yAxis;
 
 
     onMount( () => {
-        svg = d3.select('#chart')
-        .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
+        // svg = d3.select('#chart')
+        // .append('svg')
+        // .attr('width', width + margin.left + margin.right)
+        // .attr('height', height + margin.top + margin.bottom)
+        // .append('g')
+        // .attr('transform', `translate(${margin.left},${margin.top})`);
         
         
 
     });
-
 
 
     function display () {
@@ -65,13 +64,37 @@
 
         //end histogram relevant code
 
+        svg = d3.select('#chart')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        // console.log("Does svg exist, ", svg);
         svg.append('g')
         .attr('class', 'axis x-axis')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(xScale));
 
+        svg.append("text")
+                .attr("class", "axis-label")
+                .attr("text-anchor", "middle") // set the alignment of the text
+                .attr("font-size", "12px") // set the font size
+                .attr("fill", "black") // set the font color
+                .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")") // position the label at the bottom center of the axis
+                .text("Average Monthly Income (converted to USD)"); // set the label text
+
         svg.append('g')
         .attr('class', 'axis y-axis')
+
+        svg.append("text")
+                .attr("class", "axis-label")
+                .attr("text-anchor", "middle")
+                .attr("font-size", "12px")
+                .attr("fill", "black")
+                .attr("transform", "rotate(-90) translate(" + (-height/2) + "," + (0) + ")") // position the label at the left center of the axis and rotate it by -90 degrees
+                .text("People");
         // .call(d3.axisLeft(yScale));
     
         //bar chart code
@@ -98,18 +121,62 @@
         //   });
 
         //histogram code
+
+        const tooltip = d3.select("#chart")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip-visible")
+                .style("background-color", "orange")
+                .style("color", "white")
+                .style("border-radius", "5px")
+                .style("padding", "10px");
+
+        const showTooltip = function(event,d) {
+            let minOfBucket = String( d3.min( d.map((obj) => Number(obj.avg_income_amount * 0.1143).toFixed(2) ) ));
+            let maxOfBucket = String(d3.max( d.map((obj) => Number(obj.avg_income_amount * 0.1143).toFixed(2) )))
+            tooltip
+            .transition()
+            .duration(100)
+            .style("opacity", 1)
+            tooltip
+            .html(String(d.length) + " respondents in El Salvador report $"+ minOfBucket + " to $" + maxOfBucket + " in monthly income")
+            .style("left", (event.x)/2-100 + "px")
+            .style("top", (event.y)/2 + "px")
+        }
+
+
+        const moveTooltip = function(event,d) {
+            tooltip
+            .style("left", (event.x)/2-100 + "px")
+            .style("top", (event.y)/2 + "px")
+        }
+
+        // A function that changes this tooltip when the leaves a point: just need to set opacity to 0 again
+        const hideTooltip = function(event,d) {
+            tooltip
+            .transition()
+            .duration(100)
+            .style("opacity", 0)
+
+        }
         // console.log("Who is person1 ," ,person1);
         // console.log("Show bins, ", bins);
         let person1Bin = bins[2]
+        
         svg.selectAll("rect")
         .data(bins)
         .join("rect")
             .attr("x", 1)   //"translate(" + x(d.x0) + "," + y(d.length) + ")"
         .attr("transform", function(d) { return `translate(${xScale(d.x0)} , ${yScale(d.length)})`})
-            .attr("width", function(d) { return (xScale(d.x1) - xScale(d.x0))/2 -1})
+            .attr("width", function(d) { return 2*(xScale(d.x1) - xScale(d.x0))/2 -1})
             .attr("height", function(d) { return height - yScale(d.length); })
             // .style("fill", function (d) { d.some( (person) => { "2211" === person[""] }) ? "#69b3a2" : "red"}  )
             .style("fill", function(d) { return bins.indexOf(d) === 2 ? "red" : "black" })
+
+             // Show tooltip on hover
+             .on("mouseover", showTooltip )
+            .on("mousemove", moveTooltip )
+            .on("mouseleave", hideTooltip )
         
     }
 
