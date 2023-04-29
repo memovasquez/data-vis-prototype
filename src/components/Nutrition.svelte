@@ -2,6 +2,9 @@
     import * as d3 from 'd3';
 	import {onMount} from 'svelte';
     //input data 
+	let path;
+
+	//TODO use real data
     let nutritionServings = {'Grains': 11, 'Vegetables': 5, 'Fruit': 3, 'Dairy': 3, 'Protein': 7, 'Fats and Sweets': 1};
 	let individualServings = {'Grains': 5, 'Vegetables': 3, 'Fruit': 1, 'Dairy': 2, 'Protein': 2, 'Fats and Sweets': 1};
 

@@ -61,10 +61,9 @@
 
     onMount( () => {
     //function processData () {
+        console.log(path)
         d3.csv(path).then((d) => {
         data = d;
-        console.log('data', data)
-        // TODO filter to include only el salvador
         person1 = data[2211];
         data = data.filter(obj => obj.country == 'SLV') 
         let missedMeals = data.map(obj => (Number(obj.rcsi_meal_nb) > 0))//.filter( number => number > 0);
@@ -114,13 +113,8 @@
             }  
         }
 
-        
-        //console.log(income);
-        //console.log(dotNum);
+
     })
-
-
-    console.log('hist', histData)
 
 	});
 
@@ -173,7 +167,6 @@
         let nextDotCoords = []
         let offset = 0
         let verticalOffset = 20;
-        console.log(numDots['all'], numRows, numColumns)
         if (fieldName == 'all') {
             for (let i =0; i < numRows; i++) {
                 for (let j=0; j < numColumns; j ++) {
@@ -300,7 +293,6 @@
     }
 
     function splitHistogram (name, split) {
-        console.log(histData);
         let data = histData[name][split];
         let leftData = data[0];
         let rightData = data[1];
@@ -461,7 +453,6 @@
         return function () { 
 
 
-            console.log(name, histName)
             if (dotState !== name) {
                 moveDots(name);
                 splitHistogram(histName, name);
@@ -476,16 +467,12 @@
 
 
     $: {
-        //console.log('this', numDots.length, histData.length)
         if ((Object.keys(numDots).length > 0) && (Object.keys(histData).length > 0)){
-            //console.log('this',numDots, histData)
-            console.log('that',numDots, histData);
             numRows = Math.ceil(numDots['all'] / numColumns);
             height = numRows * (size + 3);
             getLabels();
             updateDotCoords('all');
             draw()
-            //updateHistogramData('income', 'all');
         }
     }
 
@@ -495,7 +482,7 @@
                 .data(labels)
                 .enter()
                 .append("text")
-                .text(function (d) { console.log(d); return d["text"]})
+                .text(function (d) {return d["text"]})
                 .attr("class", function (d) { return d["name"] + "Text"})
                 .attr("x", function (d) { return d["x"]})
                 .attr("y", function (d) { return d["y"]})
@@ -526,7 +513,6 @@
             .attr("transform",
                     `translate(${margin.left}, ${margin.top})`);
 
-    console.log('dots', dotCoords);
     d3.select("#dots").select("svg").select("g").selectAll("circle")
         .data(dotCoords)
         .enter()
@@ -580,12 +566,10 @@
         .domain(x.domain())  // then the domain of the graphic
         .thresholds(x.ticks(20)); // then the numbers of bins; 6 here because we remove 0
 
-    // console.log('this', histData['income']['all'])
     const leftBins = histogram(histData['income']['all']);
     const leftTotal = leftBins.reduce((acc, cur) => acc + cur.length, 0);
     const rightBins = histogram([]);
     const rightTotal = rightBins.reduce((acc, cur) => acc + cur.length, 0)
-    //const rightBins = leftBins;
 
     
 
@@ -597,9 +581,7 @@
         
     }
 
-    console.log('bins', bins)
 
-    console.log(leftTotal);
     const y = d3.scaleLinear()
         .range([histHeight, 0.0001])
         .domain([0, d3.max(bins, function(d) {return d.length}) / leftTotal]);   // d3.hist has to be called before the Y axis obviously
@@ -697,9 +679,6 @@
         .attr("y2", y(1));
 
     }
-
-    console.log('here', dotMarkers);
-
 
 </script>
 <div>

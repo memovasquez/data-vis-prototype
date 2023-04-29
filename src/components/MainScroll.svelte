@@ -4,6 +4,7 @@
     import * as d3 from 'd3';
     import Scroller from '@sveltejs/svelte-scroller';
     import Dots from './Dots.svelte';
+    import Info from './Info.svelte';
     import Histogram from './Histogram.svelte';
     import Nutrition from './Nutrition.svelte';
     import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
@@ -12,6 +13,8 @@
     // properties for data to be passed in
     export let wfp_data = [];
     export let fao_data = [];
+    let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
+
     
     let count;
 	let index;
@@ -59,15 +62,15 @@
           {/if}
       </section>
       <section class="panel" style="background-color: white-smoke;">
-          <b>TWO</b>
+          <Info />
+        </section>
+      <section class="panel" style="background-color: white-smoke;">
             <Nutrition />
       </section>
       <section class="panel" style="display:block; margin:auto" align="center">
-          <b>THREE</b>
-            <Dots/>
+            <Dots />
       </section>
       <section class="panel" style="background-color: burlywood;">
-          <b>FOUR</b>
           {#if fao_data.length !== 0}
           <CountryFoodInsecurity bind:fao_data={fao_data}/>
           {/if}

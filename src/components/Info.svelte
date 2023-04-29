@@ -1,0 +1,95 @@
+<script>
+    import * as d3 from 'd3';
+    import {onMount} from 'svelte';
+
+    let info;
+    let data;
+    export let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
+    let person1 = {};
+
+
+    onMount( () => {
+    //function processData () {
+        d3.csv(path).then((d) => {
+        data = d;
+        console.log('data', data)
+        // TODO filter to include only el salvador
+        person1 = data[2211];
+        data = data.filter(obj => obj.country == 'SLV') 
+        })
+    })
+
+    const margin = {top: 10, right: 30, bottom: 30, left: 30};
+    let width = 500 - margin.left - margin.right;
+    let height = 1000 - margin.top - margin.bottom;
+
+    function makeDisplay () {
+    d3.select(info).html(null);
+        let infoSVG = d3.select("#info")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("id", "infoDisplay")
+            .append("g")
+            .attr("transform",
+                `translate(${margin.left}, ${margin.top})`);
+        infoSVG.selectAll("circle")
+            .data([{"r": 20, "cx": 100, "cy": 100, "color":""}])
+            .enter()
+            .append("circle")
+            .attr("r", 20)
+            .attr("cx", 250)
+            .attr("cy", 400)
+            .attr("color", "blue");
+        console.log('wtu')
+    }
+
+    $: {
+        if (Object.keys(person1).length > 0) {
+            makeDisplay()
+            //updateHistogramData('income', 'all');
+        }
+    }
+
+</script>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-4">
+            <table style="height:600px">
+                <tr><td><button class="button">age?</button></td></tr>
+                <tr><td><button class="button">sex?</button></td></tr>
+                <tr><td><button class="button">location?</button></td></tr>
+                <tr><td><button class="button">income?</button></td></tr>
+                <tr><td><button class="button">household size?</button></td></tr>
+            </table>
+        </div>
+        <div class="col">
+            <div id="info" bind:this={info} class="visualization"></div>
+        </div>
+    </div>
+</body>
+
+<style>
+    table, th, td {
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.button {
+  border: noColor;
+  /* color: '#00'; */
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
+
