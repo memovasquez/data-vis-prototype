@@ -32,6 +32,9 @@
         "debt": "debt_amount",
     };
 
+
+    let labels; 
+
     const margin = {top: 10, right: 30, bottom: 30, left: 30},
     width = 1000 - margin.left - margin.right;
     
@@ -122,13 +125,49 @@
 	});
 
 
-
+    function getLabels () {
+        let total = numDots['all'];
+        labels = {
+        'all': [
+            {
+                "text": total.toString() + " total responses",
+                "x": width / 2,
+                "y": 10,
+            }
+        ],
+        'missedMeals': [
+            {
+                "text": numDots['missedMeals'].toString() + " missed at least one meal this week",
+                "x": 250,
+                "y": 0
+            },
+            {
+                "text": (total - numDots['missedMeals']).toString() + " missed no meals this week",
+                "x": 750,
+                "y": 0
+            },
+        ],
+        'borrowedFood': [
+            {
+                "text": numDots['borrowedFood'].toString() + " borrowed money for food this week",
+                "x": 250,
+                "y": 0
+            },
+            {
+                "text": (total - numDots['borrowedFood']).toString() + " did not",
+                "x": 750,
+                "y": 0
+            },
+        ],
+        }
+    }
     
     function updateDotCoords (fieldName) {
          //- margin.top - margin.bottom;
 
         let nextDotCoords = []
         let offset = 0
+        let verticalOffset = 20;
         console.log(numDots['all'], numRows, numColumns)
         if (fieldName == 'all') {
             for (let i =0; i < numRows; i++) {
@@ -140,7 +179,7 @@
 
                         let color = yesColor;
                         nextDotCoords.push({"x": getDotX(j, minX, maxX), 
-                                    "y": getDotY(i),
+                                    "y": getDotY(i) + verticalOffset,
                                     "c": color});
                     }
                 }
@@ -157,7 +196,7 @@
                             firstRightCol = j
 
                             let color = yesColor
-                            nextDotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i), "c": color});  
+                            nextDotCoords.push({"x": getDotX(j, 0, centerWidth), "y": getDotY(i) + verticalOffset, "c": color});  
                         } else {
                             let x = j - firstRightCol - 1
                             let y = i - numLeftRows
@@ -168,7 +207,7 @@
 
                             let color =  noColor;
                             nextDotCoords.push({"x": getDotX(x, width - centerWidth, width), 
-                                        "y": getDotY(y),
+                                        "y": getDotY(y) + verticalOffset,
                                         "c": color});
                         }                     
                     }
@@ -408,6 +447,15 @@
             .attr("y1", y(0))
             .attr("x2", x(person2[nameToField[name]]))
             .attr("y2", y(1));
+
+            d3.select("#dots").select("svg").selectAll("text")
+                .data(labels[name])
+                .enter()
+                .append("text")
+                .text(function (d) { return d["text"]})
+                .attr("x", function (d) { return d["x"]})
+                .attr("y", function (d) { return d["y"]})
+                .attr("text-anchor", "middle");
     }
 
     var updatePlots = function (name, histName, buttonName) {
@@ -435,7 +483,7 @@
             console.log('that',numDots, histData);
             numRows = Math.ceil(numDots['all'] / numColumns);
             height = numRows * (size + 3);
-            //histData = histData
+            getLabels();
             updateDotCoords('all');
             draw()
             //updateHistogramData('income', 'all');
@@ -475,11 +523,19 @@
             return d["y"];
         })
 
-        // d3.select("#dots").select("svg").select("g").selectAll("text")
-        // // .data(["Hello", "World"])
-        // // .enter()
-        // .append("text")
-        // .text("Hello World");
+        svg.selectAll("text")
+            .data(labels['all'])
+            .enter()
+            .append("text")
+            .text(function (d) { return d["text"]})
+            .attr("x", function (d) { return d["x"]})
+            .attr("y", function (d) { return d["y"]})
+            .attr("text-anchor", "middle");
+
+    //     svg.append("text")
+	// .text("This is text")
+	// .attr("x", 20)
+	// .attr("y", 20);
 
 
         // build histogram
@@ -641,9 +697,6 @@
 <button class="button dotButton {dotState === 'missedMeals' ? 'pressed' : ''}" id="mealsButton" on:click="{updatePlots('missedMeals', histState, 'mealsButton')}">Missed meals</button>
 <button class="button dotButton {dotState === 'borrowedFood' ? 'pressed' : ''}" id="borrowedButton" on:click="{updatePlots('borrowedFood', histState, 'borrowButton')}">Borrowed Money for Food</button>
 
-<div>
-    Hello World
-</div>
 
 <div id="dots" align="center" style="display:block; margin:auto" bind:this={dots} class="visualization"></div>
 
