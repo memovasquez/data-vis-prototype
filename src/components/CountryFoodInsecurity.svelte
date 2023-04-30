@@ -107,7 +107,9 @@
             // .append('option')
             // .attr('value', d => d)
             // .attr('label', d=>d);
-
+        // Add Y axis
+        y.domain([0, d3.max(necessaryData, d => Number(d.percentFoodInsec)) ]);
+        yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
 
     });
@@ -129,11 +131,6 @@
         //filter by year
 
         data = data.filter((obj) => Number(obj.year) == selected_year);
-
-        // Add Y axis
-        y.domain([0, d3.max(data, d => d.percentFoodInsec) ]);
-        yAxis.transition().duration(1000).call(d3.axisLeft(y));
-
     
         // variable u: map data to existing bars
         const u = svg.selectAll("rect")
