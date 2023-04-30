@@ -110,14 +110,43 @@
         // Add Y axis
         y.domain([0, d3.max(necessaryData, d => Number(d.percentFoodInsec)) ]);
         yAxis.transition().duration(1000).call(d3.axisLeft(y));
-
+        // update(necessaryData, 2016);
 
     });
 
 
-    
-    
+    function dragStart(d) {
+    d3.select( this )
+        .raise()
+        .style('stroke', 'black');
 
+        // d3.select(this).attr("y", d.y);
+
+    }
+
+    function dragging(d) {
+        let new_y = d.y;
+        // Calculate the new value of the rectangle based on the y position
+        let value = y.invert(new_y);
+        // Update the data and the y position of the rectangle
+        d.value = value;
+        d3.select(this)
+        .attr("y", y(value))
+        .attr("height", height - y(value));
+
+
+    }
+
+    function dragEnd(d) {
+        let new_y = d.y;
+        // Calculate the new value of the rectangle based on the y position
+        let value = y.invert(new_y);
+        // Update the data and the y position of the rectangle
+        d.value = value;
+        d3.select(this)
+        .attr("y", y(value))
+        .attr("height", height - y(value));
+    }
 
       
 
@@ -138,13 +167,25 @@
 
         // update bars
         u.join("rect")
-            .transition()
-            .duration(1000)
+            // .transition()
+            // .duration(1000)
             .attr("x", d => x(d.country))
             .attr("y", d => y(Number(d.percentFoodInsec)))
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d.percentFoodInsec))
+            .attr('id', d => d.country)
             .attr("fill", "#69b3a2")
+            .filter(d => d.country === 'El Salvador') //makes only El Salvador bar draggable
+             .call(d3.drag()
+            .on("start", dragStart)
+            .on("drag", dragging)
+            .on("end", dragEnd)
+            );
+
+
+
+       
+        
         
     }
 
