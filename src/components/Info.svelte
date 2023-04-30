@@ -135,11 +135,14 @@
         </div>
         <div class="col">
             {#if selectedField === "location"}
+                <h2>Laura's neighborhood: {person1.neighborhood}</h2>
                 <Map bind:map={map} bind:markerContainer={markerContainer}/>
             {:else if selectedField === "monthlyIncome"}
+                <h2>Laura's average monthly income: ${person1.avg_income_amount*0.1143}</h2>
                 <IncomeChart bind:data={data} bind:person1={person1}/>
             {:else if selectedField === "household"}
-                <HouseholdSizeChart bind:data={data} bind:person1={person1} />
+                <h2>Laura's household size: {person1.hh_size} people</h2>
+                <HouseholdSizeChart bind:data={data} />
             {/if}
         </div>
     </div>

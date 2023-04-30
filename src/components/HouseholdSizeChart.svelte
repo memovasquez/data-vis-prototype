@@ -87,7 +87,7 @@
                 .duration(100)
                 .style("opacity", 1)
                 tooltip
-                .html(String(d.length) + " respondents live in a household of "+ String(d.x0) )
+                .html(String(d.length) + " respondents in El Salvador live in a household of "+ String(d.x0) )
                 .style("left", (event.x)/2-100 + "px")
                 .style("top", (event.y)/2 + "px")
             }
