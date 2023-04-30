@@ -3,6 +3,7 @@
     import {onMount} from 'svelte';
     import Map from './Map.svelte';
     import IncomeChart from './IncomeChart.svelte';
+    import HouseholdSizeChart from './HouseholdSizeChart.svelte';
 
 
     let info;
@@ -137,6 +138,8 @@
                 <Map bind:map={map} bind:markerContainer={markerContainer}/>
             {:else if selectedField === "monthlyIncome"}
                 <IncomeChart bind:data={data} bind:person1={person1}/>
+            {:else if selectedField === "household"}
+                <HouseholdSizeChart bind:data={data} bind:person1={person1} />
             {/if}
         </div>
     </div>
