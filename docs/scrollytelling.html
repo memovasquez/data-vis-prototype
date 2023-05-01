@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content="">
+		<link href="./_app/immutable/assets/_page.0eb8d72a.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/MainScroll.858610c6.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/Dots.26b68d5c.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.20e39cd0.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.87e58281.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.737d12a9.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.a6653cd4.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/layout.svelte.16fc5db3.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.js.984db11e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_layout.da46b06b.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/scrollytelling-page.svelte.f3209506.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/MainScroll.49d0cdfb.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/Dots.fd109cf3.js">
+		<base href="/foodsec-data-vis">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">
+
+
+<main class="svelte-7fjmag"></main>
+
+
+
+<main class="svelte-widfx9">
+
+<svelte-scroller-outer class="svelte-xdbafy"><svelte-scroller-background-container class="background-container svelte-xdbafy" style="
+		position: absolute;
+		top: 0;
+		transform: translate(0, 0px);
+		z-index: 1;
+	"><svelte-scroller-background class="svelte-xdbafy"><div class="progress-bars svelte-widfx9" slot="background"><p>current section: <strong>1/0</strong></p>
+      <progress value="0"></progress>
+
+      <p>offset in current section</p>
+      <progress value="0"></progress>
+
+      <p>total progress</p>
+      <progress value="0"></progress></div></svelte-scroller-background></svelte-scroller-background-container>
+
+	<svelte-scroller-foreground class="svelte-xdbafy"><div class="foreground svelte-widfx9" slot="foreground"><section class="panel svelte-widfx9" style="background-color: #eed4bc;"><main class="svelte-13hvwxb"><form class="svelte-13hvwxb"><div class="svelte-13hvwxb"><label for="name" class="svelte-13hvwxb">Name</label>
+          <input type="text" id="usernmae" name="username" value="" class="svelte-13hvwxb"></div>
+      <div class="svelte-13hvwxb"><label for="name" class="svelte-13hvwxb">Age</label>
+        <input type="age" id="age" name="age" value="" class="svelte-13hvwxb">
+        <div class="svelte-13hvwxb"><label for="name" class="svelte-13hvwxb">Sex</label>
+            <input type="sex" id="sex" name="sex" value="" class="svelte-13hvwxb">
+        <div class="svelte-13hvwxb"><label for="Location" class="svelte-13hvwxb">Income</label>
+            <input type="location" id="location" name="location" value="" class="svelte-13hvwxb"></div>
+    <div class="svelte-13hvwxb"><label for="name" class="svelte-13hvwxb">Household Size</label>
+        <input type="household" id="household" name="household" value="" class="svelte-13hvwxb">
+      <button type="submit" class="svelte-13hvwxb">Submit</button></div></div></div></form>
+  </main></section>  
+      
+      <section class="panel svelte-widfx9" style="background-color: #eed4bc;"><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+
+    <script src="https://d3js.org/d3.v6.js" charset="utf-8"></script></head>
+<main><div style="display: flex; justify-content:space-around"><div><table style="height:600px" class="svelte-1q1ui5a"><tr><td class="svelte-1q1ui5a"><button class="button  svelte-1q1ui5a">age?
+                    </button></td></tr>
+                <tr><td class="svelte-1q1ui5a"><button class="button  svelte-1q1ui5a">sex?
+                    </button></td></tr>
+                <tr><td class="svelte-1q1ui5a"><button class="button pressed svelte-1q1ui5a">location?
+                    </button></td></tr>
+                <tr><td class="svelte-1q1ui5a"><button class="button  svelte-1q1ui5a">income?
+                    </button></td></tr>
+                <tr><td class="svelte-1q1ui5a"><button class="button  svelte-1q1ui5a">household size?
+                    </button></td></tr></table></div>
+
+            <div><h2>Laura&#39;s neighborhood: undefined</h2>
+                <head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+
+    <script src="https://d3js.org/d3.v6.js" charset="utf-8"></script></head>
+<body><div id="map" style="width: 400px; height: 500px;"></div>
+    <script>mapboxgl.accessToken = 'pk.eyJ1IjoiamVjdW1taW4iLCJhIjoiY2xnZmExMGl0MTFqODNtcGYza3N4MThuYSJ9.PqUnWvtJxHzj8zho_DFRwg';
+        map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/light-v11', // style URL
+            center: [-88.8965, 13.7942], // starting position [lng, lat]
+            zoom: 6, // starting zoom
+        });
+
+        markerContainer = d3
+            .select(map.getCanvasContainer() )
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .style("position", "absolute")
+            .style("z-index", 2);
+
+        function project(d) {
+            return map.project(new mapboxgl.LngLat(+d.lon, +d.lat));
+        }
+
+        station_markers = markerContainer
+            .selectAll("circle")
+            .data({lon: -89.8411, lat: 13.9259})
+            .enter()
+            .append("circle")
+            .attr("r", 5)
+            .style("fill", "#808080")
+            .attr("stroke", "#808080")
+            .attr("stroke-width", 1)
+            .attr("fill-opacity", 0.4)
+            .attr("cx", function (d) {
+                console.log('wut', d); return project(d).x;
+            })
+            .attr("cy", function (d) {
+                return project(d).y;
+            });
+        // municipo [-89.8411, 13.9259]
+        // TODO add marker for location of person
+    </script></body></div></div>
+
+</main></section>
+      <section class="panel svelte-widfx9" style="background-color: #eed4bc;"><div class="visualization svelte-1px2omp"><div><span style="display:block; height: 25px;"></span>
+		Nutrition and Diet Breakdown
+		<span style="display:block; height: 25px;"></span></div>
+    <svg width="1000" height="1000"><g transform="translate(500,400)"></g></svg>
+    <div class="tooltip-hidden svelte-1px2omp" style="left: 40px; top: 40px"></div>
+
+
+
+</div></section>
+      <section class="panel svelte-widfx9" style="display:block; margin:auto" align="center"><div><span style="display:block; height: 25px;"></span>
+    Food and Financial Security
+    <span style="display:block; height: 25px;"></span></div>
+
+
+<button class="button dotButton pressed svelte-138k9nv" id="allButton">All</button>
+<button class="button dotButton  svelte-138k9nv" id="mealsButton">Missed meals</button>
+<button class="button dotButton  svelte-138k9nv" id="borrowedButton">Borrowed Money for Food</button>
+
+
+<div id="dots" align="center" style="display:block; margin:auto" class="visualization"></div>
+
+<button class="button histButton pressed svelte-138k9nv" id="incomeButton">Monthly Income</button>
+
+<button class="button histButton  svelte-138k9nv" id="debtButton">Debt</button>
+
+
+
+<div id="hist" class="visualization"></div></section>
+      <section class="panel svelte-widfx9" style="background-color: #eed4bc;"></section></div></svelte-scroller-foreground>
+</svelte-scroller-outer>
+
+</main>
+
+
+			
+			<script>
+				{
+					__sveltekit_1vucbsi = {
+						assets: "/foodsec-data-vis",
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.20e39cd0.js"),
+						import("./_app/immutable/entry/app.a6653cd4.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 4],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
