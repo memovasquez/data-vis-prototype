@@ -146,6 +146,8 @@
         d3.select(this)
         .attr("y", y(value))
         .attr("height", height - y(value));
+        sliderVisble = true;
+
     }
 
       
@@ -205,8 +207,8 @@
 
 <main>
 
-    <button on:click="{() => {sliderVisble = !sliderVisble}}">View Slider</button>
-    
+    <!-- <button on:click="{() => {sliderVisble = !sliderVisble}}">View Slider</button> -->
+    <h2>Prevalence of moderate or severe food insecurity in the total population (percent)</h2>
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz"></div>
 

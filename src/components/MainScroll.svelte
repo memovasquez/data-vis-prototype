@@ -98,7 +98,7 @@
     }
 
     .panel {
-		height: 150vh;
+		height: 100vh;
 		width: 100%;
 	}
 
