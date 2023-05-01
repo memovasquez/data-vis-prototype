@@ -9,6 +9,7 @@
     import Nutrition from './Nutrition.svelte';
     import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
     import Pie from './Pie.svelte';
+    import Profile from './Profile.svelte';
 
     // properties for data to be passed in
     export let wfp_data = [];
@@ -54,23 +55,26 @@
 
 
   <div class="foreground" slot="foreground">
-      <section class="panel" id="slide1">
+      <section class="panel" style="background-color: #eed4bc;">
+        <Profile/>
+      </section>  
+      <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
           {#if wfp_data.length !== 0 }
           <Histogram bind:hist_data={wfp_data}></Histogram>
           <Pie bind:pie_data={wfp_data}></Pie>
           {/if}
       </section>
-      <section class="panel" style="background-color: white-smoke;">
+      <section class="panel" style="background-color: #eed4bc;">
           <Info />
         </section>
-      <section class="panel" style="background-color: white-smoke;">
+      <section class="panel" style="background-color: #eed4bc;">
             <Nutrition />
       </section>
       <section class="panel" style="display:block; margin:auto" align="center">
             <Dots />
       </section>
-      <section class="panel" style="background-color: burlywood;">
+      <section class="panel" style="background-color: #eed4bc;">
           {#if fao_data.length !== 0}
           <CountryFoodInsecurity bind:fao_data={fao_data}/>
           {/if}
