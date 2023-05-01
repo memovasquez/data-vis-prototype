@@ -54,7 +54,7 @@
 
 
   <div class="foreground" slot="foreground">
-      <section class="panel blue" id="slide1" style="background-color: turquoise;">
+      <section class="panel" id="slide1">
           <b>ONE</b>
           {#if wfp_data.length !== 0 }
           <Histogram bind:hist_data={wfp_data}></Histogram>

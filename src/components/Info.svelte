@@ -4,6 +4,7 @@
     import Map from './Map.svelte';
     import IncomeChart from './IncomeChart.svelte';
     import HouseholdSizeChart from './HouseholdSizeChart.svelte';
+  import AgeChart from './AgeChart.svelte';
 
 
     let info;
@@ -143,6 +144,10 @@
             {:else if selectedField === "household"}
                 <h2>Laura's household size: {person1.hh_size} people</h2>
                 <HouseholdSizeChart bind:data={data} />
+            {:else if selectedField === "age"}
+            <h2>Laura's age: {person1.rsp_age} </h2>
+                <AgeChart bind:data={data}/>
+                
             {/if}
         </div>
     </div>

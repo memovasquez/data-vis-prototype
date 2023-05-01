@@ -2,7 +2,7 @@
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
     export let data = [];
-
+    
     const margin = { top: 20, right: 20, bottom: 30, left: 40 };
     const width = 1000 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
@@ -10,43 +10,48 @@
     let svg;
     let xScale, yScale, xAxis, yAxis;
 
-
     function display () {
-
-        data = data.filter( d => (Number(d.hh_size) > 0 )); //only include non-null values
-
+        data = data.filter(d => d.rsp_age != ""); //make sure to discard any nulls
+        let ageMin = d3.min(data.map(d => Number(d.rsp_age)));
+        let ageMax = d3.max(data.map(d => Number(d.rsp_age)));
+    
         xScale = d3.scaleLinear()
-        .domain([0, d3.max(data.map(d => Number(d.hh_size)))])
-        .range([0, width]);
-        // console.log(d3.max(data.map(d => Number(d.hh_size))));
+        .domain([10,ageMax])
+        .range([0,width])
+
+        let binSize = 10;
+
         const histogram = d3.histogram()
-        .value(function(d) { return Number(d.hh_size) })   // I need to give the vector of value
-        .domain(xScale.domain())  // then the domain of the graphic
-        .thresholds(xScale.ticks(18)); // then the numbers of bins; 
+        .value(function(d) {return Number(d.rsp_age)})
+        .domain(xScale.domain())
+        .thresholds(d3.range(10, 100, binSize))
+        
 
-
-        // And apply this function to data to get the bins
         const bins = histogram(data);
+
+        var xAxis = d3.axisBottom(xScale)
+            .tickValues(bins.map(function(d) { return d.x0; }))
+            .tickFormat(function(d, i) { 
+                    return d + '+'; // Add a plus sign to the first tick label
+                }
+            );
 
         yScale = d3.scaleLinear()
         .range([height,0]);
         yScale.domain([0,d3.max(bins, function(d) {return d.length})]);
 
-        //end histogram relevant code
-
-        svg = d3.select('#householdChart')
+        svg = d3.select("#ageChart")
         .append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
-
+        .attr('transform',`translate(${margin.left},${margin.top})`)
 
         svg.append('g')
         .attr('class', 'axis x-axis')
         .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale));
-
+        .call(xAxis);
+        // d3.axisBottom(xScale)
 
         svg.append("text")
                 .attr("class", "axis-label")
@@ -54,7 +59,7 @@
                 .attr("font-size", "12px") // set the font size
                 .attr("fill", "black") // set the font color
                 .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")") // position the label at the bottom center of the axis
-                .text("Household Size"); // set the label text
+                .text("Respondent Age"); // set the label text
 
         svg.append('g')
         .attr('class', 'axis y-axis')
@@ -65,29 +70,27 @@
                 .attr("font-size", "12px")
                 .attr("fill", "black")
                 .attr("transform", "rotate(-90) translate(" + (-height/2) + "," + (0) + ")") // position the label at the left center of the axis and rotate it by -90 degrees
-                .text("Number of households");
 
-
-         // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
+        // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
             // Its opacity is set to 0: we don't see it by default.
-            const tooltip = d3.select("#householdChart")
+            const tooltip = d3.select("#ageChart")
                 .append("div")
                 .style("opacity", 0)
                 .attr("class", "tooltip-visible")
-                .style("background-color", "red")
+                .style("background-color", "black")
                 .style("color", "white")
                 .style("border-radius", "5px")
                 .style("padding", "10px")
 
 
             const showTooltip = function(event,d) {
-                d3.select(event.target).attr('fill', 'yellow');
+                d3.select(event.target).attr('fill', 'light-orange');
                 tooltip
                 .transition()
                 .duration(100)
                 .style("opacity", 1)
                 tooltip
-                .html(String(d.length) + " respondents in El Salvador live in a household of "+ String(d.x0) )
+                .html(String(d.length) + " respondents in El Salvador are age "+ String(d.x0) +" to "+ String(d.x1) )
                 .style("left", (event.x)/2-100 + "px")
                 .style("top", (event.y)/2 + "px")
             }
@@ -109,6 +112,7 @@
             }
 
 
+        console.log("Age bins ", bins);
         svg.selectAll("rect")
         .data(bins)
         .join("rect")
@@ -123,7 +127,6 @@
             .on("mousemove", moveTooltip )
             .on("mouseleave", hideTooltip )
 
-
     }
 
 
@@ -133,15 +136,10 @@
         }
     }
 
-
-    
-
-
 </script>
 
-
 <main>
-    <div id="householdChart"></div>
+    <div id="ageChart"></div>
        
 </main>
     
