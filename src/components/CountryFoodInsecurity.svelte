@@ -108,7 +108,7 @@
             // .attr('value', d => d)
             // .attr('label', d=>d);
         // Add Y axis
-        y.domain([0, d3.max(necessaryData, d => Number(d.percentFoodInsec)) ]);
+        y.domain([0, d3.max(necessaryData, d => Number(d.percentFoodInsec)) + 5 ]);
         yAxis.transition().duration(1000).call(d3.axisLeft(y));
         // update(necessaryData, 2016);
 
@@ -119,8 +119,6 @@
     d3.select( this )
         .raise()
         .style('stroke', 'black');
-
-        // d3.select(this).attr("y", d.y);
 
     }
 
@@ -150,7 +148,31 @@
 
     }
 
-      
+    function firstDisplay(data) {
+        // console.log("See data before ", data);
+        // Parse the Data
+        // X axis
+        x.domain(data.map(d => d.country));
+        xAxis.transition().duration(1000).call(d3.axisBottom(x));
+        //filter by year
+        const u = svg.selectAll("rect")
+            .data(data.filter(obj => Number(obj.year) === 2016))
+
+        // update bars
+        u.join("rect")
+            .attr("x", d => x(d.country))
+            .attr("y", function(d) {return d.country === "El Salvador" ? y(10.5) : y(Number(d.percentFoodInsec))})
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return d.country === "El Salvador" ? height - y(10.5) : height - y(d.percentFoodInsec)})
+            .attr('id', d => d.country + d.year)
+            .attr("fill", function (d) { return d.country === "El Salvador" ? "#0047AB": "#69b3a2"})
+            .filter(d => d.country === 'El Salvador') //makes only El Salvador bar draggable
+             .call(d3.drag()
+            .on("start", dragStart)
+            .on("drag", dragging)
+            .on("end", dragEnd)
+            );
+    }
 
     // A function that create / update the plot for a given variable:
     function update(data, selected_year) {
@@ -162,40 +184,29 @@
         //filter by year
 
         data = data.filter((obj) => Number(obj.year) == selected_year);
-    
         // variable u: map data to existing bars
+        console.log("Data on update ", data);
         const u = svg.selectAll("rect")
             .data(data)
 
         // update bars
         u.join("rect")
-            // .transition()
-            // .duration(1000)
+            .transition()
+            .duration(1000)
             .attr("x", d => x(d.country))
             .attr("y", d => y(Number(d.percentFoodInsec)))
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d.percentFoodInsec))
-            .attr('id', d => d.country)
-            .attr("fill", "#69b3a2")
-            .filter(d => d.country === 'El Salvador') //makes only El Salvador bar draggable
-             .call(d3.drag()
-            .on("start", dragStart)
-            .on("drag", dragging)
-            .on("end", dragEnd)
-            );
-
-
-
-       
-        
-        
+            .attr("fill", function (d) { return d.country === "El Salvador" ? "#0047AB": "#69b3a2"})
+            
     }
 
 
     $: {
 
         if (necessaryData.length > 0){
-            update(necessaryData, 2016);
+            firstDisplay(necessaryData);
+            // update(necessaryData, 2016);
         }
 
 
@@ -209,6 +220,8 @@
 
     <!-- <button on:click="{() => {sliderVisble = !sliderVisble}}">View Slider</button> -->
     <h2>Prevalence of moderate or severe food insecurity in the total population (percent)</h2>
+    <h3>The % of the population in the U.S. that reported moderate to severe food insecurity in 2016 was 10.5</h3>
+    <p id="guessInstruction">Drag the bar on the left to what you think the metric is for El Salvador</p> 
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz"></div>
 

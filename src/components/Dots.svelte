@@ -719,6 +719,5 @@
     background-color: #69b3a2;
 }
 
-.hidden
 
 </style>
