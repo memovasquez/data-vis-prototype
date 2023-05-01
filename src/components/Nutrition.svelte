@@ -2,11 +2,40 @@
     import * as d3 from 'd3';
 	import {onMount} from 'svelte';
     //input data 
-	let path;
+	let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
+	let person1 = {};
+	let data;
 
 	//TODO use real data
-    let nutritionServings = {'Grains': 11, 'Vegetables': 5, 'Fruit': 3, 'Dairy': 3, 'Protein': 7, 'Fats and Sweets': 1};
-	let individualServings = {'Grains': 5, 'Vegetables': 3, 'Fruit': 1, 'Dairy': 2, 'Protein': 2, 'Fats and Sweets': 1};
+    // let nutritionServings = {'Grains': 11, 'Vegetables': 5, 'Fruit': 3, 'Dairy': 3, 'Protein': 7, 'Fats and Sweets': 1};
+	// let individualServings = {'Grains': 5, 'Vegetables': 3, 'Fruit': 1, 'Dairy': 2, 'Protein': 2, 'Fats and Sweets': 1}
+	
+	// number of servings recommended by US gov food pyramid
+	let nutritionServings = {'Grains': 11, 'Vegetables': 5, 'Fruit': 3, 'Dairy': 3, 'Protein': 7, 'Fats and Sweets': 1};
+
+	//
+	let individualServings;
+
+
+	onMount( () => {
+        d3.csv(path).then((d) => {
+        data = d;
+        person1 = data[2211];
+        data = data.filter(obj => obj.country == 'SLV') 
+
+		console.log(person1['fcs_fruit']);
+		individualServings = {
+			'Grains': Math.round(Number(person1['fcs_staples']) / 7 * nutritionServings['Grains'] * 100) / 100, 
+			'Vegetables': Math.round(Number(person1['fcs_veg']) / 7 * nutritionServings['Vegetables'] * 100) / 100,
+			'Fruit': Math.round(Number(person1['fcs_fruits']) / 7 * nutritionServings['Fruit'] * 100) / 100, 
+			'Dairy': Math.round(Number(person1['fcs_dairy']) / 7 * nutritionServings['Dairy'] * 100) / 100,
+			'Protein': Math.round(Number(person1['fcs_proteins']) / 7 * nutritionServings['Protein'] * 100) / 100,
+			'Fats and Sweets': Math.round((Number(person1['fcs_fats']) + Number(person1['fcs_sugars'])) / 7 * nutritionServings['Fats and Sweets'] * 100) / 100,
+		};
+
+        })
+
+    })
 
 	let fullRadius = 200
     
@@ -35,6 +64,7 @@
 	// 	// .domain([0,3,6,9,12,15,18,21,24]);
 
 	let colors = ["#bd6202", "#158504", "#e02504", "#02c8de", "#f5830a", "#f5c60a"]
+	let lightColors = ["#fed3a7", "#a7fc9a", "#febdb1", "#b0f6fe", "#fcdcba", "#fcefba"]
 	
     function colorFunction (idx) {	
 		return colors[idx];
@@ -49,12 +79,15 @@
 
     $: {
 
-        const arcColor = d3.scaleOrdinal(d3.schemeAccent).domain(Object.keys(nutritionServings));
+
+		if (Object.keys(person1).length > 0) {
+        	const arcColor = d3.scaleOrdinal(d3.schemeAccent).domain(Object.keys(nutritionServings));
 		
-        let pie = d3.pie().value( (d) => d[1] );
-        fullArcData = pie(Object.entries(nutritionServings)); 
-		individualArcData = pie(Object.entries(individualServings));
-		console.log(fullArcData);
+        	let pie = d3.pie().value( (d) => d[1] );
+        	fullArcData = pie(Object.entries(nutritionServings)); 
+			individualArcData = pie(Object.entries(individualServings));
+			console.log(fullArcData);
+		}
 
     }
 
@@ -97,14 +130,14 @@ function shadeColor(color, percent) {
 		<span style="display:block; height: 25px;"></span>
 	</div>
     <svg width="1000" height="1000">
-        <g transform="translate(500,250)">
+        <g transform="translate(500,400)">
             {#each fullArcData as data, index}
 			<path 
 				d={fullArcGenerator({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
-				fill={index === hovered ? shadeColor("#037ffc", 40): shadeColor(colorFunction(index), 40)}
+				fill={index === hovered ? shadeColor("#037ffc", 40): lightColors[index]}
                 
                 on:mouseover={(event) => {
                      hovered = index;
@@ -122,7 +155,7 @@ function shadeColor(color, percent) {
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
-				fill={index === hovered ? "#037ffc": colorFunction(index)}
+				fill={index === hovered ? "#037ffc": colors[index]}
                 
                 on:mouseover={(event) => {
                      hovered = index;
@@ -143,7 +176,7 @@ function shadeColor(color, percent) {
         style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40}px"
 	>
 		{#if hovered !== -1}
-		    INDIVIDUAL ate {individualArcData[hovered].data[1]} servings of {individualArcData[hovered].data[0].toLowerCase()} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
+		    INDIVIDUAL ate {individualArcData[hovered].data[1]} servings per day of {individualArcData[hovered].data[0].toLowerCase()} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
 		{/if}
 	</div>
 

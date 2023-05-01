@@ -58,13 +58,13 @@
       <section class="panel" style="background-color: #eed4bc;">
         <Profile/>
       </section>  
-      <section class="panel" id="slide1" style="background-color: #eed4bc;">
+      <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
           {#if wfp_data.length !== 0 }
           <Histogram bind:hist_data={wfp_data}></Histogram>
           <Pie bind:pie_data={wfp_data}></Pie>
           {/if}
-      </section>
+      </section> -->
       <section class="panel" style="background-color: #eed4bc;">
           <Info />
         </section>
