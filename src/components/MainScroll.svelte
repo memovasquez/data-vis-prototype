@@ -56,6 +56,7 @@
 
   <div class="foreground" slot="foreground">
       <section class="panel" style="background-color: #eed4bc;">
+        <b>PROFILES + USER INPUT</b>
         <Profile/>
       </section>  
       <section class="panel" id="slide1" style="background-color: #eed4bc;">
