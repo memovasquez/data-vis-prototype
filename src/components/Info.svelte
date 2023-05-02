@@ -15,7 +15,7 @@
     let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
     let person1 = {};
 
-    let selectedField = "location";
+    let selectedField = "age";
     let fields = [
         "age",
         "sex",

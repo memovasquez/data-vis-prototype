@@ -176,7 +176,7 @@ function shadeColor(color, percent) {
         style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40}px"
 	>
 		{#if hovered !== -1}
-		    Laura ate {individualArcData[hovered].data[1]} servings per day of {individualArcData[hovered].data[0].toLowerCase()} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
+		    Laura averaged {individualArcData[hovered].data[1]} servings per day of {individualArcData[hovered].data[0].toLowerCase()} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
 		{/if}
 	</div>
 
