@@ -15,7 +15,7 @@
     let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
     let person1 = {};
 
-    let selectedField = "location";
+    let selectedField = "age";
     let fields = [
         "age",
         "sex",
@@ -89,9 +89,9 @@
 
     <script src="https://d3js.org/d3.v6.js" charset="utf-8"></script>
 </head>
-<body>
-    <div class="row">
-        <div class="col-4">
+<main>
+    <div style="display: flex; justify-content:space-around">
+            <div>
             <table style="height:600px">
                 <tr><td>
                     <button 
@@ -134,8 +134,9 @@
                     </button>
                 </td></tr>
             </table>
-        </div>
-        <div class="col">
+            </div>
+
+            <div>
             {#if selectedField === "location"}
                 <h2>Laura's neighborhood: {person1.neighborhood}</h2>
                 <Map bind:map={map} bind:markerContainer={markerContainer}/>
@@ -152,9 +153,10 @@
             <h2>Laura is Female</h2>
                 <SexChart bind:data={data} />
             {/if}
-        </div>
+            </div>
     </div>
-</body>
+
+</main>
 
 <style>
     table, th, td {
