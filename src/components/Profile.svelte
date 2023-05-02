@@ -1,14 +1,21 @@
 <script>
-    export let profileInfo;
+    import Avatar from '@fouita/avatar';
 </script>
 
 <main>
+    <div class="flex justify-center" key="k1">
+        <Avatar src="https://randomuser.me/api/portraits/men/62.jpg" size=12>
+            <div class="rounded-none text-white text-xl">
+            </div>
+        </Avatar>
+        <Avatar src="https://randomuser.me/api/portraits/women/68.jpg" size=12 class="rounded-none text-white text-xl"/>
+    </div>
     <form>
       <div>
           <label for="name">Name</label>
           <input
             type="text"
-            id="usernmae"
+            id="username"
             name="username"
             value=""
           />
@@ -16,7 +23,7 @@
       <div>
         <label for="name">Age</label>
         <input
-          type="age"
+          type="integer"
           id="age"
           name="age"
           value=""
@@ -24,7 +31,7 @@
         <div>
             <label for="name">Sex</label>
             <input
-              type="sex"
+              type="text"
               id="sex"
               name="sex"
               value=""
@@ -32,7 +39,7 @@
         <div>
             <label for="Location">Income</label>
             <input
-              type="location"
+              type="text"
               id="location"
               name="location"
               value=""
@@ -41,7 +48,7 @@
     <div>
         <label for="name">Household Size</label>
         <input
-          type="household"
+          type="text"
           id="household"
           name="household"
           value=""
