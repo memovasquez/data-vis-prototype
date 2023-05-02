@@ -90,7 +90,7 @@
           <Info />
         </section>
         <section class="panel" style="background-color: #eed4bc;">
-            <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, I'd like you to answer these questions before we continue.</b>
+            <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, answer these questions before we continue.</b>
         </section> 
       <section class="panel" style="background-color: #eed4bc;">
         <b>"Interesting. Thank you for sharing your experiences."</b>
@@ -110,10 +110,24 @@
             Severe food insecurity was also more frequent in the region (14.2%) than in the world (11.7%).</b>
       </section>
       <section class="panel" style="background-color: #eed4bc;">
+        <b>"To be honest, I know lots of people in similar situations as me here in El Salvador."</b>
+    </section> 
+      <section class="panel" style="background-color: #eed4bc;">
+        <b>How common do you think food insecurity is in Central American Countries?</b>
           {#if fao_data.length !== 0}
           <CountryFoodInsecurity bind:fao_data={fao_data}/>
           {/if}
+          <b>How did your guesses compare to the actual rates of food insecurity?</b>
       </section>
+      <section class="panel" style="background-color: #eed4bc;">
+        <b>"Hopefully you understand me a bit better. But I do wonder..."</b>
+    </section> 
+    <section class="panel" style="background-color: #eed4bc;">
+        <b>"What would you do if you were me?"</b>
+    </section> 
+    <section class="panel" style="background-color: #eed4bc;">
+        <b>Links to support food insecurity in Central America</b>
+    </section> 
   </div>
 
 
