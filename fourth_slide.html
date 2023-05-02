@@ -5,37 +5,39 @@
 		<link rel="icon" href="./favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content="">
-		<link href="./_app/immutable/assets/_page.476d5c67.css" rel="stylesheet">
-		<link href="./_app/immutable/assets/Dots.26b68d5c.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.c901ebfe.js">
+		<link href="./_app/immutable/assets/_layout.ba0070d4.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/_page.8756ddab.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/Dots.6af76cd8.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.60e27789.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.87e58281.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.6223506c.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.665d58a7.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/layout.svelte.16fc5db3.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.02b37b51.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.ce472470.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.svelte.2e96f7ca.js">
 		<link rel="modulepreload" href="./_app/immutable/entry/_layout.js.984db11e.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/_layout.da46b06b.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/fourth_slide-page.svelte.2bd5e446.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/Dots.fd109cf3.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/fourth_slide-page.svelte.11497e04.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/Dots.520ba518.js">
+		<base href="/foodsec-data-vis">
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">
 
 
-<main class="svelte-15e8phw"><section><div><span style="display:block; height: 25px;"></span>
+<main class="svelte-1mtrms8"><section><div><span style="display:block; height: 25px;"></span>
     Food and Financial Security
     <span style="display:block; height: 25px;"></span></div>
 
 
-<button class="button dotButton pressed svelte-138k9nv" id="allButton">All</button>
-<button class="button dotButton  svelte-138k9nv" id="mealsButton">Missed meals</button>
-<button class="button dotButton  svelte-138k9nv" id="borrowedButton">Borrowed Money for Food</button>
+<button class="button dotButton pressed svelte-ata05j" id="allButton">All</button>
+<button class="button dotButton  svelte-ata05j" id="mealsButton">Missed meals</button>
+<button class="button dotButton  svelte-ata05j" id="borrowedButton">Borrowed Money for Food</button>
 
 
 <div id="dots" align="center" style="display:block; margin:auto" class="visualization"></div>
 
-<button class="button histButton pressed svelte-138k9nv" id="incomeButton">Monthly Income</button>
+<button class="button histButton pressed svelte-ata05j" id="incomeButton">Monthly Income</button>
 
-<button class="button histButton  svelte-138k9nv" id="debtButton">Debt</button>
+<button class="button histButton  svelte-ata05j" id="debtButton">Debt</button>
 
 
 
@@ -46,7 +48,8 @@
 			
 			<script>
 				{
-					__sveltekit_1fmk4hl = {
+					__sveltekit_100svp2 = {
+						assets: "/foodsec-data-vis",
 						base: new URL(".", location).pathname.slice(0, -1),
 						env: {}
 					};
@@ -56,8 +59,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.c901ebfe.js"),
-						import("./_app/immutable/entry/app.665d58a7.js")
+						import("./_app/immutable/entry/start.60e27789.js"),
+						import("./_app/immutable/entry/app.ce472470.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 3],
