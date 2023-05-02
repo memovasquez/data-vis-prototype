@@ -3,6 +3,7 @@
 </script>
 
 <main>
+    <p>Interactive Dataviz</p>
 </main>
 
 <style>
