@@ -1,6 +1,5 @@
 <script>
     import Avatar from '@fouita/avatar';
-    export let profileInfo;
 </script>
 
 <main>

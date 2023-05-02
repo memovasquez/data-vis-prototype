@@ -25,6 +25,7 @@
 	let top = 0.1;
 	let threshold = 0.5;
 	let bottom = 0.9;
+    let storytext;
     
 
 </script>
@@ -55,6 +56,21 @@
 
 
   <div class="foreground" slot="foreground">
+      <section class="panel" style="background-color: #eed4bc;">
+        <b>Food is a basic human right and necessity. It provides us with the nutrition needed to sustain our lives; it fuels us; it connects us.</b>
+    </section> 
+    <section class="panel" style="background-color: #eed4bc;">
+        <b>But what if we lost access to food? What does life look like without this basic necessity?</b>
+    </section>
+    <section class="panel" style="background-color: #eed4bc;">
+        <b>In Central America, these are not rhetorical questions, but a reality. It is a reallity that is not often easily understood.</b>
+    </section>
+    <section class="panel" style="background-color: #eed4bc;">
+        <b>Scroll on to better understand what this means.</b>
+    </section> 
+      <section class="panel" style="background-color: #eed4bc;">
+        <b>First, if you're comfortable sharing, let us know some details about yourself.</b>
+      </section> 
       <section class="panel" style="background-color: #eed4bc;">
         <b>PROFILES + USER INPUT</b>
         <Profile/>
