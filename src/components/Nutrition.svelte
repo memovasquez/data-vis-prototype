@@ -122,7 +122,14 @@ function shadeColor(color, percent) {
 
 //console.log('color', colorFunction(0));
 </script>
+<div style="width:75%; margin:auto">
+	<p>The chart below visualizes how Laura's household diet 
+		compares to daily nutrition recommendations made by the US government. 
+		The light color shows the full recommended quantity and the darker color 
+		shows what proportion of the recommendation Laura's household was able to eat.
+		Hover over the chart to see information about each food group</p>
 
+</div>
 <div class="visualization">
 	<div>
 		<span style="display:block; height: 25px;"></span>
@@ -180,9 +187,8 @@ function shadeColor(color, percent) {
 		{/if}
 	</div>
 
-
-
 </div>
+
 
 <style>
 	.visualization {

@@ -68,10 +68,20 @@
       <section class="panel" style="background-color: #eed4bc;">
           <Info />
         </section>
-      <section class="panel" style="background-color: #eed4bc;">
+    <section class="textPanel" style="background-color: #eed4bc;">
+        <div class="text">
+            <p>El Salvador has made significant progress in recent years to improve food security among its citizens. 
+                However, due to high poverty levels and crime rates, food security continues to be a serious problem.
+                In El Salvador, <a href="https://www.wfp.org/countries/el-salvador">14% of children under 5 suffer from malnutrition</a> 
+                whereas in the United States, <a href="https://www.hopkinsmedicine.org/health/conditions-and-diseases/malnutrition">
+                    child malnutrition rates are closer to 1% </a>.
+            </p> 
+        </div>
+      </section>
+      <section class="panel" style="background-color: #eed4bc; height:150vh">
             <Nutrition />
       </section>
-      <section class="panel" style="display:block; margin:auto" align="center">
+      <section class="panel" style="background-color: #eed4bc;">
             <Dots />
       </section>
       <section class="panel" style="background-color: #eed4bc;">
@@ -101,6 +111,16 @@
 		height: 100vh;
 		width: 100%;
 	}
+
+    .textPanel {
+        height: 50vh;
+        width: 100%;
+    }
+
+    .text {
+        width: 75%;
+        margin: auto;
+    }
 
 	.panel.green {
 		margin-bottom: 400px
