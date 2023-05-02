@@ -63,7 +63,7 @@
         <b>But what if we lost access to food? What does life look like without this basic necessity?</b>
     </section>
     <section class="panel" style="background-color: #eed4bc;">
-        <b>In Central America, these are not rhetorical questions, but a reality. It is a reallity that is not often easily understood.</b>
+        <b>In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.</b>
     </section>
     <section class="panel" style="background-color: #eed4bc;">
         <b>Scroll on to better understand what this means.</b>
@@ -75,6 +75,9 @@
         <b>PROFILES + USER INPUT</b>
         <Profile/>
       </section>  
+      <section class="panel" style="background-color: #eed4bc;">
+        <b>"Hi, NAME. I'm Laura! Nice to meet you." Get to know Laura better! Here are some details about her.</b>
+      </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
           {#if wfp_data.length !== 0 }
@@ -83,13 +86,28 @@
           {/if}
       </section> -->
       <section class="panel" style="background-color: #eed4bc;">
+        <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and wwhere she lives. Where do you fall in this context?</b>
           <Info />
         </section>
+        <section class="panel" style="background-color: #eed4bc;">
+            <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, I'd like you to answer these questions before we continue.</b>
+        </section> 
       <section class="panel" style="background-color: #eed4bc;">
+        <b>"Interesting. Thank you for sharing your experiences."</b>
             <Nutrition />
+        <b>According to the Global Nutrition report, an average of 12.5% of adult women in the Central American subregion live with diabetes, as well as 11.4% of men. 
+            In addition, 34.5% of women and 25.1% of men live with obesity.
+            No country in the subregion is on course to meet the targets for low birth weight, diabetes among men or women, or obesity among men or women.
+            </b>
       </section>
+      <section class="panel" style="background-color: #eed4bc;">
+        <b>"Money has also been difficult this month. I've had to miss some meals and borrow money."</b>
+    </section> 
       <section class="panel" style="display:block; margin:auto" align="center">
+        <b>Notice where you fall in the data below. Would you have to miss a meal or borrow money for food this week?</b>
             <Dots />
+        <b>According to a UN report in 2021, 40.6% of the Central American population experiences moderate or severe food insecurity, compared to 29.3% worldwide. 
+            Severe food insecurity was also more frequent in the region (14.2%) than in the world (11.7%).</b>
       </section>
       <section class="panel" style="background-color: #eed4bc;">
           {#if fao_data.length !== 0}
