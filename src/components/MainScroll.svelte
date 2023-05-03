@@ -115,9 +115,20 @@
       <section class="panel" style="background-color: #eed4bc;">
         <b>"Money has also been difficult this month. I've had to miss some meals and borrow money."</b>
     </section> 
-      <section class="panel" style="display:block; margin:auto" align="center">
-        <b>Notice where you fall in the data below. Would you have to miss a meal or borrow money for food this week?</b>
+    <section class="textPanel" style="background-color: #eed4bc;">
+        <div class="text">
+            <p>Food insecurity and financial security are very often linked. In El Salvador, the poverty rate is 
+                <a href="https://www.worldbank.org/en/country/elsalvador/overview">nearly three times</a> what it is in the 
+                United States. What does the relationship between food security and financial security indicators look like in El Salvador 
+                and how do you compare?
+            </p> 
+        </div>
+      </section>
+      <section class="panel" style="background-color: #eed4bc; height:150vh">
+        <b> The dots below represent people and the graph underneath shows their distribution according to a financial indicator. 
+            Laura is represented with red and you are represented with blue. Notice where you fall in the data below. Would you have to miss a meal or borrow money for food this week?</b>
             <Dots />
+        <b></b>
         <b>According to a UN report in 2021, 40.6% of the Central American population experiences moderate or severe food insecurity, compared to 29.3% worldwide. 
             Severe food insecurity was also more frequent in the region (14.2%) than in the world (11.7%).</b>
       </section>

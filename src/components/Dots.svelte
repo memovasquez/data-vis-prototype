@@ -21,9 +21,9 @@
     let isPressed = false;
 
     let yesColor = "#69b3a2";
-    let noColor = "#a83e32";
-    let person1Color ="#c32ef0";
-    let person2Color =  "#f0dc2e";
+    let noColor = "#fc9403";
+    let person1Color ="#fc0303";
+    let person2Color =  "#0330fc";
     let person1Loc = 0;
     let person2Loc = 1;
 
