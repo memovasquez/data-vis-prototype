@@ -26,6 +26,7 @@
 	let threshold = 0.5;
 	let bottom = 0.9;
     let storytext;
+    let pieIndex = 11;
     
 
 </script>
@@ -43,7 +44,7 @@
 
     <!-- Progress Bars -->
     <!-- Toogle visibility on/off in css -->
-    <div class="progress-bars" slot="background">
+    <!-- <div class="progress-bars" slot="background">
       <p>current section: <strong>{index + 1}/{count}</strong></p>
       <progress value={count ? (index + 1) / count : 0} />
 
@@ -52,14 +53,20 @@
 
       <p>total progress</p>
       <progress value={progress || 0} />
+    </div> -->
+
+    <div class="pie-chart" slot="background" style="background-color: #eed4bc;">
+        {#if (index == pieIndex)}
+        <Nutrition bind:progress={progress} bind:index={index} bind:offset={offset}/>
+        {/if}
     </div>
 
 
   <div class="foreground" slot="foreground">
-      <section class="panel" style="background-color: #eed4bc;">
+      <section class="panel" >
         <b>Food is a basic human right and necessity. It provides us with the nutrition needed to sustain our lives; it fuels us; it connects us.</b>
     </section> 
-    <section class="panel" style="background-color: #eed4bc;">
+    <section class="panel">
         <b>But what if we lost access to food? What does life look like without this basic necessity?</b>
     </section>
     <section class="panel" style="background-color: #eed4bc;">
@@ -89,12 +96,12 @@
         <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and wwhere she lives. Where do you fall in this context?</b>
           <Info />
         </section>
-        <section class="panel" style="background-color: #eed4bc;">
+        <section class="panel" >
             <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, answer these questions before we continue.</b>
         </section> 
-      <section class="panel" style="background-color: #eed4bc;">
+      <section class="panel" >
         <b>"Interesting. Thank you for sharing your experiences."</b>
-    <section class="textPanel" style="background-color: #eed4bc;">
+    <section class="textPanel" >
         <div class="text">
             <p>El Salvador has made significant progress in recent years to improve food security among its citizens. 
                 However, due to high poverty levels and crime rates, food security continues to be a serious problem.
@@ -104,18 +111,22 @@
             </p> 
         </div>
       </section>
-      <section class="panel" style="background-color: #eed4bc; height:150vh">
+      </section>
+      <section class="textPanel" style="height:500vh">
 
-            <Nutrition />
+            <!-- <Nutrition /> -->
+        
+      </section>
+      <section class="panel">
         <b>According to the Global Nutrition report, an average of 12.5% of adult women in the Central American subregion live with diabetes, as well as 11.4% of men. 
             In addition, 34.5% of women and 25.1% of men live with obesity.
             No country in the subregion is on course to meet the targets for low birth weight, diabetes among men or women, or obesity among men or women.
             </b>
       </section>
-      <section class="panel" style="background-color: #eed4bc;">
+      <section class="panel" >
         <b>"Money has also been difficult this month. I've had to miss some meals and borrow money."</b>
     </section> 
-    <section class="textPanel" style="background-color: #eed4bc;">
+    <section class="panel" >
         <div class="text">
             <p>Food insecurity and financial security are very often linked. In El Salvador, the poverty rate is 
                 <a href="https://www.worldbank.org/en/country/elsalvador/overview">nearly three times</a> what it is in the 
@@ -172,6 +183,7 @@
     .panel {
 		height: 100vh;
 		width: 100%;
+        background-color: #eed4bc;
 	}
 
     .textPanel {

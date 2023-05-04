@@ -5,6 +5,12 @@
 	let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
 	let person1 = {};
 	let data;
+	export let hideText = true;
+	export let progress = 0;
+	export let index = 0;
+	export let targetIndex = 11;
+	export let offset;
+	//export let foo;
 
 	//TODO use real data
     // let nutritionServings = {'Grains': 11, 'Vegetables': 5, 'Fruit': 3, 'Dairy': 3, 'Protein': 7, 'Fats and Sweets': 1};
@@ -122,25 +128,82 @@ function shadeColor(color, percent) {
 
 //console.log('color', colorFunction(0));
 </script>
+{#if index == targetIndex}
+{#if (! hideText)}
+
 <div style="width:75%; margin:auto">
 	<p>The chart below visualizes how Laura's household diet 
 		compares to daily nutrition recommendations made by the US government. 
 		The light color shows the full recommended quantity and the darker color 
 		shows what proportion of the recommendation Laura's household was able to eat.
 		Hover over the chart to see information about each food group</p>
-
 </div>
+{/if}
 <div class="visualization">
+	{#if (! hideText)}
 	<div>
 		<span style="display:block; height: 25px;"></span>
 		Nutrition and Diet Breakdown
 		<span style="display:block; height: 25px;"></span>
 	</div>
-    <svg width="1000" height="1000">
-        <g transform="translate(500,400)">
+	{/if}
+	<!-- {#if (offset < 0.2)} -->
+	<svg width="1000" height="1000">
+        <g id="fullPlate" transform="translate(500,400)">
+
+
+			<!-- <path 
+				d={fullArcGenerator({
+					startAngle: 0,
+					endAngle: 360
+				})}
+				fill={"#39ccc7"}
+                
+                on:mouseover={(event) => {
+                     hovered = index;
+                     recorded_mouse_position = {
+							x: event.pageX,
+							y: event.pageY
+						};
+                }}
+				on:mouseout={(event) => { hovered = -1; }}
+			/> -->
+			<circle r="{fullRadius * Math.min((offset) / 0.1, 1)}" fill="#39ccc7">
+				<!-- <animate attributeName="r" begin="0s" dur="0.5s" repeatCount="1" from="0" to="{fullRadius}"/> -->
+			</circle>
+		<!-- </g>
+	</svg> -->
+	<!-- {/if} -->
+	<!-- {#if ((offset > 0.2) & (offset < 0.4))} -->
+    <!-- <svg width="1000" height="1000"> -->
+        <!-- <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
 			<path 
-				d={fullArcGenerator({
+				d={getArcGenerator(Math.min(1, (offset - 0.2) / 0.1))({
+					startAngle: data.startAngle,
+					endAngle: data.endAngle
+				})}
+				fill={index === hovered ? shadeColor("#037ffc", 40): lightColors[index]}
+                
+                on:mouseover={(event) => {
+                     hovered = index;
+                     recorded_mouse_position = {
+							x: event.pageX,
+							y: event.pageY
+						};
+                }}
+				on:mouseout={(event) => { hovered = -1; }}
+			/>			
+			{/each}
+		<!-- </g>
+	</svg> -->
+	<!-- {/if} -->
+	<!-- {#if ((offset > 0.4))} -->
+    <!-- <svg width="1000" height="1000">
+        <g transform="translate(500,400)"> -->
+            {#each fullArcData as data, index}
+			<path 
+				d={getArcGenerator(Math.min(1, (offset - 0.4) / 0.1))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -158,7 +221,7 @@ function shadeColor(color, percent) {
 			/>
 
 			<path 
-				d={getArcGenerator(individualArcData[index].value / data.value)({
+				d={getArcGenerator(individualArcData[index].value / data.value * Math.min(1, (offset - 0.4) / 0.1))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -178,6 +241,7 @@ function shadeColor(color, percent) {
 
         </g>
     </svg>
+	<!-- {/if} -->
     <div
 		class={hovered === -1 ? "tooltip-hidden": "tooltip-visible"}	
         style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40}px"
@@ -188,7 +252,7 @@ function shadeColor(color, percent) {
 	</div>
 
 </div>
-
+{/if}
 
 <style>
 	.visualization {
@@ -216,5 +280,9 @@ function shadeColor(color, percent) {
 		color: white;
 		position: absolute;
 		padding: 10px;
+	}
+
+	#fullPlate path {
+		transition: r .5s ease;
 	}
 </style>
