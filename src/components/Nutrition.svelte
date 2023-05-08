@@ -10,6 +10,7 @@
 	export let index = 0;
 	export let targetIndex = 11;
 	export let offset;
+	export let windowHeight;
 	//export let foo;
 
 	//TODO use real data
@@ -148,8 +149,23 @@ function shadeColor(color, percent) {
 	</div>
 	{/if}
 	<!-- {#if (offset < 0.2)} -->
-	<svg width="1000" height="1000">
-        <g id="fullPlate" transform="translate(500,400)">
+	<svg width="1500" height="1000" y="{offset * windowHeight - 350}" transform="translate(0, {offset * windowHeight - 350})">
+		{#if offset < 0.2}
+		<text x="100" y="300">This blue circle represents what a healthy </text>
+		<text x="100" y="325">adult eats in a day.</text>
+		{/if}
+		{#if ((offset > 0.2) & (offset < 0.4))}
+		<text x="100" y="300">These light colored slices show how the US  </text>
+		<text x="100" y="325">government recommends adults apportion</text>
+		<text x="100" y="350">their daily diet into food groups. </text>
+		{/if}
+		{#if ((offset > 0.4))}
+		<text x="100" y="300">These dark colored slices show how much  </text>
+		<text x="100" y="325">of each food group Laura ate</text>
+		<text x="100" y="350">per day on average this week. </text>
+		<text x="100" y="400">Hover over the chart to see details.</text>
+		{/if}
+        <g id="fullPlate" transform="translate(1000,400)">
 
 
 			<!-- <path 
@@ -168,7 +184,7 @@ function shadeColor(color, percent) {
                 }}
 				on:mouseout={(event) => { hovered = -1; }}
 			/> -->
-			<circle r="{fullRadius * Math.min((offset) / 0.1, 1)}" fill="#39ccc7">
+			<circle r="{fullRadius * Math.min((offset) / 0.05, 1)}" fill="#39ccc7">
 				<!-- <animate attributeName="r" begin="0s" dur="0.5s" repeatCount="1" from="0" to="{fullRadius}"/> -->
 			</circle>
 		<!-- </g>
@@ -193,6 +209,8 @@ function shadeColor(color, percent) {
 						};
                 }}
 				on:mouseout={(event) => { hovered = -1; }}
+				on:focus={(event) => {null}}
+				on:blur={(event) => {null}}
 			/>			
 			{/each}
 		<!-- </g>
@@ -208,15 +226,17 @@ function shadeColor(color, percent) {
 					endAngle: data.endAngle
 				})}
 				fill={index === hovered ? shadeColor("#037ffc", 40): lightColors[index]}
-                
-                on:mouseover={(event) => {
-                     hovered = index;
-                     recorded_mouse_position = {
-							x: event.pageX,
-							y: event.pageY
-						};
-                }}
-				on:mouseout={(event) => { hovered = -1; }}
+				on:mouseover={(event) => {
+					hovered = index;
+					recorded_mouse_position = {
+						   x: event.pageX,
+						   y: event.pageY
+					   };
+			   }}
+			   on:mouseout={(event) => { hovered = -1; }}
+			   on:focus={(event) => {null}}
+			   on:blur={(event) => {null}}
+ 
 
 			/>
 
@@ -235,6 +255,8 @@ function shadeColor(color, percent) {
 						};
                 }}
 				on:mouseout={(event) => { hovered = -1; }}
+				on:focus={(event) => {null}}
+				on:blur={(event) => {null}}
 
 			/>
 			{/each}

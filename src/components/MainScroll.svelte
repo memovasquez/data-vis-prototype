@@ -27,6 +27,7 @@
 	let bottom = 0.9;
     let storytext;
     let pieIndex = 11;
+    let pieWindowHeight = 10000;
     
 
 </script>
@@ -55,11 +56,11 @@
       <progress value={progress || 0} />
     </div> -->
 
-    <div class="pie-chart" slot="background" style="background-color: #eed4bc;">
+    <!-- <div class="pie-chart" slot="background" style="background-color: #eed4bc;">
         {#if (index == pieIndex)}
         <Nutrition bind:progress={progress} bind:index={index} bind:offset={offset}/>
         {/if}
-    </div>
+    </div> -->
 
 
   <div class="foreground" slot="foreground">
@@ -112,9 +113,11 @@
         </div>
       </section>
       </section>
-      <section class="textPanel" style="height:500vh">
+      <section class="panel" style="height:10000px">
 
             <!-- <Nutrition /> -->
+            <Nutrition bind:progress={progress} bind:index={index} bind:offset={offset} bind:windowHeight={pieWindowHeight}/>
+
         
       </section>
       <section class="panel">
