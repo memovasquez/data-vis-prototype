@@ -11,6 +11,7 @@
 	export let targetIndex = 11;
 	export let offset;
 	export let windowHeight;
+	let hoverOffset = 0;
 	//export let foo;
 
 	//TODO use real data
@@ -60,6 +61,25 @@
 		.outerRadius(radius)
 		.padAngle(.02)
 		.cornerRadius(2);
+	}
+
+	function getLabelCoords(fraction, data) {
+		let arc = getArcGenerator(fraction);
+		let x = arc.centroid(data)[0];
+		let y = arc.centroid(data)[1];
+		let radius = Math.sqrt(x ** 2 + y ** 2);
+		let radiusFrac = fullRadius / radius * 1.35;
+		console.log(fraction, data, radiusFrac)
+		x *= radiusFrac;
+		y *= radiusFrac;
+		return [x, y]
+	}
+
+	function getLabelX(fraction, data) {
+		return getLabelCoords(fraction, data)[0]
+	}
+	function getLabelY(fraction, data) {
+		return getLabelCoords(fraction, data)[1]
 	}
 
 	let fullArcData = [];
@@ -184,7 +204,7 @@ function shadeColor(color, percent) {
                 }}
 				on:mouseout={(event) => { hovered = -1; }}
 			/> -->
-			<circle r="{fullRadius * Math.min((offset) / 0.05, 1)}" fill="#39ccc7">
+			<circle r="{fullRadius * Math.min((offset) / 0.025, 1)}" fill="#39ccc7">
 				<!-- <animate attributeName="r" begin="0s" dur="0.5s" repeatCount="1" from="0" to="{fullRadius}"/> -->
 			</circle>
 		<!-- </g>
@@ -195,22 +215,11 @@ function shadeColor(color, percent) {
         <!-- <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
 			<path 
-				d={getArcGenerator(Math.min(1, (offset - 0.2) / 0.1))({
+				d={getArcGenerator(Math.min(1, (offset - 0.2) / 0.025))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
 				fill={index === hovered ? shadeColor("#037ffc", 40): lightColors[index]}
-                
-                on:mouseover={(event) => {
-                     hovered = index;
-                     recorded_mouse_position = {
-							x: event.pageX,
-							y: event.pageY
-						};
-                }}
-				on:mouseout={(event) => { hovered = -1; }}
-				on:focus={(event) => {null}}
-				on:blur={(event) => {null}}
 			/>			
 			{/each}
 		<!-- </g>
@@ -221,13 +230,14 @@ function shadeColor(color, percent) {
         <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
 			<path 
-				d={getArcGenerator(Math.min(1, (offset - 0.4) / 0.1))({
+				d={getArcGenerator(Math.min(1, (offset - 0.4) / 0.025))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
 				fill={index === hovered ? shadeColor("#037ffc", 40): lightColors[index]}
 				on:mouseover={(event) => {
 					hovered = index;
+					hoverOffset = offset;
 					recorded_mouse_position = {
 						   x: event.pageX,
 						   y: event.pageY
@@ -240,8 +250,10 @@ function shadeColor(color, percent) {
 
 			/>
 
+			
+
 			<path 
-				d={getArcGenerator(individualArcData[index].value / data.value * Math.min(1, (offset - 0.4) / 0.1))({
+				d={getArcGenerator(individualArcData[index].value / data.value * Math.min(1, (offset - 0.4) / 0.025))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -249,6 +261,7 @@ function shadeColor(color, percent) {
                 
                 on:mouseover={(event) => {
                      hovered = index;
+					 hoverOffset = offset;
                      recorded_mouse_position = {
 							x: event.pageX,
 							y: event.pageY
@@ -259,6 +272,15 @@ function shadeColor(color, percent) {
 				on:blur={(event) => {null}}
 
 			/>
+			{#if offset > 0.2}
+			<text 
+			x="{getLabelX(individualArcData[index].value / data.value * Math.min(1, (offset - 0.2) / 0.025), data)}px"
+			y="{getLabelY(individualArcData[index].value / data.value * Math.min(1, (offset - 0.2) / 0.025), data)}px"
+			text-anchor="middle"
+			>
+				{individualArcData[index].data[0]}
+			</text>
+			{/if}
 			{/each}
 
         </g>
@@ -266,7 +288,7 @@ function shadeColor(color, percent) {
 	<!-- {/if} -->
     <div
 		class={hovered === -1 ? "tooltip-hidden": "tooltip-visible"}	
-        style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40}px"
+        style="left: {recorded_mouse_position.x + 40}px; top: {recorded_mouse_position.y + 40 + (offset - hoverOffset) * windowHeight}px"
 	>
 		{#if hovered !== -1}
 		    Laura averaged {individualArcData[hovered].data[1]} servings per day of {individualArcData[hovered].data[0].toLowerCase()} this week. The US government recommends {fullArcData[hovered].data[1]} servings.
