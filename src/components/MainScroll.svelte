@@ -1,6 +1,7 @@
 <script>
 
     import {onMount} from 'svelte';
+    import { fly } from 'svelte/transition'
     import * as d3 from 'd3';
     import Scroller from '@sveltejs/svelte-scroller';
     import Dots from './Dots.svelte';
@@ -64,7 +65,7 @@
 
 
   <div class="foreground" slot="foreground">
-      <section class="panel" >
+    <section class="panel" >
         <b>Food is a basic human right and necessity. It provides us with the nutrition needed to sustain our lives; it fuels us; it connects us.</b>
     </section> 
     <section class="panel">
@@ -76,16 +77,16 @@
     <section class="panel" style="background-color: #eed4bc;">
         <b>Scroll on to better understand what this means.</b>
     </section> 
-      <section class="panel" style="background-color: #eed4bc;">
+    <section class="panel" style="background-color: #eed4bc;">
         <b>First, if you're comfortable sharing, let us know some details about yourself.</b>
-      </section> 
-      <section class="panel" style="background-color: #eed4bc;">
+    </section> 
+    <section class="panel" style="background-color: #eed4bc;">
         <b>PROFILES + USER INPUT</b>
         <Profile/>
-      </section>  
-      <section class="panel" style="background-color: #eed4bc;">
+    </section>  
+    <section class="panel" style="background-color: #eed4bc;">
         <b>"Hi, NAME. I'm Laura! Nice to meet you." Get to know Laura better! Here are some details about her.</b>
-      </section> 
+    </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
           {#if wfp_data.length !== 0 }
@@ -93,25 +94,28 @@
           <Pie bind:pie_data={wfp_data}></Pie>
           {/if}
       </section> -->
-      <section class="panel" style="background-color: #eed4bc;">
+    <section class="panel" style="background-color: #eed4bc;">
         <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and wwhere she lives. Where do you fall in this context?</b>
           <Info />
-        </section>
-        <section class="panel" >
+    </section>
+    <section class="panel" >
             <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, answer these questions before we continue.</b>
         </section> 
-      <section class="panel" >
+    <section class="panel" >
         <b>"Interesting. Thank you for sharing your experiences."</b>
+    </section>
     <section class="textPanel" >
         <div class="text">
-            <p>El Salvador has made significant progress in recent years to improve food security among its citizens. 
+            {#if index == 10}
+            <p transition:fly="{{ y: 20, duration: 200 }}">
+                El Salvador has made significant progress in recent years to improve food security among its citizens. 
                 However, due to high poverty levels and crime rates, food security continues to be a serious problem.
                 In El Salvador, <a href="https://www.wfp.org/countries/el-salvador">14% of children under 5 suffer from malnutrition</a> 
                 whereas in the United States, <a href="https://www.hopkinsmedicine.org/health/conditions-and-diseases/malnutrition">
                     child malnutrition rates are closer to 1% </a>.
             </p> 
+            {/if}
         </div>
-      </section>
       </section>
       <section class="panel" style="height:10000px">
 
@@ -131,7 +135,8 @@
     </section> 
     <section class="panel" >
         <div class="text">
-            <p>Food insecurity and financial security are very often linked. In El Salvador, the poverty rate is 
+            <p>
+            Food insecurity and financial security are very often linked. In El Salvador, the poverty rate is 
                 <a href="https://www.worldbank.org/en/country/elsalvador/overview">nearly three times</a> what it is in the 
                 United States. What does the relationship between food security and financial security indicators look like in El Salvador 
                 and how do you compare?
@@ -192,6 +197,7 @@
     .textPanel {
         height: 50vh;
         width: 100%;
+        background-color: #eed4bc;
     }
 
     .text {

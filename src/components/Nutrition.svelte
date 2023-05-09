@@ -69,7 +69,6 @@
 		let y = arc.centroid(data)[1];
 		let radius = Math.sqrt(x ** 2 + y ** 2);
 		let radiusFrac = fullRadius / radius * 1.35;
-		console.log(fraction, data, radiusFrac)
 		x *= radiusFrac;
 		y *= radiusFrac;
 		return [x, y]
@@ -80,6 +79,22 @@
 	}
 	function getLabelY(fraction, data) {
 		return getLabelCoords(fraction, data)[1]
+	}
+
+	function getEffectiveRadius(offset) {
+		let ratio = 0
+		if (offset < 0.2){
+			ratio = Math.min((offset) / 0.025, 1)
+		}
+		else if ((offset > 0.2) & (offset < 0.4)) {
+			ratio = Math.min(1, (offset - 0.2) / 0.025)
+		} else if ((offset > 0.4) & (offset < 0.8)) {
+			ratio = Math.min(1, (offset - 0.4) / 0.025)
+		}
+		else if (offset > 0.8) {
+			ratio = Math.max(0, (0.85 - offset) / 0.05)
+		}
+		return ratio
 	}
 
 	let fullArcData = [];
@@ -113,7 +128,6 @@
         	let pie = d3.pie().value( (d) => d[1] );
         	fullArcData = pie(Object.entries(nutritionServings)); 
 			individualArcData = pie(Object.entries(individualServings));
-			console.log(fullArcData);
 		}
 
     }
@@ -204,18 +218,18 @@ function shadeColor(color, percent) {
                 }}
 				on:mouseout={(event) => { hovered = -1; }}
 			/> -->
-			<circle r="{fullRadius * Math.min((offset) / 0.025, 1)}" fill="#39ccc7">
+			<circle r="{fullRadius * getEffectiveRadius(offset)}" fill="#39ccc7">
 				<!-- <animate attributeName="r" begin="0s" dur="0.5s" repeatCount="1" from="0" to="{fullRadius}"/> -->
 			</circle>
 		<!-- </g>
 	</svg> -->
 	<!-- {/if} -->
-	<!-- {#if ((offset > 0.2) & (offset < 0.4))} -->
+	{#if ((offset > 0.2) & (offset < 0.4))}
     <!-- <svg width="1000" height="1000"> -->
         <!-- <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
 			<path 
-				d={getArcGenerator(Math.min(1, (offset - 0.2) / 0.025))({
+				d={getArcGenerator(getEffectiveRadius(offset))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -224,13 +238,14 @@ function shadeColor(color, percent) {
 			{/each}
 		<!-- </g>
 	</svg> -->
-	<!-- {/if} -->
-	<!-- {#if ((offset > 0.4))} -->
+	{/if}
     <!-- <svg width="1000" height="1000">
         <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
+			{#if ((offset > 0.4))}
+
 			<path 
-				d={getArcGenerator(Math.min(1, (offset - 0.4) / 0.025))({
+				d={getArcGenerator(getEffectiveRadius(offset))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -253,7 +268,7 @@ function shadeColor(color, percent) {
 			
 
 			<path 
-				d={getArcGenerator(individualArcData[index].value / data.value * Math.min(1, (offset - 0.4) / 0.025))({
+				d={getArcGenerator(individualArcData[index].value / data.value * getEffectiveRadius(offset))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -272,17 +287,18 @@ function shadeColor(color, percent) {
 				on:blur={(event) => {null}}
 
 			/>
+			{/if}
 			{#if offset > 0.2}
 			<text 
-			x="{getLabelX(individualArcData[index].value / data.value * Math.min(1, (offset - 0.2) / 0.025), data)}px"
-			y="{getLabelY(individualArcData[index].value / data.value * Math.min(1, (offset - 0.2) / 0.025), data)}px"
+			x="{getLabelX(individualArcData[index].value / data.value * getEffectiveRadius(offset), data)}px"
+			y="{getLabelY(individualArcData[index].value / data.value * getEffectiveRadius(offset), data)}px"
 			text-anchor="middle"
 			>
 				{individualArcData[index].data[0]}
 			</text>
 			{/if}
 			{/each}
-
+		
         </g>
     </svg>
 	<!-- {/if} -->
