@@ -81,15 +81,27 @@
 		return getLabelCoords(fraction, data)[1]
 	}
 
-	function getEffectiveRadius(offset) {
+	function getEffectiveRadius(offset, section) {
 		let ratio = 0
 		if (offset < 0.2){
-			ratio = Math.min((offset) / 0.025, 1)
+			if (section == 0) {
+				ratio = Math.min((offset) / 0.025, 1)
+			} else {
+				ratio = 1
+			}
 		}
 		else if ((offset > 0.2) & (offset < 0.4)) {
-			ratio = Math.min(1, (offset - 0.2) / 0.025)
+			if (section >= 1) {
+				ratio = Math.min(1, (offset - 0.2) / 0.025)
+			} else {
+				ratio = 1
+			}
 		} else if ((offset > 0.4) & (offset < 0.8)) {
-			ratio = Math.min(1, (offset - 0.4) / 0.025)
+			if (section >= 2) {
+				ratio = Math.min(1, (offset - 0.4) / 0.025)
+			} else {
+				ratio = 1
+			}
 		}
 		else if (offset > 0.8) {
 			ratio = Math.max(0, (0.85 - offset) / 0.05)
@@ -218,7 +230,7 @@ function shadeColor(color, percent) {
                 }}
 				on:mouseout={(event) => { hovered = -1; }}
 			/> -->
-			<circle r="{fullRadius * getEffectiveRadius(offset)}" fill="#39ccc7">
+			<circle r="{fullRadius * getEffectiveRadius(offset, 0)}" fill="#39ccc7">
 				<!-- <animate attributeName="r" begin="0s" dur="0.5s" repeatCount="1" from="0" to="{fullRadius}"/> -->
 			</circle>
 		<!-- </g>
@@ -229,7 +241,7 @@ function shadeColor(color, percent) {
         <!-- <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
 			<path 
-				d={getArcGenerator(getEffectiveRadius(offset))({
+				d={getArcGenerator(getEffectiveRadius(offset, 1))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -245,7 +257,7 @@ function shadeColor(color, percent) {
 			{#if ((offset > 0.4))}
 
 			<path 
-				d={getArcGenerator(getEffectiveRadius(offset))({
+				d={getArcGenerator(getEffectiveRadius(offset, 1))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}
@@ -268,7 +280,7 @@ function shadeColor(color, percent) {
 			
 
 			<path 
-				d={getArcGenerator(individualArcData[index].value / data.value * getEffectiveRadius(offset))({
+				d={getArcGenerator(individualArcData[index].value / data.value * getEffectiveRadius(offset, 2))({
 					startAngle: data.startAngle,
 					endAngle: data.endAngle
 				})}

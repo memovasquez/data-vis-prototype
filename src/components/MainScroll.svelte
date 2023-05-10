@@ -78,14 +78,42 @@
         <b>Scroll on to better understand what this means.</b>
     </section> 
     <section class="panel" style="background-color: #eed4bc;">
-        <b>First, if you're comfortable sharing, let us know some details about yourself.</b>
+        <table width="100%">
+            <tr>
+                <td width="50%">
+                    <p style="text-align:left">First, if you're comfortable sharing, let us know some details about yourself. 
+                        We'll use your answers to show you how you compare to people in El Salvador.</p>
+                </td>
+                <td>
+                    <Profile/>
+                </td>
+            </tr>  
+        </table>
+
     </section> 
-    <section class="panel" style="background-color: #eed4bc;">
+    <section class="panel">
+        TODO introduce dataset
+    </section>
+    <!-- <section class="panel" style="background-color: #eed4bc;">
         <b>PROFILES + USER INPUT</b>
         <Profile/>
-    </section>  
+    </section>   -->
     <section class="panel" style="background-color: #eed4bc;">
-        <b>"Hi, NAME. I'm Laura! Nice to meet you." Get to know Laura better! Here are some details about her.</b>
+        <table width="100%">
+            <tr>
+                <td width="50%">
+                    <b style="margin-bottom:10cm;"> "Hi, NAME. I'm Laura! Nice to meet you."</b>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p style="text-align:left">Laura is a Salvadoran woman who responded to the WFP survey. 
+                        We'll use her responses to introduce you to food insecurity in El Salvador.</p>
+                </td>
+                <td>
+                <img src="https://drive.google.com/uc?export=view&id=1JK7MqnTyOQA0c1l8Ahsk6L-yGR6jiF2s" alt="Image of Laura"/>
+                </td>
+            </tr>  
+        </table>
     </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
@@ -94,12 +122,23 @@
           <Pie bind:pie_data={wfp_data}></Pie>
           {/if}
       </section> -->
-    <section class="panel" style="background-color: #eed4bc;">
-        <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and wwhere she lives. Where do you fall in this context?</b>
+    <section class="panel" style="background-color: #eed4bc; height:150vh">
+        <b>"Step into my shoes!"</b>
+        <br/>
+        <br/>
+        <div style="text-align: center;">
+        <p style="text-align:left; width:600px; display: inline-block;">Learn more about Laura by selecting the information fields below. Laura's information is 
+            represented in red on the charts and yours in blue. How do you compare to Laura and other Salvadorans?</p>
+        </div>
+        <br />
           <Info />
+        
     </section>
     <section class="panel" >
-            <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, answer these questions before we continue.</b>
+            <b>"To be honest, I've been struggling to get enough food on the table this week."</b> 
+            <br />
+            <br />
+            <p>If you're comfortable sharing, answer these questions before we continue.</p>
         </section> 
     <section class="panel" >
         <b>"Interesting. Thank you for sharing your experiences."</b>
@@ -240,8 +279,6 @@
         background: rgba(170, 51, 120, 0.2) /*  40% opaque */;
         visibility: hidden;
     }
-
-
 
 </style>
 
