@@ -82,7 +82,7 @@
                 .append("div")
                 .style("opacity", 0)
                 .attr("class", "tooltip-visible")
-                .style("background-color", "red")
+                .style("background-color", fillColor)
                 .style("color", "white")
                 .style("border-radius", "5px")
                 .style("padding", "10px")
