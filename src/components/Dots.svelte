@@ -20,12 +20,18 @@
     // TODO handle if person2 line is off the charts
     let isPressed = false;
 
-    let yesColor = "#69b3a2";
-    let noColor = "#fc9403";
-    let person1Color ="#fc0303";
-    let person2Color =  "#0330fc";
+    let yesColor = "#742a24";//"#69b3a2";
+    let noColor = "#e7873b";//"#fc9403";
+    let person2Color = "#cf2513";//"#fc0303";
+    let person1Color =  "#69b3a2";//"#0330fc";
     let person1Loc = 0;
     let person2Loc = 1;
+
+    // #742a24 brown
+    // #eed4bc background
+    // #6c370f also brown
+    // #e7873b orange
+    // #cf2513 red  
 
     let nameToField = {
         "income": "avg_income_amount",
@@ -716,7 +722,8 @@
   cursor: pointer;
 }
 .pressed {
-    background-color: #69b3a2;
+    color: white;
+    background-color: #742a24;
 }
 
 
