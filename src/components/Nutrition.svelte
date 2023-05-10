@@ -195,6 +195,7 @@ function shadeColor(color, percent) {
 	</div>
 	{/if}
 	<!-- {#if (offset < 0.2)} -->
+	
 	<svg width="1500" height="1000" y="{offset * windowHeight - 350}" transform="translate(0, {offset * windowHeight - 350})">
 		{#if offset < 0.2}
 		<text x="100" y="300">This blue circle represents what a healthy </text>
@@ -205,7 +206,7 @@ function shadeColor(color, percent) {
 		<text x="100" y="325">government recommends adults apportion</text>
 		<text x="100" y="350">their daily diet into food groups. </text>
 		{/if}
-		{#if ((offset > 0.4))}
+		{#if ((offset > 0.4) & (offset < 0.85))}
 		<text x="100" y="300">These dark colored slices show how much  </text>
 		<text x="100" y="325">of each food group Laura ate</text>
 		<text x="100" y="350">per day on average this week. </text>
@@ -254,7 +255,7 @@ function shadeColor(color, percent) {
     <!-- <svg width="1000" height="1000">
         <g transform="translate(500,400)"> -->
             {#each fullArcData as data, index}
-			{#if ((offset > 0.4))}
+			{#if ((offset > 0.4) & (offset < 0.85))}
 
 			<path 
 				d={getArcGenerator(getEffectiveRadius(offset, 1))({
@@ -300,7 +301,7 @@ function shadeColor(color, percent) {
 
 			/>
 			{/if}
-			{#if offset > 0.2}
+			{#if (offset > 0.2) & (offset < 0.85)}
 			<text 
 			x="{getLabelX(individualArcData[index].value / data.value * getEffectiveRadius(offset), data)}px"
 			y="{getLabelY(individualArcData[index].value / data.value * getEffectiveRadius(offset), data)}px"
@@ -327,6 +328,9 @@ function shadeColor(color, percent) {
 {/if}
 
 <style>
+	text {
+		font-weight: 100;
+	}
 	.visualization {
 		font: 25px sans-serif;
 		margin: auto;
