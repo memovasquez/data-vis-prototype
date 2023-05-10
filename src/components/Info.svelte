@@ -38,7 +38,7 @@
 
     })
 
-    const margin = {top: 10, right: 30, bottom: 30, left: 30};
+    let margin = {top: 10, right: 30, bottom: 30, left: 30};
     let width = 500 - margin.left - margin.right;
     let height = 1000 - margin.top - margin.bottom;
 
@@ -98,7 +98,7 @@
                         class="button {selectedField === "age" ? "pressed" : ""}" 
                         on:click="{pressButton("age")}"
                     >
-                        age?
+                        Age
                     </button>
                 </td></tr>
                 <tr><td>
@@ -106,7 +106,7 @@
                         class="button {selectedField === "sex" ? "pressed" : ""}"
                         on:click="{pressButton("sex")}"
                     >
-                        sex?
+                        Sex
                     </button>
                 </td></tr>
                 <tr><td>
@@ -114,7 +114,7 @@
                         class="button {selectedField === "location" ? "pressed" : ""}"
                         on:click="{pressButton("location")}"
                     >
-                        location?
+                        Location
                     </button>
                 </td></tr>
                 <tr><td>
@@ -122,7 +122,7 @@
                         class="button {selectedField === "monthlyIncome" ? "pressed" : ""}"
                         on:click="{pressButton("monthlyIncome")}"
                     >
-                        income?
+                        Income
                     </button>
                 </td></tr>
                 <tr><td>
@@ -130,7 +130,7 @@
                         class="button {selectedField === "household" ? "pressed" : ""}"
                         on:click="{pressButton("household")}"
                     >
-                        household size?
+                        Family size
                     </button>
                 </td></tr>
             </table>
@@ -138,19 +138,19 @@
 
             <div>
             {#if selectedField === "location"}
-                <h2>Laura's neighborhood: {person1.neighborhood}</h2>
-                <Map bind:map={map} bind:markerContainer={markerContainer}/>
+                <h2>Laura lives in Ahuachapan, El Salvador</h2>
+                <Map bind:map={map} bind:markerContainer={markerContainer} />
             {:else if selectedField === "monthlyIncome"}
-                <h2>Laura's average monthly income: ${person1.avg_income_amount*0.1143}</h2>
+                <h2>Laura makes ${person1.avg_income_amount} per month</h2>
                 <IncomeChart bind:data={data} bind:person1={person1}/>
             {:else if selectedField === "household"}
-                <h2>Laura's household size: {person1.hh_size} people</h2>
+                <h2>Laura provides for {person1.hh_size} people in her household</h2>
                 <HouseholdSizeChart bind:data={data} />
             {:else if selectedField === "age"}
-            <h2>Laura's age: {person1.rsp_age} </h2>
+            <h2>Laura is {person1.rsp_age} years old</h2>
                 <AgeChart bind:data={data}/>
             {:else if selectedField === "sex"}
-            <h2>Laura is Female</h2>
+            <h2>Laura is female</h2>
                 <SexChart bind:data={data} />
             {/if}
             </div>
@@ -177,7 +177,8 @@
 }
 
 .pressed {
-    background-color: #69b3a2;
+    background-color: #742a24;
+    color: white;
 }
 
 </style>
