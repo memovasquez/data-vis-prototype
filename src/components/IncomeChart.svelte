@@ -11,6 +11,14 @@
     let svg;
     let xScale, yScale, xAxis, yAxis;
 
+    let fillColor = "#742a24"
+    let lauraColor = "#cf2513"
+
+// #742a24 brown
+// #eed4bc background
+// #6c370f also brown
+// #e7873b orange
+// #cf2513 red
 
     onMount( () => {
         // svg = d3.select('#chart')
@@ -172,7 +180,7 @@
             .attr("width", function(d) { return 2*(xScale(d.x1) - xScale(d.x0))/2 -1})
             .attr("height", function(d) { return height - yScale(d.length); })
             // .style("fill", function (d) { d.some( (person) => { "2211" === person[""] }) ? "#69b3a2" : "red"}  )
-            .style("fill", function(d) { return bins.indexOf(d) === 2 ? "red" : "black" })
+            .style("fill", function(d) { return bins.indexOf(d) === 2 ? lauraColor : fillColor })
 
              // Show tooltip on hover
              .on("mouseover", showTooltip )
