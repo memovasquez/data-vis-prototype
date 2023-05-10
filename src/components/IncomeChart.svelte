@@ -43,14 +43,15 @@
 
         //histogram 
 
-        data = data.filter( d => (Number(d.avg_income_amount) > 0 )); //only include non-null values
+        data = data.filter( d => ((Number(d.avg_income_amount) > 0 ) && (Number(d.avg_income_currency) == 1))); //only include non-null values and amounts in dollars
+
 
         xScale = d3.scaleLinear()
-        .domain([0,d3.max(data.map((d) => Number(d.avg_income_amount)*0.1143))])
+        .domain([0,d3.max(data.map((d) => Number(d.avg_income_amount)))])
         .range([0,width]);
 
         const histogram = d3.histogram()
-        .value(function(d) { return Number(d.avg_income_amount)*0.1143; })   // I need to give the vector of value
+        .value(function(d) { return Number(d.avg_income_amount); })   // I need to give the vector of value
         .domain(xScale.domain())  // then the domain of the graphic
         .thresholds(xScale.ticks(80)); // then the numbers of bins; 
 
@@ -132,8 +133,8 @@
                 .style("padding", "10px");
 
         const showTooltip = function(event,d) {
-            let minOfBucket = String( d3.min( d.map((obj) => Number(obj.avg_income_amount * 0.1143).toFixed(2) ) ));
-            let maxOfBucket = String(d3.max( d.map((obj) => Number(obj.avg_income_amount * 0.1143).toFixed(2) )))
+            let minOfBucket = String( d3.min( d.map((obj) => Number(obj.avg_income_amount).toFixed(2) ) ));
+            let maxOfBucket = String(d3.max( d.map((obj) => Number(obj.avg_income_amount).toFixed(2) )))
             tooltip
             .transition()
             .duration(100)
