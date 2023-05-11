@@ -63,7 +63,6 @@
         {/if}
     </div> -->
 
-
   <div class="foreground" slot="foreground">
     <section class="panel" >
         <div class="text">
@@ -233,23 +232,23 @@
             <b class="laura"> "To be honest, I know lots of people in similar situations as me here in El Salvador."</b>
         </div>
     </section> 
-      <section class="panel" style="background-color: #eed4bc;">
+    <section>
         <div class="text">
             <p class="context">How common do you think food insecurity is in Central American Countries?</p>
         </div>
-          {#if fao_data.length !== 0}
+    </section>
+    <section class="panel" style="background-color: #eed4bc;">
+          <!-- {#if fao_data.length !== 0} -->
           <CountryFoodInsecurity bind:fao_data={fao_data}/>
-          {/if}
-        <div class="text">
-            <p class="context"> How did your guesses compare to the actual rates of food insecurity? </p>
-        </div>
-      </section>
-      <section class="panel" style="background-color: #eed4bc;">
+          <!-- {/if} -->
+
+    </section>
+    
+
+    <section class="panel" style="background-color: #eed4bc;">
         <div class="text">
             <b class="laura">"Hopefully you understand me a bit better. But I do wonder..."</b>
         </div>
-    </section> 
-    <section class="panel" style="background-color: #eed4bc;">
         <div class="text">
             <b class="laura">"What would you do if you were me?"</b>
         </div>

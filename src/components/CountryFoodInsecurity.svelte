@@ -21,7 +21,7 @@
     // set the dimensions and margins of the graph
     const margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
 
     onMount( () => {
 
@@ -221,15 +221,18 @@
     <!-- <button on:click="{() => {sliderVisble = !sliderVisble}}">View Slider</button> -->
     <h2>Prevalence of moderate or severe food insecurity in the total population (percent)</h2>
     <h3>The % of the population in the U.S. that reported moderate to severe food insecurity in 2016 was 10.5</h3>
+    
     <p id="guessInstruction">Drag the bar on the left to what you think the metric is for El Salvador</p> 
+    
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz"></div>
-
-
+    
+    
     <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"};">
-    <input style="width: 80%;" id="year-slider" type="range" bind:value={selectedYear} />
-
+        <input style="width: 80%;" id="year-slider" type="range" bind:value={selectedYear} />
+        
     </div>
+    <p style="font-size: medium;">The visualization above is made possible with the <a href="https://www.fao.org/faostat/en/#data/FS" target="_blank">FAO Suite of Food Security Indicators dataset </a> </p>
 
 
 
