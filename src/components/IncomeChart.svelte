@@ -11,8 +11,9 @@
     let svg;
     let xScale, yScale, xAxis, yAxis;
 
-    let fillColor = "#742a24"
-    let lauraColor = "#cf2513"
+    let fillColor = "#742a24";
+    let lauraColor = "#cf2513";
+    let userColor = "#69b3a2";
 
 // #742a24 brown
 // #eed4bc background

@@ -20,10 +20,11 @@
     // TODO handle if person2 line is off the charts
     let isPressed = false;
 
-    let yesColor = "#742a24";//"#69b3a2";
-    let noColor = "#e7873b";//"#fc9403";
-    let person2Color = "#cf2513";//"#fc0303";
-    let person1Color =  "#69b3a2";//"#0330fc";
+    let noColor = "#742a24";//"#69b3a2";
+    let yesColor = "#e7873b";//"#fc9403";
+    let allColor = noColor;
+    let person1Color = "#cf2513";//"#fc0303";
+    let person2Color = "#69b3a2";//"#69b3a2";//"#0330fc";
     let person1Loc = 0;
     let person2Loc = 1;
 
@@ -181,7 +182,7 @@
                         let minX = (width / 2) - (centerWidth / 2)
                         let maxX = (width / 2) + (centerWidth / 2)
 
-                        let color = yesColor;
+                        let color = allColor;
                         nextDotCoords.push({"x": getDotX(j, minX, maxX), 
                                     "y": getDotY(i) + verticalOffset,
                                     "c": color});
@@ -381,6 +382,12 @@
             .x(d => x(d[0]))
             .y(d => newY(d[1]))
 
+        if (split == 'all') {
+            let temp = leftDensity;
+            leftDensity = rightDensity;
+            rightDensity = temp;
+        }
+
         // let rightDensity = []
         // for (let i = 0; i < leftDensity.length; i++) {
         //     rightDensity.push([leftDensity[i][0], 0])
@@ -556,7 +563,7 @@
             .attr("id", "histogram")
         .append("g")
             .attr("transform",
-                `translate(${margin.left + 200}, ${margin.top + 50})`);
+                `translate(${margin.left + 400}, ${margin.top + 50})`);
 
     const x = d3.scaleLinear()
             .domain([0, d3.max(histData['income']['all']) * 1.25])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
@@ -626,6 +633,9 @@
     for (let i = 0; i < leftDensity.length; i++) {
         rightDensity.push([leftDensity[i][0], 0])
     }
+    let temp = leftDensity;
+    leftDensity = rightDensity;
+    rightDensity = temp;
     //let rightDensity = kde(epanechnikov(bandwidth), thresholds, rightData);
 
     svgHist.append("path")
