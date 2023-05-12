@@ -131,16 +131,6 @@
           <Pie bind:pie_data={wfp_data}></Pie>
           {/if}
       </section> -->
-      <section class="panel" style="background-color: #eed4bc;">
-        <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and where she lives. Where do you fall in this context?</b>
-          <Info />
-        </section>
-        <section class="panel" style="background-color: #eed4bc;">
-            <b>"To be honest, I've been struggling to get enough food on the table this week."" If you're comfortable sharing, answer these questions before we continue.</b>
-        </section> 
-      <section class="panel" style="background-color: #eed4bc;">
-        <b>"Interesting. Thank you for sharing your experiences."</b>
-    <section class="textPanel" style="background-color: #eed4bc;">
     <section class="panel" style="background-color: #eed4bc; height:150vh">
         <b class="laura">"Step into my shoes!"</b>
         <br/>
