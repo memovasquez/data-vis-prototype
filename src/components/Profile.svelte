@@ -70,7 +70,7 @@
           value=""
         />
       </div>
-      <button class:active="submit" >Submit</button>
+      <button>Submit</button>
     </form>
   </main>
   
