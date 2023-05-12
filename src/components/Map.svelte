@@ -13,12 +13,12 @@
     <script src="https://d3js.org/d3.v6.js" charset="utf-8"></script>
 </head>
 <body>
-    <div id='map' style='width: 400px; height: 500px;'></div>
+    <div id='map' style='width: 600px; height: 600px;'></div>
     <script>
 
         margin = {top: 10, right: 30, bottom: 30, left: 30};
-        width = 500 - margin.left - margin.right;
-        height = 1000 - margin.top - margin.bottom;
+        width = 600 - margin.left - margin.right;
+        height = 600 - margin.top - margin.bottom;
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiamVjdW1taW4iLCJhIjoiY2xnZmExMGl0MTFqODNtcGYza3N4MThuYSJ9.PqUnWvtJxHzj8zho_DFRwg';
         map = new mapboxgl.Map({
