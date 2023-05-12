@@ -1,7 +1,7 @@
 <script>
     import * as d3 from 'd3';
     import {onMount, onDestroy} from 'svelte';
-
+    import {sliderBottom, sliderHorizontal} from 'd3-simple-slider';
 
     export let fao_data = [];
 
@@ -22,7 +22,7 @@
 
     // set the dimensions and margins of the graph
     const margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
+    width = 500 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
     onMount( () => {
@@ -53,7 +53,17 @@
             .range([ height, 0]);
             yAxis = svg.append("g")
             .attr("class", "myYaxis");
-
+            yAxis.append("text")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "12px")
+            .attr("fill", "black")
+            .attr("transform", "rotate(-90) translate(" + (-height/2) + "," + (-50) + ")") // position the label at the left center of the axis and rotate it by -90 degrees
+            .text("% of Population Reporting Moderate to Severe Food Insecurity");
+            
+            
+            // Add Y axis
+            y.domain([0, d3.max(necessaryData, d => Number(d.percentFoodInsec)) + 5 ]);
+            yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
             // Add slider input
             const slider = d3.select('#year-slider');
@@ -66,53 +76,30 @@
                 selectedYear = +slider.node().value; // Convert to number
                 update(necessaryData, selectedYear);
             });
-
+            
+            
             const tickValues = d3.range(2016, 2022);
-
+            
             const slider_container = d3.select('#slider_container');
 
-            const slider_ticks = slider_container.append('svg')
-            .attr('width', '80%')
-            .attr('height','10' )
-            .attr('id', 'slider-ticks')
-            .selectAll('rect')
-            .data(tickValues)
-            .enter()
-            .append('rect')
-            .attr('class', 'range__tick')
-            .attr('x', d => `${(d - 2016) / 5 * 100}%`)
-            .attr('y', '3')
-            .attr('width', '1')
-            .attr('height', '10')
+            var d3Slider = sliderHorizontal()
+                .min(d3.min(necessaryData, function(d) { return d.year; }))
+               .max(d3.max(necessaryData, function(d) { return d.year; }))
+               .step(1)
+                .tickValues(["2016","2017","2018","2019","2020","2021"])
+                .tickFormat(d3.format("d"))
+               .default(2016)
+               .width(750)
+               .on("onchange", function(year) {
+                 update(necessaryData, year);
+               });
 
-            const ticks_text = slider_container.append('svg')
-            .attr('width', '80%')
-            .attr('height','14' )
-            .attr('id', 'ticks-text')
-            .selectAll('text')
-            .data(tickValues)
-            .enter()
-            .append('text')
-            .attr('class', 'range__point')
-            .attr('text-anchor', d => d === 2016 ? 'start' : d === 2021 ? 'end' : 'middle' )
-            .attr('x', d => `${(d - 2016) / 5 * 100}%`)
-            .attr('y', '14')
-            .attr('font-size', 'medium')
-            .text(d=>d);
-
-            // slider.append('datalist')
-            // .attr('id', 'tickmarks')
-            // .selectAll('option')
-            // .data(tickValues)
-            // .enter()
-            // .append('option')
-            // .attr('value', d => d)
-            // .attr('label', d=>d);
-        // Add Y axis
-        y.domain([0, d3.max(necessaryData, d => Number(d.percentFoodInsec)) + 5 ]);
-        yAxis.transition().duration(1000).call(d3.axisLeft(y));
-        // update(necessaryData, 2016);
-
+            const g = slider_container.append('svg')
+            .attr('width',800)
+            .attr('height', 100)
+            .append('g')
+            .attr('transform', 'translate(30,30)');
+            g.call(d3Slider);
 
     });
 
@@ -169,6 +156,7 @@
         update(necessaryData,2016);
         disableDrag();
         sliderVisble = true;
+        confirmGuessButtonVisible = false;
     }
     // define the blinking function
     function blink(selection) {
@@ -274,11 +262,12 @@
     
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz" style="display: flex; justify-content:center" >
-        <button on:click={() => showRealVis()} style="visibility: {confirmGuessButtonVisible ? "visible" : "hidden"}; justify-self:left ;">Confirm guess</button>
+        <button on:click={() => showRealVis()} style="visibility: {confirmGuessButtonVisible ? "visible" : "hidden"}; justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white" >Confirm guess</button>
     </div>
     
-    <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"};">
-        <input style="width: 80%;" id="year-slider" type="range" bind:value={selectedYear} />
+    <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"}; display: flex; justify-content: center">
+
+        <!-- <input id="year-slider" type="range" bind:value={selectedYear} /> -->
         
     </div>
     <p style="font-size: medium;">The visualization above is made possible with the <a href="https://www.fao.org/faostat/en/#data/FS" target="_blank">FAO Suite of Food Security Indicators dataset </a> </p>
@@ -299,8 +288,12 @@
         color: var(--color-text);
         margin-top: 100px;
     }
+    .axis text,
+    .slider text {
+        font-size: 18px;
+    }
 
-    #tick-container {
+    /* #tick-container {
         position: relative;
         height: 2em;
     }
@@ -323,7 +316,7 @@
         text-align: center;
         width: 20%;
         transform: translateX(-50%);
-     }
+     } */
 
      .range__tick {
         fill: #000000;
