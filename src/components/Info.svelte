@@ -39,8 +39,8 @@
     })
 
     let margin = {top: 10, right: 30, bottom: 30, left: 30};
-    let width = 500 - margin.left - margin.right;
-    let height = 1000 - margin.top - margin.bottom;
+    let width = 1000 - margin.left - margin.right;
+    let height = 500 - margin.top - margin.bottom;
 
     function makeDisplay () {
     d3.select(info).html(null);

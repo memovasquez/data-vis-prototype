@@ -87,17 +87,19 @@
         </div>
     </section> 
     <section class="panel" style="background-color: #eed4bc;">
-        <table width="100%">
+        <div align="center">
+        <table width="80%">
             <tr>
                 <td width="50%">
                     <p style="text-align:left">First, if you're comfortable sharing, let us know some details about yourself. 
                         We'll use your answers to show you how you compare to people in El Salvador.</p>
                 </td>
-                <td>
+                <td align="center">
                     <Profile/>
                 </td>
             </tr>  
         </table>
+    </div>
 
     </section> 
     <section class="panel">
@@ -108,7 +110,8 @@
         <Profile/>
     </section>   -->
     <section class="panel" style="background-color: #eed4bc;">
-        <table width="100%">
+        <div align="center">
+        <table width="90%">
             <tr>
                 <td width="50%">
                     <b style="margin-bottom:10cm;"> "Hi, NAME. I'm Laura! Nice to meet you."</b>
@@ -118,11 +121,12 @@
                     <p style="text-align:left">Laura is a Salvadoran woman who responded to the WFP survey. 
                         We'll use her responses to introduce you to food insecurity in El Salvador.</p>
                 </td>
-                <td>
-                <img src="https://drive.google.com/uc?export=view&id=1JK7MqnTyOQA0c1l8Ahsk6L-yGR6jiF2s" alt="Image of Laura"/>
+                <td align="center">
+                    <img src="https://drive.google.com/uc?export=view&id=1JK7MqnTyOQA0c1l8Ahsk6L-yGR6jiF2s" alt="Image of Laura"/>
                 </td>
             </tr>  
         </table>
+    </div>
     </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>

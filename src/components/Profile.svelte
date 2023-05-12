@@ -57,7 +57,7 @@
         />
       </div>
       <div>
-        <label for="Location">Income</label>
+        <label for="Location">Monthly Income ($)</label>
         <input
           type="text"
           id="location"
