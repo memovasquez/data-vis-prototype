@@ -103,7 +103,12 @@
 
     </section> 
     <section class="panel">
-        TODO introduce dataset
+        <div class="text">
+            <p class="context">
+                In the following visualizations, we will be using data contributed by the United Nations World Food Programme (WFP)
+                which includes responses from over 1700 Salvadorans to questions regarding their experiences with food security and nutrition.
+            </p>
+        </div>
     </section>
     <!-- <section class="panel" style="background-color: #eed4bc;">
         <b>PROFILES + USER INPUT</b>
