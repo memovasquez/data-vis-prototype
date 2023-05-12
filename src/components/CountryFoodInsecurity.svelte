@@ -1,6 +1,6 @@
 <script>
     import * as d3 from 'd3';
-    import {onMount} from 'svelte';
+    import {onMount, onDestroy} from 'svelte';
 
 
     export let fao_data = [];
@@ -17,6 +17,8 @@
     let svg;
     let selectedYear = 2016;
     let sliderVisble = false;
+    let confirmGuessButtonVisible = false;
+    let blinking = true;
 
     // set the dimensions and margins of the graph
     const margin = {top: 30, right: 30, bottom: 70, left: 60},
@@ -31,7 +33,6 @@
         // let usaData = fao_data.filter( (item) => item.Country == 'United States of America' && Number(item.Year) > 2015);
         // necessaryUSAData = usaData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)'], country: obj.Country } } );
         
-
         // append the svg object to the body of the page
         svg = d3.select("#my_dataviz")
         .append("svg")
@@ -112,8 +113,8 @@
         yAxis.transition().duration(1000).call(d3.axisLeft(y));
         // update(necessaryData, 2016);
 
-    });
 
+    });
 
     function dragStart(d) {
     d3.select( this )
@@ -144,9 +145,55 @@
         d3.select(this)
         .attr("y", y(value))
         .attr("height", height - y(value));
-        sliderVisble = true;
-
+        confirmGuessButtonVisible = true;
     }
+
+    function keyFunction(d) {
+            return d.country;
+    }
+
+    function disableDrag() {
+        const bar = d3.selectAll(".bar");//will select both bars on the chart
+        bar.style('stroke', 'none');
+
+        bar.call(d3.drag()
+            .on("start", null)
+            .on("drag", null)
+            .on("end", null)
+            );
+    }
+
+
+    function showRealVis() {
+        blinking = false;
+        update(necessaryData,2016);
+        disableDrag();
+        sliderVisble = true;
+    }
+    // define the blinking function
+    function blink(selection) {
+        (function repeat() {
+            selection.transition()
+                .duration(500)
+                .style('fill', 'red')
+                .transition()
+                .duration(500)
+                .style('fill', '#742a24')
+                .ease(d3.easeSin)
+                .on("end", blinking ? repeat : null);
+        })();
+    }
+
+    function stopBlink(selection){
+        console.log("called stopBlink");
+        selection.transition()
+        .duration(500)
+        .style("fill",'#742a24');
+    }
+
+    
+
+
 
     function firstDisplay(data) {
         // console.log("See data before ", data);
@@ -156,22 +203,26 @@
         xAxis.transition().duration(1000).call(d3.axisBottom(x));
         //filter by year
         const u = svg.selectAll("rect")
-            .data(data.filter(obj => Number(obj.year) === 2016))
+        .data(data.filter(obj => Number(obj.year) === 2016), keyFunction)
 
         // update bars
         u.join("rect")
             .attr("x", d => x(d.country))
+            .attr("class", "bar")
             .attr("y", function(d) {return d.country === "El Salvador" ? y(10.5) : y(Number(d.percentFoodInsec))})
             .attr("width", x.bandwidth())
             .attr("height", function(d) { return d.country === "El Salvador" ? height - y(10.5) : height - y(d.percentFoodInsec)})
             .attr('id', d => d.country + d.year)
-            .attr("fill", function (d) { return d.country === "El Salvador" ? "#0047AB": "#69b3a2"})
+            .attr("fill", function (d) { return d.country === "El Salvador" ? "rgb(207, 37, 19)": "#69b3a2"})
             .filter(d => d.country === 'El Salvador') //makes only El Salvador bar draggable
              .call(d3.drag()
             .on("start", dragStart)
             .on("drag", dragging)
             .on("end", dragEnd)
             );
+
+        let leftBar = d3.selectAll(".bar").filter(":nth-child(odd)");//selects left bar
+        blink(leftBar);
     }
 
     // A function that create / update the plot for a given variable:
@@ -182,25 +233,22 @@
         x.domain(data.map(d => d.country));
         xAxis.transition().duration(1000).call(d3.axisBottom(x));
         //filter by year
-
         data = data.filter((obj) => Number(obj.year) == selected_year);
-        // variable u: map data to existing bars
-        console.log("Data on update ", data);
-        const u = svg.selectAll("rect")
-            .data(data)
 
-        // update bars
-        u.join("rect")
+        
+        const bars = svg.selectAll(".bar").data(data, keyFunction)
+            // .attr("x", d => x(d.country))
             .transition()
             .duration(1000)
-            .attr("x", d => x(d.country))
             .attr("y", d => y(Number(d.percentFoodInsec)))
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d.percentFoodInsec))
-            .attr("fill", function (d) { return d.country === "El Salvador" ? "#0047AB": "#69b3a2"})
+            .style("fill", function (d) { return d.country === "El Salvador" ? "#742a24": "#69b3a2"})
             
     }
 
+    
+    
 
     $: {
 
@@ -208,7 +256,7 @@
             firstDisplay(necessaryData);
             // update(necessaryData, 2016);
         }
-
+        necessaryData = necessaryData;
 
     }
 
@@ -225,8 +273,9 @@
     <p id="guessInstruction">Drag the bar on the left to what you think the metric is for El Salvador</p> 
     
     <!-- Create a div where the graph will take place -->
-    <div id="my_dataviz"></div>
-    
+    <div id="my_dataviz" style="display: flex; justify-content:center" >
+        <button on:click={() => showRealVis()} style="visibility: {confirmGuessButtonVisible ? "visible" : "hidden"}; justify-self:left ;">Confirm guess</button>
+    </div>
     
     <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"};">
         <input style="width: 80%;" id="year-slider" type="range" bind:value={selectedYear} />
