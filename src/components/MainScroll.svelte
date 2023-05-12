@@ -86,7 +86,7 @@
           {/if}
       </section> -->
       <section class="panel" style="background-color: #eed4bc;">
-        <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and wwhere she lives. Where do you fall in this context?</b>
+        <b>"Step into my shoes!" Hover over the infographic to get a better idea of Laura's life and where she lives. Where do you fall in this context?</b>
           <Info />
         </section>
         <section class="panel" style="background-color: #eed4bc;">
