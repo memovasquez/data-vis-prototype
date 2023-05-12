@@ -5,8 +5,7 @@
 
     export let fao_data = [];
 
-    let necessaryUSAData = [];
-    let necessarySalvadorData = [];
+
     let necessaryData = [];
     // let hist;
 
@@ -19,6 +18,8 @@
     let sliderVisble = false;
     let confirmGuessButtonVisible = false;
     let blinking = true;
+    let tooltip;
+    let dragTooltip;
 
     // set the dimensions and margins of the graph
     const margin = {top: 30, right: 30, bottom: 70, left: 60},
@@ -28,10 +29,8 @@
     onMount( () => {
 
         let filteredData = fao_data.filter( (item) => (item.Country == 'El Salvador' || item.Country == 'United States of America') && Number(item.Year) > 2015);
-        // necessarySalvadorData = salvadorData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)']} });
         necessaryData = filteredData.map( (obj) => {return {year:obj.Year, percentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)'], country: obj.Country}} );
         // let usaData = fao_data.filter( (item) => item.Country == 'United States of America' && Number(item.Year) > 2015);
-        // necessaryUSAData = usaData.map( (obj) => {return {year:obj.Year, perecentFoodInsec: obj['Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)'], country: obj.Country } } );
         
         // append the svg object to the body of the page
         svg = d3.select("#my_dataviz")
@@ -40,6 +39,34 @@
             .attr("height", height + margin.top + margin.bottom)
         .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    
+         tooltip = d3.select("#my_dataviz")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip-visible")
+            .style("background-color", "#742a24")
+            .style("color", "white")
+            .style("border-radius", "5px")
+            .style("width","200px")
+            .style("height", "150px")
+            .style("padding", "10px")
+            .style("font-size", "medium")
+
+        dragTooltip = d3.select("#my_dataviz")
+            .append("div")
+            .attr("id", "dragging-tooltip")
+            .style("opacity", 0)
+            .attr("class", "tooltip-visible")
+            .style("background-color", "red")
+            .style("color", "white")
+            .style("border-radius", "5px")
+            .style("width","200px")
+            .style("height", "50")
+            .style("padding", "10px")
+            .style("font-size", "medium")
+            .style("position", "absolute")
+
 
             // Initialize the X axis
             x = d3.scaleBand()
@@ -100,57 +127,60 @@
             .append('g')
             .attr('transform', 'translate(30,30)');
             g.call(d3Slider);
-
-    });
-
-    function dragStart(d) {
-    d3.select( this )
-        .raise()
-        .style('stroke', 'black');
-
+            
+        });
+        
+        function dragStart(d) {
+            d3.select( this )
+                .raise()
+                .style('stroke', 'black');
+            dragTooltip.style("opacity",1);
+        }
+    
+        function dragging(d) {
+            let new_y = d3.max([0,d.y]);
+            // Calculate the new value of the rectangle based on the y position
+            let value = y.invert(new_y);
+            // Update the data and the y position of the rectangle
+            d.value = value
+            d3.select(this)
+            .attr("y", y(value))
+            .attr("height", d3.max([height - y(value),0]));
+            dragTooltip.text("Percentage: " + (d.value.toFixed(1))) // update the tooltip text to show the new y value
+        
+    
+        }
+    
+        function dragEnd(d) {
+            let new_y = d.y;
+            // Calculate the new value of the rectangle based on the y position
+            let value = y.invert(new_y);
+            // Update the data and the y position of the rectangle
+            d.value = value;
+            d3.select(this)
+            .attr("y", y(value))
+            .attr("height", height - y(value));
+            confirmGuessButtonVisible = true;
+    
+            dragTooltip.style("opacity", 0);
+    
+        }
+        
+        function keyFunction(d) {
+        return d.country;
     }
-
-    function dragging(d) {
-        let new_y = d.y;
-        // Calculate the new value of the rectangle based on the y position
-        let value = y.invert(new_y);
-        // Update the data and the y position of the rectangle
-        d.value = value;
-        d3.select(this)
-        .attr("y", y(value))
-        .attr("height", height - y(value));
-
-
-    }
-
-    function dragEnd(d) {
-        let new_y = d.y;
-        // Calculate the new value of the rectangle based on the y position
-        let value = y.invert(new_y);
-        // Update the data and the y position of the rectangle
-        d.value = value;
-        d3.select(this)
-        .attr("y", y(value))
-        .attr("height", height - y(value));
-        confirmGuessButtonVisible = true;
-    }
-
-    function keyFunction(d) {
-            return d.country;
-    }
-
+    
     function disableDrag() {
         const bar = d3.selectAll(".bar");//will select both bars on the chart
         bar.style('stroke', 'none');
-
+        
         bar.call(d3.drag()
-            .on("start", null)
-            .on("drag", null)
-            .on("end", null)
-            );
+        .on("start", null)
+        .on("drag", null)
+        .on("end", null)
+        );
     }
-
-
+    
     function showRealVis() {
         blinking = false;
         update(necessaryData,2016);
@@ -162,27 +192,36 @@
     function blink(selection) {
         (function repeat() {
             selection.transition()
-                .duration(500)
-                .style('fill', 'red')
-                .transition()
-                .duration(500)
-                .style('fill', '#742a24')
-                .ease(d3.easeSin)
-                .on("end", blinking ? repeat : null);
+            .duration(500)
+            .style('fill', 'red')
+            .transition()
+            .duration(500)
+            .style('fill', '#742a24')
+            .ease(d3.easeSin)
+            .on("end", blinking ? repeat : null);
         })();
     }
+        
+    function showPercent(event, d) {
+        if (sliderVisble) {
 
-    function stopBlink(selection){
-        console.log("called stopBlink");
-        selection.transition()
-        .duration(500)
-        .style("fill",'#742a24');
+            tooltip
+            .style("opacity", 1)
+            tooltip
+            .html('Percentage of population with food insecurity in ' + d.year + ' in '+  d.country + ': '+d.percentFoodInsec)
+        }
+
+    }
+
+    function hidePercent() {
+        tooltip.style("opacity",0)
     }
 
     
-
-
-
+    
+    
+    
+    
     function firstDisplay(data) {
         // console.log("See data before ", data);
         // Parse the Data
@@ -192,27 +231,28 @@
         //filter by year
         const u = svg.selectAll("rect")
         .data(data.filter(obj => Number(obj.year) === 2016), keyFunction)
-
+        
         // update bars
         u.join("rect")
-            .attr("x", d => x(d.country))
-            .attr("class", "bar")
-            .attr("y", function(d) {return d.country === "El Salvador" ? y(10.5) : y(Number(d.percentFoodInsec))})
-            .attr("width", x.bandwidth())
-            .attr("height", function(d) { return d.country === "El Salvador" ? height - y(10.5) : height - y(d.percentFoodInsec)})
-            .attr('id', d => d.country + d.year)
-            .attr("fill", function (d) { return d.country === "El Salvador" ? "rgb(207, 37, 19)": "#69b3a2"})
-            .filter(d => d.country === 'El Salvador') //makes only El Salvador bar draggable
-             .call(d3.drag()
-            .on("start", dragStart)
-            .on("drag", dragging)
-            .on("end", dragEnd)
-            );
-
+        .attr("x", d => x(d.country))
+        .attr("class", "bar")
+        .attr("y", function(d) {return d.country === "El Salvador" ? y(10.5) : y(Number(d.percentFoodInsec))})
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return d.country === "El Salvador" ? height - y(10.5) : height - y(d.percentFoodInsec)})
+        .attr('id', d => d.country + d.year)
+        .attr("fill", function (d) { return d.country === "El Salvador" ? "rgb(207, 37, 19)": "#69b3a2"})
+        .on("mouseover",  showPercent)
+        .on('mouseleave', hidePercent)
+        .filter(d => d.country === 'El Salvador') //makes only El Salvador bar draggable
+        .call(d3.drag()
+        .on("start", dragStart)
+        .on("drag", dragging)
+        .on("end", dragEnd)
+        );
         let leftBar = d3.selectAll(".bar").filter(":nth-child(odd)");//selects left bar
         blink(leftBar);
     }
-
+    
     // A function that create / update the plot for a given variable:
     function update(data, selected_year) {
         console.log("called update");
@@ -262,7 +302,7 @@
     
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz" style="display: flex; justify-content:center" >
-        <button on:click={() => showRealVis()} style="visibility: {confirmGuessButtonVisible ? "visible" : "hidden"}; justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white" >Confirm guess</button>
+        <button on:click={() => showRealVis()} style="visibility: {confirmGuessButtonVisible ? "visible" : "hidden"}; justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white; border-radius: 5px;" >Confirm guess</button>
     </div>
     
     <div id="slider_container" style="visibility: {sliderVisble ? "visible" : "hidden"}; display: flex; justify-content: center">
