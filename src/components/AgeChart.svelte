@@ -10,6 +10,16 @@
     let svg;
     let xScale, yScale, xAxis, yAxis;
 
+    let fillColor = "#742a24";
+    let lauraColor = "#cf2513";
+    let userColor = "#69b3a2";
+    
+    // #742a24 brown
+    // #eed4bc background
+    // #6c370f also brown
+    // #e7873b orange
+    // #cf2513 red
+
     function display () {
         data = data.filter(d => d.rsp_age != ""); //make sure to discard any nulls
         let ageMin = d3.min(data.map(d => Number(d.rsp_age)));
@@ -77,7 +87,7 @@
                 .append("div")
                 .style("opacity", 0)
                 .attr("class", "tooltip-visible")
-                .style("background-color", "black")
+                .style("background-color", fillColor)
                 .style("color", "white")
                 .style("border-radius", "5px")
                 .style("padding", "10px")
@@ -116,10 +126,10 @@
         .data(bins)
         .join("rect")
             .attr("x", 1)   //"translate(" + x(d.x0) + "," + y(d.length) + ")"
-        .attr("transform", function(d) { return `translate(${xScale(d.x0) - (xScale(d.x1) - xScale(d.x0))/4 } , ${yScale(d.length)})`})
-            .attr("width", function(d) { return (xScale(d.x1) - xScale(d.x0))/2 -1})
+        .attr("transform", function(d) { return `translate(${xScale(d.x0) - (xScale(d.x1) - xScale(d.x0))/2 } , ${yScale(d.length)})`})
+            .attr("width", function(d) { return (xScale(d.x1) - xScale(d.x0)) -1})
             .attr("height", function(d) { return height - yScale(d.length); })
-            .style("fill", function(d) { return bins.indexOf(d) === 4 ? "red" : bins.indexOf(d) === 5 ? "blue" : "black" })
+            .style("fill", function(d) { return bins.indexOf(d) === 4 ? lauraColor : bins.indexOf(d) === 5 ? userColor : fillColor })
 
             //  Show tooltip on hover
              .on("mouseover", showTooltip )

@@ -20,12 +20,19 @@
     // TODO handle if person2 line is off the charts
     let isPressed = false;
 
-    let yesColor = "#69b3a2";
-    let noColor = "#a83e32";
-    let person1Color ="#c32ef0";
-    let person2Color =  "#f0dc2e";
+    let noColor = "#742a24";//"#69b3a2";
+    let yesColor = "#e7873b";//"#fc9403";
+    let allColor = noColor;
+    let person1Color = "#cf2513";//"#fc0303";
+    let person2Color = "#69b3a2";//"#69b3a2";//"#0330fc";
     let person1Loc = 0;
     let person2Loc = 1;
+
+    // #742a24 brown
+    // #eed4bc background
+    // #6c370f also brown
+    // #e7873b orange
+    // #cf2513 red  
 
     let nameToField = {
         "income": "avg_income_amount",
@@ -175,7 +182,7 @@
                         let minX = (width / 2) - (centerWidth / 2)
                         let maxX = (width / 2) + (centerWidth / 2)
 
-                        let color = yesColor;
+                        let color = allColor;
                         nextDotCoords.push({"x": getDotX(j, minX, maxX), 
                                     "y": getDotY(i) + verticalOffset,
                                     "c": color});
@@ -375,6 +382,12 @@
             .x(d => x(d[0]))
             .y(d => newY(d[1]))
 
+        if (split == 'all') {
+            let temp = leftDensity;
+            leftDensity = rightDensity;
+            rightDensity = temp;
+        }
+
         // let rightDensity = []
         // for (let i = 0; i < leftDensity.length; i++) {
         //     rightDensity.push([leftDensity[i][0], 0])
@@ -545,12 +558,12 @@
     d3.select(hist).html(null);
     const svgHist = d3.select("#hist")
         .append('svg')
-            .attr("width", histWidth + margin.left + margin.right)
-            .attr("height", histHeight + margin.top + margin.bottom)
+            .attr("width", histWidth + margin.left + margin.right + 1000)
+            .attr("height", histHeight + margin.top + margin.bottom + 50)
             .attr("id", "histogram")
         .append("g")
             .attr("transform",
-                `translate(${margin.left}, ${margin.top})`);
+                `translate(${margin.left + 400}, ${margin.top + 50})`);
 
     const x = d3.scaleLinear()
             .domain([0, d3.max(histData['income']['all']) * 1.25])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
@@ -620,6 +633,9 @@
     for (let i = 0; i < leftDensity.length; i++) {
         rightDensity.push([leftDensity[i][0], 0])
     }
+    let temp = leftDensity;
+    leftDensity = rightDensity;
+    rightDensity = temp;
     //let rightDensity = kde(epanechnikov(bandwidth), thresholds, rightData);
 
     svgHist.append("path")
@@ -716,7 +732,8 @@
   cursor: pointer;
 }
 .pressed {
-    background-color: #69b3a2;
+    color: white;
+    background-color: #742a24;
 }
 
 

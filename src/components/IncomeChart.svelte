@@ -11,6 +11,15 @@
     let svg;
     let xScale, yScale, xAxis, yAxis;
 
+    let fillColor = "#742a24";
+    let lauraColor = "#cf2513";
+    let userColor = "#69b3a2";
+
+// #742a24 brown
+// #eed4bc background
+// #6c370f also brown
+// #e7873b orange
+// #cf2513 red
 
     onMount( () => {
         // svg = d3.select('#chart')
@@ -43,14 +52,15 @@
 
         //histogram 
 
-        data = data.filter( d => (Number(d.avg_income_amount) > 0 )); //only include non-null values
+        data = data.filter( d => ((Number(d.avg_income_amount) > 0 ) && (Number(d.avg_income_currency) == 1))); //only include non-null values and amounts in dollars
+
 
         xScale = d3.scaleLinear()
-        .domain([0,d3.max(data.map((d) => Number(d.avg_income_amount)*0.1143))])
+        .domain([0,d3.max(data.map((d) => Number(d.avg_income_amount)))])
         .range([0,width]);
 
         const histogram = d3.histogram()
-        .value(function(d) { return Number(d.avg_income_amount)*0.1143; })   // I need to give the vector of value
+        .value(function(d) { return Number(d.avg_income_amount); })   // I need to give the vector of value
         .domain(xScale.domain())  // then the domain of the graphic
         .thresholds(xScale.ticks(80)); // then the numbers of bins; 
 
@@ -126,14 +136,14 @@
                 .append("div")
                 .style("opacity", 0)
                 .attr("class", "tooltip-visible")
-                .style("background-color", "orange")
+                .style("background-color", fillColor)
                 .style("color", "white")
                 .style("border-radius", "5px")
                 .style("padding", "10px");
 
         const showTooltip = function(event,d) {
-            let minOfBucket = String( d3.min( d.map((obj) => Number(obj.avg_income_amount * 0.1143).toFixed(2) ) ));
-            let maxOfBucket = String(d3.max( d.map((obj) => Number(obj.avg_income_amount * 0.1143).toFixed(2) )))
+            let minOfBucket = String( d3.min( d.map((obj) => Number(obj.avg_income_amount).toFixed(2) ) ));
+            let maxOfBucket = String(d3.max( d.map((obj) => Number(obj.avg_income_amount).toFixed(2) )))
             tooltip
             .transition()
             .duration(100)
@@ -171,7 +181,7 @@
             .attr("width", function(d) { return 2*(xScale(d.x1) - xScale(d.x0))/2 -1})
             .attr("height", function(d) { return height - yScale(d.length); })
             // .style("fill", function (d) { d.some( (person) => { "2211" === person[""] }) ? "#69b3a2" : "red"}  )
-            .style("fill", function(d) { return bins.indexOf(d) === 2 ? "red" : "black" })
+            .style("fill", function(d) { return bins.indexOf(d) === 2 ? lauraColor : fillColor })
 
              // Show tooltip on hover
              .on("mouseover", showTooltip )
