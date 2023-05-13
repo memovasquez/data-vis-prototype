@@ -2,6 +2,7 @@
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
     export let data = [];
+    export let userHHSize = 0;
 
     const margin = { top: 20, right: 20, bottom: 30, left: 40 };
     const width = 1000 - margin.left - margin.right;
@@ -12,6 +13,7 @@
     let fillColor = "#742a24";
     let lauraColor = "#cf2513";
     let userColor = "#69b3a2";
+    let bothColor = "#868A79";
     // #742a24 brown
     // #eed4bc background
     // #6c370f also brown
@@ -117,6 +119,26 @@
             }
 
 
+         //defaultvalue if no user input
+         if (!userHHSize) {
+            userHHSize = 4;
+        }
+
+        let userBin;
+
+        for (let i = 0; i < bins.length; i++){
+            
+            let binMin = bins[i].x0;
+            let binMax = bins[i].x1;
+            console.log("User hh size: ", userHHSize);
+            // console.log(binMin, binMax);
+            if (Number(userHHSize) >= Number(binMin) && Number(userHHSize) <= Number(binMax)){
+                userBin = i;
+                console.log("Bin user fits into: ",i);
+            }
+        }
+
+
         svg.selectAll("rect")
         .data(bins)
         .join("rect")
@@ -124,8 +146,7 @@
         .attr("transform", function(d) { return `translate(${xScale(d.x0) - (xScale(d.x1) - xScale(d.x0))/2 } , ${yScale(d.length)})`})
             .attr("width", function(d) { return (xScale(d.x1) - xScale(d.x0)) -1})
             .attr("height", function(d) { return height - yScale(d.length); })
-            .style("fill", function(d) { return bins.indexOf(d) === 4 ? lauraColor : bins.indexOf(d) === 5 ? userColor : fillColor })
-
+            .style("fill", function(d) { return (bins.indexOf(d) === 4 && userBin === 4) ? bothColor :  bins.indexOf(d) === 4 ? lauraColor : bins.indexOf(d) === userBin ? userColor : fillColor })
             //  Show tooltip on hover
              .on("mouseover", showTooltip )
             .on("mousemove", moveTooltip )

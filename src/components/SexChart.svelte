@@ -2,6 +2,7 @@
     import * as d3 from 'd3';
     import {onMount} from 'svelte';
     export let data = [];
+    export let userSex = 0;
 
     const margin = { top: 20, right: 20, bottom: 30, left: 40 };
     const width = 1000 - margin.left - margin.right;

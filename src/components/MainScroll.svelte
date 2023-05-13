@@ -42,7 +42,7 @@
     ];
 
     // stores variables (user input)
-    import {userName} from '../stores';
+    import {userAge, userName} from '../stores';
     import { userSex } from '../stores.js';
     import { userMonthlyIncome } from '../stores.js';
     import { userHouseholdSize } from '../stores.js';
@@ -53,6 +53,7 @@
     let userSexValue;
     let userMonthlyIncomeValue;
     let userHouseholdSizeValue;
+    let userAgeValue;
     
     let userMissedMealValue;
     let userBorrowedMoneyValue;
@@ -76,6 +77,10 @@
         userHouseholdSizeValue = value;
     })
 
+    userAge.subscribe(value => {
+        userAgeValue = value;
+    })
+
     //meal and financial indicators
     userMissedMeal.subscribe(value => {
         userMissedMealValue = value;
@@ -92,6 +97,12 @@
     userDebtAmt.subscribe(value => {
         userDebtAmtValue = value;
     })
+
+    let userInput;
+    $:{
+
+        userInput = {name: userNameValue, income: userMonthlyIncomeValue, sex: userSexValue, hh_size: userHouseholdSizeValue, age: userAgeValue};
+    }
 
     
 </script>
@@ -193,7 +204,7 @@
             represented in red on the charts and yours in blue. How do you compare to Laura and other Salvadorans?</p>
         </div>
         <br />
-          <Info />
+          <Info bind:userInput={userInput} />
         
     </section>
     <section class="panel" >

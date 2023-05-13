@@ -4,8 +4,12 @@
     import Map from './Map.svelte';
     import IncomeChart from './IncomeChart.svelte';
     import HouseholdSizeChart from './HouseholdSizeChart.svelte';
-  import AgeChart from './AgeChart.svelte';
-  import SexChart from './SexChart.svelte';
+    import AgeChart from './AgeChart.svelte';
+    import SexChart from './SexChart.svelte';
+  import { userAge } from '../stores';
+
+    export let userInput = {}; 
+    // (mainscroll) let userInput = {name: userNameValue, income: userMonthlyIncomeValue, sex: userSexValue, hh_size: userHouseholdSizeValue};
 
 
     let info;
@@ -142,16 +146,16 @@
                 <Map bind:map={map} bind:markerContainer={markerContainer} />
             {:else if selectedField === "monthlyIncome"}
                 <h2>Laura makes ${person1.avg_income_amount} per month</h2>
-                <IncomeChart bind:data={data} bind:person1={person1}/>
+                <IncomeChart bind:data={data} bind:person1={person1} bind:userIncome={userInput.income}/>
             {:else if selectedField === "household"}
                 <h2>Laura provides for {person1.hh_size} people in her household</h2>
-                <HouseholdSizeChart bind:data={data} />
+                <HouseholdSizeChart bind:data={data} bind:userHHSize={userInput.hh_size} />
             {:else if selectedField === "age"}
             <h2>Laura is {person1.rsp_age} years old</h2>
-                <AgeChart bind:data={data}/>
+                <AgeChart bind:data={data} bind:userAge={userInput.age}/>
             {:else if selectedField === "sex"}
             <h2>Laura is female</h2>
-                <SexChart bind:data={data} />
+                <SexChart bind:data={data} bind:userSex={userInput.sex} />
             {/if}
             </div>
     </div>

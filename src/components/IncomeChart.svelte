@@ -3,6 +3,7 @@
     import {onMount} from 'svelte';
     export let data = [];
     export let person1 = {};
+    export let userIncome = 0;
 
     const margin = { top: 20, right: 20, bottom: 30, left: 40 };
     const width = 1000 - margin.left - margin.right;
@@ -142,8 +143,8 @@
                 .style("padding", "10px");
 
         const showTooltip = function(event,d) {
-            let minOfBucket = String( d3.min( d.map((obj) => Number(obj.avg_income_amount).toFixed(2) ) ));
-            let maxOfBucket = String(d3.max( d.map((obj) => Number(obj.avg_income_amount).toFixed(2) )))
+            let minOfBucket = d.x0;
+            let maxOfBucket = d.x1;
             tooltip
             .transition()
             .duration(100)
@@ -172,6 +173,24 @@
         // console.log("Who is person1 ," ,person1);
         // console.log("Show bins, ", bins);
         let person1Bin = bins[2]
+        //defaultvalue if no user input
+        if (!userIncome) {
+            userIncome = 1000;
+        }
+
+        let userBin;
+
+        for (let i = 0; i < bins.length; i++){
+            
+            let binMin = bins[i].x0;
+            let binMax = bins[i].x1;
+            console.log("User income: ", userIncome);
+            // console.log(binMin, binMax);
+            if (Number(userIncome) >= Number(binMin) && Number(userIncome) <= Number(binMax)){
+                userBin = i;
+                console.log("Bin user fits into: ",i);
+            }
+        }
         
         svg.selectAll("rect")
         .data(bins)
@@ -181,12 +200,18 @@
             .attr("width", function(d) { return 2*(xScale(d.x1) - xScale(d.x0))/2 -1})
             .attr("height", function(d) { return height - yScale(d.length); })
             // .style("fill", function (d) { d.some( (person) => { "2211" === person[""] }) ? "#69b3a2" : "red"}  )
-            .style("fill", function(d) { return bins.indexOf(d) === 2 ? lauraColor : fillColor })
+            .style("fill", function(d) { return bins.indexOf(d) === 2 ? lauraColor : bins.indexOf(d) === userBin ? userColor :fillColor })
 
              // Show tooltip on hover
              .on("mouseover", showTooltip )
             .on("mousemove", moveTooltip )
             .on("mouseleave", hideTooltip )
+        
+        // svg.append("rect")
+        // .attr('x', 1)
+        // .attr("transform", function(d) { return `translate(${xScale(Number(userIncome))} , ${yScale(10)})`})
+        // .style("fill", userColor)
+
         
     }
 
