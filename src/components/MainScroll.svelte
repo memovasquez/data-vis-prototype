@@ -12,6 +12,7 @@
     import Pie from './Pie.svelte';
     import UserProfile from './UserInputProfile.svelte';
     import UserInputDiet from './UserInputDiet.svelte';
+    import UserInputMealFin from './UserInputMealFin.svelte';
     import Introduction from './Introduction.svelte';
 
     // properties for data to be passed in
@@ -41,18 +42,56 @@
     ];
 
     // stores variables (user input)
-    import { userName } from '../stores.js';
-    import { userAge } from '../stores.js';
+    import {userName} from '../stores';
     import { userSex } from '../stores.js';
-    import { userLocation } from '../stores.js';
     import { userMonthlyIncome } from '../stores.js';
     import { userHouseholdSize } from '../stores.js';
-    import { userFatsSweets } from '../stores.js';
-    import { userGrains } from '../stores.js';
-    import { userProtein } from '../stores.js';
-    import { userVegetables } from '../stores.js';
-    import { userFruit } from '../stores.js';
-    import { userDairy } from '../stores.js';
+
+    import {userMissedMeal, userBorrowedMoney, userHasDebt, userDebtAmt} from '../stores';
+
+    let userNameValue;
+    let userSexValue;
+    let userMonthlyIncomeValue;
+    let userHouseholdSizeValue;
+    
+    let userMissedMealValue;
+    let userBorrowedMoneyValue;
+    let userHasDebtValue;
+    let userDebtAmtValue;
+
+    //user profile things
+    userName.subscribe(value => {
+        userNameValue = value;
+    })
+
+    userSex.subscribe(value => {
+        userSexValue = value;
+    })
+
+    userMonthlyIncome.subscribe(value => {
+        userMonthlyIncomeValue = value;
+    })
+
+    userHouseholdSize.subscribe(value => {
+        userHouseholdSizeValue = value;
+    })
+
+    //meal and financial indicators
+    userMissedMeal.subscribe(value => {
+        userMissedMealValue = value;
+    })
+
+    userBorrowedMoney.subscribe(value => {
+        userBorrowedMoneyValue = value;
+    })
+    
+    userHasDebt.subscribe(value => {
+        userHasDebtValue = value;
+    })
+
+    userDebtAmt.subscribe(value => {
+        userDebtAmtValue = value;
+    })
 
     
 </script>
@@ -124,7 +163,7 @@
         <table width="90%">
             <tr>
                 <td width="50%">
-                    <b style="margin-bottom:10cm;"> "Hi, {userName}. I'm Laura! Nice to meet you."</b>
+                    <b style="margin-bottom:10cm;"> "Hi, {userNameValue}. I'm Laura! Nice to meet you."</b>
                     <br/>
                     <br/>
                     <br/>
@@ -170,7 +209,15 @@
         </section> 
 
     <section>
-        <UserInputDiet />
+        <!-- <UserInputDiet /> -->
+        <UserInputMealFin />
+        <p>{userMissedMealValue}</p>
+        <p>{userBorrowedMoneyValue}</p>
+        <p>{userHasDebtValue}</p>
+        <p>{userDebtAmtValue}</p>
+
+
+
     </section>
 
     <section class="panel" >

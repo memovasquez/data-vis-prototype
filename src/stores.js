@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 
-export const userName = writable('', validateUserText);
+export const userName = writable('[NAME]');
 export const userAge = writable(0);
 export const userSex = writable(null);
-export const userLocation = writable('', validateUserText);
+export const userLocation = writable('');
 export const userMonthlyIncome = writable(null);
 export const userHouseholdSize = writable(null);
 export const storyText = writable('');
@@ -16,6 +16,11 @@ export const userProtein = writable(null);
 export const userVegetables = writable(null);
 export const userFruit = writable(null);
 export const userDairy = writable(null);
+
+export const userMissedMeal = writable(false);
+export const userBorrowedMoney = writable(false);
+export const userHasDebt = writable(false);
+export const userDebtAmt = writable(0);
 
 function validateUserText(value) {
     if (typeof value !== 'string') {

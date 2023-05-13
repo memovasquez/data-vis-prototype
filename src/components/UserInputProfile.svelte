@@ -17,7 +17,8 @@
 
   function handleChange() {
     event.preventDefault();
-    userName.update( () => inputName)
+    console.log("Called change");
+    userName.update(() => inputName);
     userAge.update(() => inputAge);
     userSex.update(() => inputSex);
     userLocation.update(() => inputLocation);
@@ -28,7 +29,7 @@
 
   const handleSelect = event => {
     event.preventDefault();
-    let inputSex = event.target.value;
+    inputSex = event.target.value;
   };
 
   function validateMonthlyIncome(event) {
@@ -37,8 +38,9 @@
     if (isNaN(value) || value < 0 || value > 4500) {
       userMonthlyIncome.set(0);
       event.target.value = 0;
+      inputMonthlyIncome = 0;
     } else {
-      let inputMonthlyIncome = event.target.value;
+      inputMonthlyIncome = event.target.value;
     }
   }
 
@@ -49,7 +51,7 @@
       userHouseholdSize.set(1);
       event.target.value = 1;
     } else {
-      let inputHouseholdSize = event.target.value;
+      inputHouseholdSize = event.target.value;
     }
   }
 
@@ -74,12 +76,10 @@
 
         <label for="sex" class="form-element">Sex</label>
         <select id="dropdown" on:change={handleSelect} class="form-element">
-          <option value="option1">Female</option>
-          <option value="option2">Male</option>
+          <option value="F">Female</option>
+          <option value="M">Male</option>
         </select>
       
-        <label for="location" class="form-element">Location </label>
-        <input bind:value={inputLocation} class="form-element"/>
   
         <label for="monthlyIncome" class="form-element">Monthly Income</label>
         <input type="number" id="monthlyIncome" bind:value={inputMonthlyIncome} on:change={validateMonthlyIncome} class="form-element"/>
