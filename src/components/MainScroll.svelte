@@ -1,7 +1,7 @@
 <script>
 
     import {onMount} from 'svelte';
-    import { fly } from 'svelte/transition'
+    import { fly, fade, slide } from 'svelte/transition'
     import * as d3 from 'd3';
     import Scroller from '@sveltejs/svelte-scroller';
     import Dots from './Dots.svelte';
@@ -10,7 +10,9 @@
     import Nutrition from './Nutrition.svelte';
     import CountryFoodInsecurity from './CountryFoodInsecurity.svelte';
     import Pie from './Pie.svelte';
-    import Profile from './Profile.svelte';
+    import UserProfile from './UserInputProfile.svelte';
+    import UserInputDiet from './UserInputDiet.svelte';
+    import Introduction from './Introduction.svelte';
 
     // properties for data to be passed in
     export let wfp_data = [];
@@ -29,6 +31,28 @@
     let storytext;
     let pieIndex = 11;
     let pieWindowHeight = 5000;
+
+    // INTRODUCTION, FOR TESTING
+    const paragraphs = [
+        "Food is a basic human right and necessity. It provides us with the nutrition needed to sustain our lives; it fuels us; it connects us.",
+        "But what if we lost access to food? What does life look like without this basic necessity?",
+        "In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.",
+        "Scroll on to better understand what this means."
+    ];
+
+    // stores variables (user input)
+    import { userName } from '../stores.js';
+    import { userAge } from '../stores.js';
+    import { userSex } from '../stores.js';
+    import { userLocation } from '../stores.js';
+    import { userMonthlyIncome } from '../stores.js';
+    import { userHouseholdSize } from '../stores.js';
+    import { userFatsSweets } from '../stores.js';
+    import { userGrains } from '../stores.js';
+    import { userProtein } from '../stores.js';
+    import { userVegetables } from '../stores.js';
+    import { userFruit } from '../stores.js';
+    import { userDairy } from '../stores.js';
 
     
 </script>
@@ -63,29 +87,13 @@
         {/if}
     </div> -->
 
-  <div class="foreground" slot="foreground">
-    <section class="panel" >
-        <div class="text">
-            <p class="context">Food is a basic human right and necessity. It provides us with the nutrition needed to 
-                sustain our lives; it fuels us; it connects us.</p>
-        </div>
-    </section> 
-    <section class="panel">
-        <div class="text">
-            <p class="context">But what if we lost access to food? What does life look like without this basic necessity?</p>
-        </div>
+    <!-- <section id="section">
+        <Introduction />
+    </section> -->
+    <div class="foreground" slot="foreground">
+    <section>
+        <Introduction />
     </section>
-    <section class="panel" style="background-color: #eed4bc;">
-        <div class="text">
-            <p class="context">In Central America, these are not rhetorical questions, but a reality. It is a reality 
-                that is not often easily understood.</p>
-        </div>
-    </section>
-    <section class="panel" style="background-color: #eed4bc;">
-        <div class="text">
-            <p class="context">Scroll on to better understand what this means.</p>
-        </div>
-    </section> 
     <section class="panel" style="background-color: #eed4bc;">
         <div align="center">
         <table width="80%">
@@ -95,13 +103,13 @@
                         We'll use your answers to show you how you compare to people in El Salvador.</p>
                 </td>
                 <td align="center">
-                    <Profile/>
+                    <UserProfile/>
                 </td>
             </tr>  
         </table>
-    </div>
-
+        </div>
     </section> 
+
     <section class="panel">
         <div class="text">
             <p class="context">
@@ -110,16 +118,13 @@
             </p>
         </div>
     </section>
-    <!-- <section class="panel" style="background-color: #eed4bc;">
-        <b>PROFILES + USER INPUT</b>
-        <Profile/>
-    </section>   -->
+
     <section class="panel" style="background-color: #eed4bc;">
         <div align="center">
         <table width="90%">
             <tr>
                 <td width="50%">
-                    <b style="margin-bottom:10cm;"> "Hi, NAME. I'm Laura! Nice to meet you."</b>
+                    <b style="margin-bottom:10cm;"> "Hi, {userName}. I'm Laura! Nice to meet you."</b>
                     <br/>
                     <br/>
                     <br/>
@@ -131,7 +136,7 @@
                 </td>
             </tr>  
         </table>
-    </div>
+        </div>
     </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
@@ -161,9 +166,13 @@
             <br />
             <br />
             <br />
-            <b>TODO are we missing stuff here?</b>
         </div>
         </section> 
+
+    <section>
+        <UserInputDiet />
+    </section>
+
     <section class="panel" >
         <div class="text">
             <b class="laura"> "Thank you for sharing your experiences with me."</b>
@@ -270,10 +279,10 @@
             <b>TODO include links</b>
         </div>
     </section> 
-  </div>
+    </div>
 
 
-    </Scroller>
+</Scroller>
 
 </main>
 
@@ -303,7 +312,7 @@
     .text {
         width: 75%;
         margin: auto;
-        text-align: center;
+        text-align: left;
     }
 
 	.panel.green {
