@@ -30,7 +30,7 @@
 	let threshold = 0.5;
 	let bottom = 0.9;
     let storytext;
-    let pieIndex = 11;
+    let pieIndex = 9;
     let pieWindowHeight = 5000;
 
     // INTRODUCTION, FOR TESTING
@@ -219,7 +219,7 @@
         </div>
         </section> 
 
-    <section>
+    <section class="panel">
         <!-- <UserInputDiet /> -->
         <UserInputMealFin />
         <p>{userMissedMealValue}</p>
@@ -234,7 +234,6 @@
     <section class="panel" >
         <div class="text">
             <b class="laura"> "Thank you for sharing your experiences with me."</b>
-
         </div>
     </section>
     <section class="textPanel" >
