@@ -14,6 +14,7 @@
     let fillColor = "#742a24";
     let lauraColor = "#cf2513";
     let userColor = "#69b3a2";
+    let bothColor = "#868A79";
     // #742a24 brown
     // #eed4bc background
     // #6c370f also brown

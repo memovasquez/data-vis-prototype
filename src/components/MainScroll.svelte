@@ -211,8 +211,8 @@
         <br/>
         <br/>
         <div class="text">
-        <p class="context">Learn more about Laura by selecting the information fields below. Laura's information is 
-            represented in red on the charts and yours in blue. How do you compare to Laura and other Salvadorans?</p>
+        <p class="context">Learn more about Laura by selecting the information fields below. How do you compare to Laura and other Salvadoreans?  Laura's information is 
+            represented in red on the charts and yours in blue (if in same category, the bar will be gray). </p>
         </div>
         <br />
           <Info bind:userInput={userInput} />
@@ -265,7 +265,7 @@
             <!-- <Nutrition /> -->
             <Nutrition bind:progress={progress} bind:index={index} bind:offset={offset} bind:windowHeight={pieWindowHeight}/>
 
-        
+    </section>
       <!-- </section>
       <section class="panel">
         <div class="text">
@@ -315,14 +315,18 @@
       </section>
       <section class="panel" style="background-color: #eed4bc;">
         <div class="text">
-            <b class="laura"> "To be honest, I know lots of people in similar situations as me here in El Salvador."</b>
+            <b class="laura"> "Frankly, I know MANY people in similar situations as me here in El Salvador."</b>
         </div>
-    </section> 
-    <section>
+        <br/>
         <div class="text">
-            <p class="context">How common do you think food insecurity is in Central American Countries?</p>
+            <p class="context"> 
+                Food insecurity is a serious issue in all regions of the world; unfortunately, there's been a recent upward trend in reported food insecurity in many countries. <br/> The Food and Agriculture Oranization of the United Nations <a href="https://data.apps.fao.org/catalog/about" target="_blank">(FAO)</a> has been collecting data on food security indicators
+                 for over 245 countries including El Salvador and even more developed countries, such as the United States, since 1961.<br/>
+                <br/> How common do you think food insecurity is in El Salvador?
+            </p>
         </div>
-    </section>
+        </section> 
+        
     <section class="panel" style="background-color: #eed4bc;">
           <!-- {#if fao_data.length !== 0} -->
           <CountryFoodInsecurity bind:fao_data={fao_data}/>
@@ -347,6 +351,8 @@
             <b>TODO include links</b>
         </div>
     </section> 
+    <p style="background-color: #eed4bc;">Thank you to the <a href="https://www.wfp.org/" target="_blank">World Food Programme</a> for providing the data used in these interactive data visualizations</p>
+
     </div>
 
 

@@ -292,13 +292,13 @@
 
 </script>
 
-<main>
+
 
     <!-- <button on:click="{() => {sliderVisble = !sliderVisble}}">View Slider</button> -->
-    <h2>Prevalence of moderate or severe food insecurity in the total population (percent)</h2>
+    <h3>Prevalence of moderate or severe food insecurity in the total population (percent)</h3>
     <h3>The % of the population in the U.S. that reported moderate to severe food insecurity in 2016 was 10.5</h3>
     
-    <p id="guessInstruction">Drag the bar on the left to what you think the metric is for El Salvador</p> 
+    <p style="visibility: {!sliderVisble ? "visible" : "hidden"};" id="guessInstruction">Drag the bar on the left to what you think the metric is for El Salvador</p> 
     
     <!-- Create a div where the graph will take place -->
     <div id="my_dataviz" style="display: flex; justify-content:center" >
@@ -315,7 +315,7 @@
 
 
 
-</main>
+
 
 
 <style>

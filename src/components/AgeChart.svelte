@@ -14,6 +14,7 @@
     let fillColor = "#742a24";
     let lauraColor = "#cf2513";
     let userColor = "#69b3a2";
+    let bothColor = "#868A79";
     
     // #742a24 brown
     // #eed4bc background
@@ -148,7 +149,7 @@
         .attr("transform", function(d) { return `translate(${xScale(d.x0) - (xScale(d.x1) - xScale(d.x0))/2 } , ${yScale(d.length)})`})
             .attr("width", function(d) { return (xScale(d.x1) - xScale(d.x0)) -1})
             .attr("height", function(d) { return height - yScale(d.length); })
-            .style("fill", function(d) { return bins.indexOf(d) === 4 ? lauraColor : bins.indexOf(d) === userBin ? userColor : fillColor })
+            .style("fill", function(d) { return bins.indexOf(d) === 4 && bins.indexOf(d) === userBin ? bothColor : bins.indexOf(d) === 4 ? lauraColor :  bins.indexOf(d) === userBin ? userColor : fillColor })
 
             //  Show tooltip on hover
              .on("mouseover", showTooltip )
