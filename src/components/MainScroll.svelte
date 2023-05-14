@@ -273,7 +273,9 @@
       <!-- </section>
       <section class="panel">
         <div class="text">
-        <p class="context">According to the Global Nutrition report, an average of 12.5% of adult women in the Central American subregion live with diabetes, as well as 11.4% of men. 
+        <p class="context">
+            <a href="https://globalnutritionreport.org/resources/nutrition-profiles/latin-america-and-caribbean/central-america/?fbclid=IwAR2x_uxJPhO7Er4RdMdym1iUhFr7FLRVlU9i1EXwUBR0cuwoahMM_EGLfaU">
+                According to the Global Nutrition report </a>, an average of 12.5% of adult women in the Central American subregion live with diabetes, as well as 11.4% of men. 
             In addition, 34.5% of women and 25.1% of men live with obesity.
             No country in the subregion is on course to meet the targets for low birth weight, diabetes among men or women, or obesity among men or women.
         </p>
@@ -309,7 +311,9 @@
         <br />
         <br />
         <div class="text">
-            <p class="context">According to a UN report in 2021, 40.6% of the Central American population experiences moderate or severe food insecurity, compared to 29.3% worldwide. 
+            <p class="context">
+                According to a <a href="https://www.paho.org/en/news/19-1-2023-report-131-million-people-latin-america-and-caribbean-cannot-access-healthy-diet?fbclid=IwAR1vB5a8lAmefLsKEq_xS1-3SHQ1sRR4btBgLh0Iep1OBR7NarKNF6bILbs#:~:text=In%202021%2C%2040.6%25%20of%20the,in%20the%20world%20(11.7%25)"> UN report in 2021 </a>
+                , 40.6% of the Central American population experiences moderate or severe food insecurity, compared to 29.3% worldwide. 
                 Severe food insecurity was also more frequent in the region (14.2%) than in the world (11.7%).</p>
             <br/>
             <br/>
