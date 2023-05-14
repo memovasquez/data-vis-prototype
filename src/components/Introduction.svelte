@@ -12,11 +12,16 @@
   
   <main>
 
+    <div style="text-align: center">
     {#each texts as text (text)}
-      <p class="paragraph" in:fly={{ y: 50, duration: 500 }} out:fly={{ y: -50, duration: 500 }} animate:fade={{ duration: 200 }} transition={{ delay: 100, duration: 500, easing: 'ease-out' }}>
+      <p class="paragraph" style="text-align:left; width:600px; display: inline-block;" 
+        >
+        <!-- in:fly={{ y: 50, duration: 500 }} out:fly={{ y: -50, duration: 500 }} animate:fade={{ duration: 200 }} transition={{ delay: 100, duration: 500, easing: 'ease-out' }} -->
         {text}
       </p>
+    <br/>
     {/each}
+  </div>
   
   </main>
   
