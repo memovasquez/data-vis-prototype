@@ -211,6 +211,16 @@ function shadeColor(color, percent) {
 		<text x="100" y="325">of each food group Laura ate</text>
 		<text x="100" y="350">per day on average this week. </text>
 		<text x="100" y="400">Hover over the chart to see details.</text>
+
+		<text x="1100" y="40" font-size="smaller">According to the Global Nutrition report,</text> 
+		<text x="1100" y="60" font-size="smaller">an average of 12.5% of adult women in the </text>
+		<text x="1100" y="80" font-size="smaller">Central American subregion live with</text>
+		<text x="1100" y="100" font-size="smaller">diabetes, as well as 11.4% of men. In </text>
+        <text x="1100" y="120" font-size="smaller">addition, 34.5% of women and 25.1% of </text>
+        <text x="1100" y="140" font-size="smaller">men live with obesity. No country in the </text>
+		<text x="1100" y="160" font-size="smaller">subregion is on course to meet the targets</text>
+		<text x="1100" y="180" font-size="smaller">for low birth weight, diabetes or obesity </text>
+		<text x="1100" y="200" font-size="smaller">among men or women.</text>
 		{/if}
         <g id="fullPlate" transform="translate(1000,400)">
 
