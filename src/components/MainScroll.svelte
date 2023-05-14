@@ -152,7 +152,7 @@
         <Introduction />
     </section> -->
     <div class="foreground" slot="foreground">
-    <section>
+    <section class="panel">
         <Introduction />
     </section>
     <section class="panel" style="background-color: #eed4bc;">
