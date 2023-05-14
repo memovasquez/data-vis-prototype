@@ -101,7 +101,17 @@
     let userInput;
     $:{
 
-        userInput = {name: userNameValue, income: userMonthlyIncomeValue, sex: userSexValue, hh_size: userHouseholdSizeValue, age: userAgeValue};
+        userInput = {
+            name: userNameValue, 
+            income: userMonthlyIncomeValue, 
+            sex: userSexValue, 
+            hh_size: userHouseholdSizeValue, 
+            age: userAgeValue,
+            missedMeal: userMissedMealValue,
+            hasDebt: userHasDebtValue,
+            debtAmt: userDebtAmtValue,
+            borrowedMoney: userBorrowedMoneyValue,
+        };
     }
 
     
@@ -222,10 +232,10 @@
     <section class="panel">
         <!-- <UserInputDiet /> -->
         <UserInputMealFin />
-        <p>{userMissedMealValue}</p>
+        <!-- <p>{userMissedMealValue}</p>
         <p>{userBorrowedMoneyValue}</p>
         <p>{userHasDebtValue}</p>
-        <p>{userDebtAmtValue}</p>
+        <p>{userDebtAmtValue}</p> -->
 
 
 
@@ -290,7 +300,7 @@
             <p class="context"> The dots below represent people and the graph underneath shows their distribution according to a financial indicator. 
                 Laura is represented with red and you are represented with blue. Notice where you fall in the data below. Would you have to miss a meal or borrow money for food this week?</p>
         </div>
-        <Dots />
+        <Dots bind:userInput={userInput}/>
         <br />
         <br />
         <div class="text">

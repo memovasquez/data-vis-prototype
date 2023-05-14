@@ -28,6 +28,12 @@
     let person1Loc = 0;
     let person2Loc = 1;
 
+    let person1TargetColor = {};
+    let person2TargetColor = {};
+
+    export let userInput = {}; 
+
+
     // #742a24 brown
     // #eed4bc background
     // #6c370f also brown
@@ -85,7 +91,7 @@
 
         let debtCurrency = data.map(obj => Number(obj.debt_currency))
         let debt = data.map(obj => Number(obj.debt_amount))
-            .filter((number, i) => ((number < 1000) && (number > 0)  && (debtCurrency[i] == 1)));
+            .filter((number, i) => ((number < 1000) && (debtCurrency[i] == 1)));
 
         let remittanceCurrency = data.map(obj => Number(obj.rem_currency))
         let remittance = data.map(obj => Number(obj.remesa_amount))
@@ -227,13 +233,13 @@
             let person2Found = false;
             for (let i=1; i <= dotCoords.length; i++) {
                 if (! person1Found) {
-                    if (dotCoords[dotCoords.length - i]["c"] == yesColor) {
+                    if (dotCoords[dotCoords.length - i]["c"] == person1TargetColor[fieldName]) {
                         idx1 = dotCoords.length - i
                         person1Found = true;
                     }
                 } 
-                if (! person2Found)  {
-                    if (dotCoords[dotCoords.length - i]["c"] == noColor) {
+                if ((! person2Found) && (idx1 != dotCoords.length - i)) {
+                    if (dotCoords[dotCoords.length - i]["c"] == person2TargetColor[fieldName]) {
                         idx2 = dotCoords.length - i
                         person2Found = true;
                     }
@@ -305,8 +311,12 @@
         let rightData = data[1];
 
         const x = d3.scaleLinear()
-            .domain([0, d3.max(histData[name]['all'])*1.25])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
+            .domain([0, d3.max([d3.max(histData[name]['all']), person2[nameToField[name]]]) * 1.15])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
             .range([0, histWidth]);
+
+        d3.select("#x-axis")
+        .attr("transform", `translate(0, ${histHeight})`)
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
         const histogram = d3.histogram()
             .value(function(d) { return d; })   // I need to give the vector of value
@@ -480,9 +490,26 @@
 
 
     $: {
-        if ((Object.keys(numDots).length > 0) && (Object.keys(histData).length > 0)){
+        if ((Object.keys(numDots).length > 0) && (Object.keys(histData).length > 0) && (Object.keys(userInput).length > 0)){
             numRows = Math.ceil(numDots['all'] / numColumns);
             height = numRows * (size + 3);
+            console.log(userInput);
+            person2 = {
+                "avg_income_amount": userInput.income,
+                "debt_amount": userInput.debtAmt,
+            }
+
+            person1TargetColor = {
+                "missedMeals": yesColor,
+                "borrowedFood": yesColor,
+            };
+
+            person2TargetColor = {
+                "missedMeals": (userInput.missedMeal == "true") ? yesColor : noColor,
+                "borrowedFood": (userInput.borrowedMoney == "true") ? yesColor : noColor,
+            };
+
+
             getLabels();
             updateDotCoords('all');
             draw()
@@ -566,11 +593,11 @@
                 `translate(${margin.left + 400}, ${margin.top + 50})`);
 
     const x = d3.scaleLinear()
-            .domain([0, d3.max(histData['income']['all']) * 1.25])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
-            .range([0, histWidth]); //width of histogram
-
+            .domain([0, d3.max([d3.max(histData['income']['all']), person2[nameToField['income']]]) * 1.15])     // can use this instead of 1000 to have the max of data: d3.max(data) turns out to be 7
+            .range([0, histWidth]);
     // TODO fix 
     svgHist.append("g")
+        .attr("id", "x-axis")
         .attr("transform", `translate(0, ${histHeight})`)
         .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
