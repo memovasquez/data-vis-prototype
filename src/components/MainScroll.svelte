@@ -99,7 +99,7 @@
     })
 
     let userInput;
-    
+
     $:{
 
         userInput = {
@@ -266,7 +266,7 @@
             <Nutrition bind:progress={progress} bind:index={index} bind:offset={offset} bind:windowHeight={pieWindowHeight}/>
 
         
-      </section>
+      <!-- </section>
       <section class="panel">
         <div class="text">
         <p class="context">According to the Global Nutrition report, an average of 12.5% of adult women in the Central American subregion live with diabetes, as well as 11.4% of men. 
@@ -280,7 +280,7 @@
             TODO do we need to cite these?
         </b>
         </div>
-      </section>
+      </section> -->
       <section class="panel" >
         <div class="text">
             <b class="laura">"Money has also been difficult this month. I've had to miss some meals and borrow money."</b>
