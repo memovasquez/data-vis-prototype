@@ -317,7 +317,6 @@
                 Severe food insecurity was also more frequent in the region (14.2%) than in the world (11.7%).</p>
             <br/>
             <br/>
-            <b>TODO cite these stats^</b>
         </div>
 
       </section>
