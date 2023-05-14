@@ -41,6 +41,10 @@
         "Scroll on to better understand what this means."
     ];
 
+    function goTop() {
+    document.body.scrollIntoView();
+  }
+
     // stores variables (user input)
     import {userAge, userName} from '../stores';
     import { userSex } from '../stores.js';
@@ -351,6 +355,7 @@
             <b>TODO include links</b>
         </div>
     </section> 
+    <button on:click={goTop} style="justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white; border-radius: 5px;" >Go back to top</button>
     <p style="background-color: #eed4bc;">Thank you to the <a href="https://www.wfp.org/" target="_blank">World Food Programme</a> for providing the data used in these interactive data visualizations</p>
 
     </div>
