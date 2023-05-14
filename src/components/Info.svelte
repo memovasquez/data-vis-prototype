@@ -19,7 +19,7 @@
     let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
     let person1 = {};
 
-    let selectedField = "age";
+    let selectedField = "location";
     let fields = [
         "age",
         "sex",
@@ -74,7 +74,7 @@
     }
 
     $: {
-        if (Object.keys(person1).length > 0) {
+        if ((Object.keys(person1).length > 0) && (Object.keys(userInput).length > 0)) {
             makeDisplay()
             //updateHistogramData('income', 'all');
             
@@ -99,6 +99,14 @@
             <table style="height:600px">
                 <tr><td>
                     <button 
+                        class="button {selectedField === "location" ? "pressed" : ""}"
+                        on:click="{pressButton("location")}"
+                    >
+                        Location
+                    </button>
+                </td></tr>
+                <tr><td>
+                    <button 
                         class="button {selectedField === "age" ? "pressed" : ""}" 
                         on:click="{pressButton("age")}"
                     >
@@ -111,14 +119,6 @@
                         on:click="{pressButton("sex")}"
                     >
                         Sex
-                    </button>
-                </td></tr>
-                <tr><td>
-                    <button 
-                        class="button {selectedField === "location" ? "pressed" : ""}"
-                        on:click="{pressButton("location")}"
-                    >
-                        Location
                     </button>
                 </td></tr>
                 <tr><td>

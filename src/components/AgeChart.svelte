@@ -159,7 +159,7 @@
 
 
     $: {
-        if (data.length > 0){
+        if ((data.length > 0)){
             display();
         }
     }
