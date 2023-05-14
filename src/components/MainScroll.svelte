@@ -380,7 +380,7 @@
     .text {
         width: 75%;
         margin: auto;
-        text-align: left;
+        text-align: center;
     }
 
 	.panel.green {
