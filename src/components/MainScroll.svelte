@@ -43,6 +43,19 @@
 
     function goTop() {
     document.body.scrollIntoView();
+
+    const supportLinks = [
+    { id: 1, label: "Button 1", link: "https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB"  },
+    { id: 2, label: "Button 2" },
+    { id: 3, label: "Button 3" },
+    { id: 4, label: "Button 4" },
+    { id: 5, label: "Button 5" },
+    { id: 6, label: "Button 6" },
+    ];
+
+    function handleClick() {
+    console.log("Button clicked!");
+    }
   }
 
     // stores variables (user input)
@@ -157,49 +170,10 @@
     </section> -->
     <div class="foreground" slot="foreground">
     <section class="panel">
-        {#if index == 0}
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
-            Food is a basic human right and necessity. It provides us with the nutrition needed to sustain our lives; it fuels us; it connects us.
-        </p>
-        {/if}
-        <!-- 'But what if we lost access to food? What does life look like without this basic necessity?',
-        'In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.',
-        'Scroll on to better understand what this means.' -->
-
-    </section>
-    <section class="panel">
-        {#if index == 1}
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
-            But what if we lost access to food? What does life look like without this basic necessity?
-        </p>
-        {/if}
-        <!-- 'But what if we lost access to food? What does life look like without this basic necessity?',
-        'In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.',
-        'Scroll on to better understand what this means.' -->
-    </section>
-    <section class="panel">
-        {#if index == 2}
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
-            In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.
-        </p>
-        {/if}
-        <!-- 'But what if we lost access to food? What does life look like without this basic necessity?',
-        'In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.',
-        'Scroll on to better understand what this means.' -->
-    </section>
-    <section class="panel">
-        {#if index == 3}
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
-            Scroll on to better understand what this means.
-        </p>
-        {/if}
-        <!-- 'But what if we lost access to food? What does life look like without this basic necessity?',
-        'In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.',
-        'Scroll on to better understand what this means.' -->
+        <Introduction />
     </section>
     <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 4}
-        <div align="center" transition:fly="{{ y: 20, duration: 200 }}">
+        <div align="center">
         <table width="80%">
             <tr>
                 <td width="50%">
@@ -212,23 +186,19 @@
             </tr>  
         </table>
         </div>
-        {/if}
     </section> 
 
     <section class="panel">
-        {#if index == 5}
-        <div class="text"  transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <p class="context">
                 In the following visualizations, we will be using data contributed by the United Nations World Food Programme (WFP)
                 which includes responses from over 1700 Salvadorans to questions regarding their experiences with food security and nutrition.
             </p>
         </div>
-        {/if}
     </section>
 
     <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 6}
-        <div align="center" transition:fly="{{ y: 20, duration: 200 }}">
+        <div align="center">
         <table width="90%">
             <tr>
                 <td width="50%">
@@ -245,7 +215,6 @@
             </tr>  
         </table>
         </div>
-        {/if}
     </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
@@ -255,21 +224,19 @@
           {/if}
       </section> -->
     <section class="panel" style="background-color: #eed4bc; height:150vh">
-        {#if index == 7}
-        <b class="laura" transition:fly="{{ y: 20, duration: 200 }}">"Step into my shoes!"</b>
+        <b class="laura">"Step into my shoes!"</b>
         <br/>
         <br/>
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">Learn more about Laura by selecting the information fields below. How do you compare to Laura and other Salvadoreans?  Laura's information is 
+        <div class="text">
+        <p class="context">Learn more about Laura by selecting the information fields below. How do you compare to Laura and other Salvadoreans?  Laura's information is 
             represented in red on the charts and yours in blue (if in same category, the bar will be gray). </p>
         </div>
         <br />
           <Info bind:userInput={userInput} />
-        {/if}
+        
     </section>
     <section class="panel" >
-        {#if index == 8}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <b class="laura">"To be honest, I've been struggling to get enough food on the table this week."</b> 
             <br />
             <br />
@@ -278,29 +245,28 @@
             <br />
             <br />
         </div>
-        {/if}
         </section> 
 
     <section class="panel">
         <!-- <UserInputDiet /> -->
         <UserInputMealFin />
-
         <!-- <p>{userMissedMealValue}</p>
         <p>{userBorrowedMoneyValue}</p>
         <p>{userHasDebtValue}</p>
         <p>{userDebtAmtValue}</p> -->
+
+
+
     </section>
 
     <section class="panel" >
-        {#if index == 10}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <b class="laura"> "Thank you for sharing your experiences with me."</b>
         </div>
-        {/if}
     </section>
     <section class="textPanel" >
         <div class="text">
-            {#if index == 11}
+            {#if index == 10}
             <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
                 El Salvador has made significant progress in recent years to improve food security among its citizens. 
                 However, due to high poverty levels and crime rates, food security continues to be a serious problem.
@@ -335,15 +301,12 @@
         </div>
       </section> -->
       <section class="panel" >
-        {#if index == 13}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <b class="laura">"Money has also been difficult this month. I've had to miss some meals and borrow money."</b>
         </div>
-        {/if}
     </section> 
     <section class="panel" >
-        {#if index == 14}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <p class="context">
             Food insecurity and financial security are very often linked. In El Salvador, the poverty rate is 
                 <a href="https://www.worldbank.org/en/country/elsalvador/overview">nearly three times</a> what it is in the 
@@ -351,21 +314,16 @@
                 and how do you compare?
             </p> 
         </div>
-        {/if}
       </section>
       <section class="panel" style="background-color: #eed4bc; height:200vh">
-        <!-- {#if index == 15} -->
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <p class="context"> The dots below represent people and the graph underneath shows their distribution according to a financial indicator. 
                 Laura is represented with red and you are represented with blue. Notice where you fall in the data below. Would you have to miss a meal or borrow money for food this week?</p>
         </div>
-        <!-- {/if} -->
         <Dots bind:userInput={userInput}/>
-
-        </section>
-        <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 16}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <br />
+        <br />
+        <div class="text">
             <p class="context">
                 According to a <a href="https://www.paho.org/en/news/19-1-2023-report-131-million-people-latin-america-and-caribbean-cannot-access-healthy-diet?fbclid=IwAR1vB5a8lAmefLsKEq_xS1-3SHQ1sRR4btBgLh0Iep1OBR7NarKNF6bILbs#:~:text=In%202021%2C%2040.6%25%20of%20the,in%20the%20world%20(11.7%25)"> UN report in 2021 </a>
                 , 40.6% of the Central American population experiences moderate or severe food insecurity, compared to 29.3% worldwide. 
@@ -373,11 +331,10 @@
             <br/>
             <br/>
         </div>
-        {/if}
+
       </section>
       <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 17}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <b class="laura"> "Frankly, I know MANY people in similar situations as me here in El Salvador."</b>
         </div>
         <br/>
@@ -388,7 +345,6 @@
                 <br/> How common do you think food insecurity is in El Salvador?
             </p>
         </div>
-        {/if}
         </section> 
         
     <section class="panel" style="background-color: #eed4bc;">
@@ -400,24 +356,53 @@
     
 
     <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 19}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
+        <div class="text">
             <b class="laura">"Hopefully you understand me a bit better. But I do wonder..."</b>
         </div>
         <div class="text">
             <b class="laura">"What would you do if you were me?"</b>
         </div>
-        {/if}
     </section> 
     <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 20}
-        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
-            <p class="context">Links to support food insecurity in Central America</p>
+        <p class="context">Help combat food insecurity in Central America:</p>
+        <div class="supportLinks" align="center">
+            <div class="supportLink">
+                <a href="https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB" target="_blank"
+                rel="noopener noreferrer" class="button" on:click={handleClick}>Donate to the World Food Program</a>
+            <div class="supportLink">
+                <a href="https://www.globalgiving.org/projects/strengthen-60-women-farmers-in-el-salvador/" target="_blank"
+                rel="noopener noreferrer" class="button" on:click={handleClick}>Donate to El Salvadoran Farmers</a>
+            </div>
+            <div class="supportLink">
+                <a href="https://www.worldvision.org/global-hunger-crisis-response?campaign=400076170&gclid=Cj0KCQjwsIejBhDOARIsANYqkD1nFEXHfYSSR2C-0jczvNz_IfcFxYRr1tvDxZAu1QKLj-kze2N5AMEaAr9FEALw_wcB&gclsrc=aw.ds" target="_blank"
+                rel="noopener noreferrer" class="button" on:click={handleClick}>Donate to the World Vision</a>
+            </div>
             <br/>
             <br/>
-            <b>TODO include links</b>
+            <br/>
+            <br/>
         </div>
-        {/if}
+        <p class="context">Learn more about food insecurity in El Salvador:</p>
+        <div class="supportLinks">
+            <div class="supportLink">
+            <a href="https://www.wfp.org/countries/el-salvador" target="_blank"
+            rel="noopener noreferrer" class="button" on:click={handleClick}>
+            General Information
+            </a>
+            </div>
+            <div class="supportLink">
+                <a href="https://www.wfpusa.org/articles/voices-dry-corridor-stories-climate-change-hunger/" target="_blank"
+                rel="noopener noreferrer" class="button" on:click={handleClick}>
+                "Dry Corridor"
+                </a>
+            </div>
+            <div class="supportLink">
+                <a href="https://www.wfpusa.org/articles/hunger-poverty-climate-violence-force-families-homes-central-america/" target="_blank"
+                rel="noopener noreferrer" class="button" on:click={handleClick}>
+                Migration
+                </a>
+            </div>
+        </div>
     </section> 
     <button on:click={goTop} style="justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white; border-radius: 5px;" >Go back to top</button>
     <p style="background-color: #eed4bc;">Thank you to the <a href="https://www.wfp.org/" target="_blank">World Food Programme</a> for providing the data used in these interactive data visualizations</p>
@@ -481,6 +466,7 @@
     position: relative;
     /* outline: green solid 3px; */
     }
+
     .foreground {
         width: 100%;
         margin: 0 auto;
@@ -505,6 +491,38 @@
         width:600px; 
         display: inline-block;
     }
+
+    .button {
+    display: inline-block;
+    padding: 10px;
+    background-color: #742a24;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    width: 500px;
+    height: 200px;
+    border-radius: 5px
+    }
+
+  .supportLinks {
+    padding: 20px;
+    align-self: center;
+    margin:auto;
+    overflow: hidden;
+    justify-self:left ;
+    margin-right: 50px;
+  }
+
+  .supportLink {
+    align-self: center;
+    padding: 20px;
+    background-color:#eed4bc;
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    width: 600px; 
+  }
 
 </style>
 
