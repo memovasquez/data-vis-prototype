@@ -91,7 +91,7 @@
 
         let debtCurrency = data.map(obj => Number(obj.debt_currency))
         let debt = data.map(obj => Number(obj.debt_amount))
-            .filter((number, i) => ((number < 1000) && (debtCurrency[i] == 1)));
+            .filter((number, i) => ((number < 1000) && (number > 0) && (debtCurrency[i] == 1)));
 
         let remittanceCurrency = data.map(obj => Number(obj.rem_currency))
         let remittance = data.map(obj => Number(obj.remesa_amount))
