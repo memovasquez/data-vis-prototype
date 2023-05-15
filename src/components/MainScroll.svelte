@@ -166,10 +166,40 @@ const supportLinks = [
     </section> -->
     <div class="foreground" slot="foreground">
     <section class="panel">
-        <Introduction />
+        {#if (index == 0)}
+        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
+            Food is a basic human right and necessity. It provides us with the nutrition needed to sustain our lives; it fuels us; it connects us.
+        </p>
+        {/if}
+
+    </section>
+    <section class="panel">
+        {#if (index == 1)}
+        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
+            But what if we lost access to food? What does life look like without this basic necessity?
+        </p>
+        {/if}
+
+    </section>
+    <section class="panel">
+        {#if (index == 2)}
+        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
+            In Central America, these are not rhetorical questions, but a reality. It is a reality that is not often easily understood.
+        </p>
+        {/if}
+
+    </section>
+    <section class="panel">
+        {#if (index == 3)}
+        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
+            Scroll on to better understand what this means.
+        </p>
+        {/if}
+
     </section>
     <section class="panel" style="background-color: #eed4bc;">
-        <div align="center">
+        {#if (index == 4)}
+        <div align="center" transition:fly="{{ y: 20, duration: 200 }}">
         <table width="80%">
             <tr>
                 <td width="50%">
@@ -182,19 +212,23 @@ const supportLinks = [
             </tr>  
         </table>
         </div>
+        {/if}
     </section> 
 
     <section class="panel">
-        <div class="text">
+        {#if (index == 5)}
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <p class="context">
                 In the following visualizations, we will be using data contributed by the United Nations World Food Programme (WFP)
                 which includes responses from over 1700 Salvadorans to questions regarding their experiences with food security and nutrition.
             </p>
         </div>
+        {/if}
     </section>
 
     <section class="panel" style="background-color: #eed4bc;">
-        <div align="center">
+        {#if (index == 6)}
+        <div align="center"  transition:fly="{{ y: 20, duration: 200 }}">
         <table width="90%">
             <tr>
                 <td width="50%">
@@ -211,6 +245,7 @@ const supportLinks = [
             </tr>  
         </table>
         </div>
+        {/if}
     </section> 
       <!-- <section class="panel" id="slide1" style="background-color: #eed4bc;">
           <b>ONE</b>
@@ -229,10 +264,10 @@ const supportLinks = [
         </div>
         <br />
           <Info bind:userInput={userInput} />
-        
     </section>
     <section class="panel" >
-        <div class="text">
+        {#if (index == 8)}
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <b class="laura">"To be honest, I've been struggling to get enough food on the table this week."</b> 
             <br />
             <br />
@@ -241,11 +276,16 @@ const supportLinks = [
             <br />
             <br />
         </div>
+        {/if}
         </section> 
 
     <section class="panel">
         <!-- <UserInputDiet /> -->
-        <UserInputMealFin />
+        {#if (index == 9)}
+        <div transition:fly="{{ y: 20, duration: 200 }}">
+            <UserInputMealFin />
+        </div>
+        {/if}
         <!-- <p>{userMissedMealValue}</p>
         <p>{userBorrowedMoneyValue}</p>
         <p>{userHasDebtValue}</p>
@@ -256,13 +296,15 @@ const supportLinks = [
     </section>
 
     <section class="panel" >
-        <div class="text">
+        {#if (index == 10)}
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <b class="laura"> "Thank you for sharing your experiences with me."</b>
         </div>
+        {/if}
     </section>
     <section class="textPanel" >
         <div class="text">
-            {#if index == 10}
+            {#if index == 11}
             <p class="context" transition:fly="{{ y: 20, duration: 200 }}">
                 El Salvador has made significant progress in recent years to improve food security among its citizens. 
                 However, due to high poverty levels and crime rates, food security continues to be a serious problem.
@@ -297,12 +339,15 @@ const supportLinks = [
         </div>
       </section> -->
       <section class="panel" >
-        <div class="text">
+        {#if index == 13}
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <b class="laura">"Money has also been difficult this month. I've had to miss some meals and borrow money."</b>
         </div>
+        {/if}
     </section> 
     <section class="panel" >
-        <div class="text">
+        {#if index == 14}
+        <div class="text"  transition:fly="{{ y: 20, duration: 200 }}">
             <p class="context">
             Food insecurity and financial security are very often linked. In El Salvador, the poverty rate is 
                 <a href="https://www.worldbank.org/en/country/elsalvador/overview">nearly three times</a> what it is in the 
@@ -310,6 +355,7 @@ const supportLinks = [
                 and how do you compare?
             </p> 
         </div>
+        {/if}
       </section>
       <section class="panel" style="background-color: #eed4bc; height:200vh">
         <div class="text">
@@ -330,17 +376,19 @@ const supportLinks = [
 
       </section>
       <section class="panel" style="background-color: #eed4bc;">
-        <div class="text">
+        {#if index == 16}
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <b class="laura"> "Frankly, I know MANY people in similar situations as me here in El Salvador."</b>
         </div>
         <br/>
-        <div class="text">
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <p class="context"> 
                 Food insecurity is a serious issue in all regions of the world; unfortunately, there's been a recent upward trend in reported food insecurity in many countries. <br/> The Food and Agriculture Oranization of the United Nations <a href="https://data.apps.fao.org/catalog/about" target="_blank">(FAO)</a> has been collecting data on food security indicators
                  for over 245 countries including El Salvador and even more developed countries, such as the United States, since 1961.<br/>
                 <br/> How common do you think food insecurity is in El Salvador?
             </p>
         </div>
+        {/if}
         </section> 
         
     <section class="panel" style="background-color: #eed4bc;">
@@ -352,16 +400,19 @@ const supportLinks = [
     
 
     <section class="panel" style="background-color: #eed4bc;">
-        <div class="text">
+        {#if index == 18}
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <b class="laura">"Hopefully you understand me a bit better. But I do wonder..."</b>
         </div>
-        <div class="text">
+        <div class="text" transition:fly="{{ y: 20, duration: 200 }}">
             <b class="laura">"What would you do if you were me?"</b>
         </div>
+        {/if}
     </section> 
     <section class="panel" style="background-color: #eed4bc;">
-        <p class="context">Help combat food insecurity in Central America:</p>
-        <div class="supportLinks" align="center">
+        {#if index == 19}
+        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">Help combat food insecurity in Central America:</p>
+        <div class="supportLinks"  transition:fly="{{ y: 20, duration: 200 }}" align="center">
             <div class="supportLink">
                 <a href="https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB" target="_blank"
                 rel="noopener noreferrer" class="button">Donate to the World Food Program</a>
@@ -378,8 +429,8 @@ const supportLinks = [
             <br/>
             <br/>
         </div>
-        <p class="context">Learn more about food insecurity in El Salvador:</p>
-        <div class="supportLinks">
+        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">Learn more about food insecurity in El Salvador:</p>
+        <div class="supportLinks" transition:fly="{{ y: 20, duration: 200 }}">
             <div class="supportLink">
             <a href="https://www.wfp.org/countries/el-salvador" target="_blank"
             rel="noopener noreferrer" class="button" >
@@ -399,6 +450,8 @@ const supportLinks = [
                 </a>
             </div>
         </div>
+        </div>
+        {/if}
     </section> 
     <button on:click={goTop} style="justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white; border-radius: 5px;" >Go back to top</button>
     <p style="background-color: #eed4bc;">Thank you to the <a href="https://www.wfp.org/" target="_blank">World Food Programme</a> for providing the data used in these interactive data visualizations</p>
