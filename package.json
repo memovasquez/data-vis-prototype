@@ -31,6 +31,7 @@
     "d3-simple-slider": "^1.10.4",
     "flowbite": "^1.6.5",
     "flowbite-svelte": "^0.34.9",
+    "mapbox-gl": "^2.14.1",
     "svelte-adapter-github": "^1.0.0-next.0"
   }
 }

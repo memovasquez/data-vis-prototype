@@ -14,8 +14,8 @@
 
     let info;
     let data;
-    let map;
-    let markerContainer;
+ `   // let map;
+    // let markerContainer;`
     let path = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTYmcthdA2QHcxz-7LyWtPwFCw6EcrxqdbKk7ABJNdcDGEb4u5AyoU1Gg3716krw3_HmqaH7tzGBd17/pub?output=csv";
     let person1 = {};
 
@@ -84,15 +84,6 @@
 
 </script>
 
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-
-    <script src="https://d3js.org/d3.v6.js" charset="utf-8"></script>
-</head>
 <main>
     <div style="display: flex; justify-content:space-around">
             <div>
@@ -143,7 +134,7 @@
             <div>
             {#if selectedField === "location"}
                 <h2>Laura lives in Ahuachapan, El Salvador</h2>
-                <Map bind:map={map} bind:markerContainer={markerContainer} />
+                <Map  />
             {:else if selectedField === "monthlyIncome"}
                 <h2>Laura makes ${person1.avg_income_amount} per month</h2>
                 <IncomeChart bind:data={data} bind:person1={person1} bind:userIncome={userInput.income}/>
