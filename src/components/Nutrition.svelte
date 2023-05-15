@@ -8,7 +8,7 @@
 	export let hideText = true;
 	export let progress = 0;
 	export let index = 0;
-	export let targetIndex = 9;
+	export let targetIndex = 12;
 	export let offset;
 	export let windowHeight;
 	let hoverOffset = 0;
