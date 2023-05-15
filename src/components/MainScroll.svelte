@@ -409,13 +409,18 @@ const supportLinks = [
         </div>
         {/if}
     </section> 
-    <section class="panel" style="background-color: #eed4bc;">
-        {#if index == 19}
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">Help combat food insecurity in Central America:</p>
-        <div class="supportLinks"  transition:fly="{{ y: 20, duration: 200 }}" align="center">
+    <section class="panel" style="background-color: #eed4bc;" >
+        
+
+    <div>
+        
+        <div style="display: flex; justify-content:flex-start">
+            <p >Help combat food insecurity in Central America:</p>
             <div class="supportLink">
                 <a href="https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB" target="_blank"
                 rel="noopener noreferrer" class="button">Donate to the World Food Program</a>
+            </div>
+
             <div class="supportLink">
                 <a href="https://www.globalgiving.org/projects/strengthen-60-women-farmers-in-el-salvador/" target="_blank"
                 rel="noopener noreferrer" class="button">Donate to El Salvadoran Farmers</a>
@@ -424,13 +429,9 @@ const supportLinks = [
                 <a href="https://www.worldvision.org/global-hunger-crisis-response?campaign=400076170&gclid=Cj0KCQjwsIejBhDOARIsANYqkD1nFEXHfYSSR2C-0jczvNz_IfcFxYRr1tvDxZAu1QKLj-kze2N5AMEaAr9FEALw_wcB&gclsrc=aw.ds" target="_blank"
                 rel="noopener noreferrer" class="button" >Donate to the World Vision</a>
             </div>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
         </div>
-        <p class="context" transition:fly="{{ y: 20, duration: 200 }}">Learn more about food insecurity in El Salvador:</p>
-        <div class="supportLinks" transition:fly="{{ y: 20, duration: 200 }}">
+        <div style="display: flex; justify-content:flex-start" >
+            <p class="context">Learn more about food insecurity in El Salvador:</p>
             <div class="supportLink">
             <a href="https://www.wfp.org/countries/el-salvador" target="_blank"
             rel="noopener noreferrer" class="button" >
@@ -450,8 +451,7 @@ const supportLinks = [
                 </a>
             </div>
         </div>
-        </div>
-        {/if}
+    </div>
     </section> 
     <button on:click={goTop} style="justify-self:left ; align-self: center; margin-right: 50px; background-color: #742a24; height:100px; width:200px; color:white; border-radius: 5px;" >Go back to top</button>
     <p style="background-color: #eed4bc;">Thank you to the <a href="https://www.wfp.org/" target="_blank">World Food Programme</a> for providing the data used in these interactive data visualizations</p>
@@ -549,7 +549,7 @@ const supportLinks = [
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
-    width: 500px;
+    width: 300px;
     height: 200px;
     border-radius: 5px
     }
@@ -570,7 +570,7 @@ const supportLinks = [
     color: #fff;
     border-radius: 4px;
     text-align: center;
-    width: 600px; 
+    width: 300px; 
   }
 
 </style>
