@@ -128,6 +128,8 @@
 
             }
 
+        
+        const userSexBin = userSex === 'F' ? 0 : 1;
 
         svg.selectAll("rect")
         .data(bins)
@@ -136,7 +138,7 @@
         .attr("transform", function(d) { return `translate(${xScale(d.x0)  } , ${yScale(d.length)})`})
             .attr("width", function(d) { return (xScale(d.x1) - xScale(d.x0)) -1})
             .attr("height", function(d) { return height - yScale(d.length); })
-            .style("fill", function(d) { return bins.indexOf(d) === 0 ? lauraColor : bins.indexOf(d) ===1  ? userColor : fillColor })
+            .style("fill", function(d) { return bins.indexOf(d) === 0 && userSexBin === 0 ? bothColor :  bins.indexOf(d) === 0 ? lauraColor : userSexBin === 1 ? userColor : fillColor   })
 
             //  Show tooltip on hover
              .on("mouseover", showTooltip )
