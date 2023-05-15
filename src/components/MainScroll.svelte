@@ -42,23 +42,19 @@
     ];
 
     function goTop() {
-    document.body.scrollIntoView();
-
-    const supportLinks = [
-    { id: 1, label: "Button 1", link: "https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB"  },
-    { id: 2, label: "Button 2" },
-    { id: 3, label: "Button 3" },
-    { id: 4, label: "Button 4" },
-    { id: 5, label: "Button 5" },
-    { id: 6, label: "Button 6" },
-    ];
-
-    function handleClick() {
-    console.log("Button clicked!");
+        document.body.scrollIntoView();    
     }
-  }
 
-    // stores variables (user input)
+const supportLinks = [
+{ id: 1, label: "Button 1", link: "https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB"  },
+{ id: 2, label: "Button 2" },
+{ id: 3, label: "Button 3" },
+{ id: 4, label: "Button 4" },
+{ id: 5, label: "Button 5" },
+{ id: 6, label: "Button 6" },
+];
+
+// stores variables (user input)
     import {userAge, userName} from '../stores';
     import { userSex } from '../stores.js';
     import { userMonthlyIncome } from '../stores.js';
@@ -368,14 +364,14 @@
         <div class="supportLinks" align="center">
             <div class="supportLink">
                 <a href="https://secure.wfpusa.org/donate/2210_HungerTerms_SRCH?ms=Hunger_SRCH_GSA_Hunger_FoodBank-Broad_FoodBank_UNR&gad=1&gclid=Cj0KCQjwsIejBhDOARIsANYqkD0EQvRxCn-tB2nbHpVq3hBET05EfuUiJgjGsxuTGoOS6uVgfLW3K6caAldyEALw_wcB" target="_blank"
-                rel="noopener noreferrer" class="button" on:click={handleClick}>Donate to the World Food Program</a>
+                rel="noopener noreferrer" class="button">Donate to the World Food Program</a>
             <div class="supportLink">
                 <a href="https://www.globalgiving.org/projects/strengthen-60-women-farmers-in-el-salvador/" target="_blank"
-                rel="noopener noreferrer" class="button" on:click={handleClick}>Donate to El Salvadoran Farmers</a>
+                rel="noopener noreferrer" class="button">Donate to El Salvadoran Farmers</a>
             </div>
             <div class="supportLink">
                 <a href="https://www.worldvision.org/global-hunger-crisis-response?campaign=400076170&gclid=Cj0KCQjwsIejBhDOARIsANYqkD1nFEXHfYSSR2C-0jczvNz_IfcFxYRr1tvDxZAu1QKLj-kze2N5AMEaAr9FEALw_wcB&gclsrc=aw.ds" target="_blank"
-                rel="noopener noreferrer" class="button" on:click={handleClick}>Donate to the World Vision</a>
+                rel="noopener noreferrer" class="button" >Donate to the World Vision</a>
             </div>
             <br/>
             <br/>
@@ -386,19 +382,19 @@
         <div class="supportLinks">
             <div class="supportLink">
             <a href="https://www.wfp.org/countries/el-salvador" target="_blank"
-            rel="noopener noreferrer" class="button" on:click={handleClick}>
+            rel="noopener noreferrer" class="button" >
             General Information
             </a>
             </div>
             <div class="supportLink">
                 <a href="https://www.wfpusa.org/articles/voices-dry-corridor-stories-climate-change-hunger/" target="_blank"
-                rel="noopener noreferrer" class="button" on:click={handleClick}>
+                rel="noopener noreferrer" class="button" >
                 "Dry Corridor"
                 </a>
             </div>
             <div class="supportLink">
                 <a href="https://www.wfpusa.org/articles/hunger-poverty-climate-violence-force-families-homes-central-america/" target="_blank"
-                rel="noopener noreferrer" class="button" on:click={handleClick}>
+                rel="noopener noreferrer" class="button">
                 Migration
                 </a>
             </div>
