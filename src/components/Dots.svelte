@@ -32,6 +32,7 @@
     let person2TargetColor = {};
 
     export let userInput = {}; 
+    let run = 0;
 
 
     // #742a24 brown
@@ -512,7 +513,13 @@
 
             getLabels();
             updateDotCoords('all');
-            draw()
+            if (run == 0) {
+                draw()
+            } else {
+                updatePlots('all', histState, 'allButton');
+            }
+            run++;
+
         }
     }
 
