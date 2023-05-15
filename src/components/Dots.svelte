@@ -745,6 +745,9 @@
 
 
 <div id="hist" bind:this={dots} class="visualization"></div>
+{#if (histState === 'debt')}
+<p style="font-size:10px"> Distribution of debt amount among respondents with revolving debt</p>
+{/if}
 
 <style>
     .button {
